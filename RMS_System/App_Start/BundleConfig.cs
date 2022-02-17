@@ -20,10 +20,10 @@ namespace RMS_System
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~//Content/themedata/dist/js/adminlte.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/themedata/dist/css/adminlte.min.css",
                       "~/Content/site.css"));
         }
     }

@@ -1,0 +1,73 @@
+﻿@model List<RMS_System.Entities.Role>
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="wrapper">
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- general form elements -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Create User</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input type="email" class="form-control" name="Email" id="Email" placeholder="Enter email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">User Name</label>
+                                        <input type="text" class="form-control" name="UserName" id="UserName" placeholder="Enter email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input type="email" class="form-control" name="Email" id="Email" placeholder="Enter email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Password</label>
+                                        <input type="password" class="form-control" name="Password" id="Password" placeholder="Password">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Select Role</label>
+                                        <select class="form-control" name="Role">
+                                            @foreach (var role in Model)
+                                            {
+                                                <option class="form-control" value="@role.ID">@role.Roles</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">File input</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="ImageURL" id="ImageURL">
+                                                <label class="custom-file-label" for="exampleInputFile">Upload Photo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>

@@ -55,6 +55,22 @@
     <Compile Include="Migrations\202202151332206_userandroleinitalized.designer.cs">
       <DependentUpon>202202151332206_userandroleinitalized.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202161833579_userrolemapping.cs" />
+    <Compile Include="Migrations\202202161833579_userrolemapping.designer.cs">
+      <DependentUpon>202202161833579_userrolemapping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202161854162_somefixed.cs" />
+    <Compile Include="Migrations\202202161854162_somefixed.designer.cs">
+      <DependentUpon>202202161854162_somefixed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202170343464_userfixing.cs" />
+    <Compile Include="Migrations\202202170343464_userfixing.designer.cs">
+      <DependentUpon>202202170343464_userfixing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202170349480_sad.cs" />
+    <Compile Include="Migrations\202202170349480_sad.designer.cs">
+      <DependentUpon>202202170349480_sad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RMContext.cs" />
@@ -72,6 +88,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202202151332206_userandroleinitalized.resx">
       <DependentUpon>202202151332206_userandroleinitalized.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202161833579_userrolemapping.resx">
+      <DependentUpon>202202161833579_userrolemapping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202161854162_somefixed.resx">
+      <DependentUpon>202202161854162_somefixed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202170343464_userfixing.resx">
+      <DependentUpon>202202170343464_userfixing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202170349480_sad.resx">
+      <DependentUpon>202202170349480_sad.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

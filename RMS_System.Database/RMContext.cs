@@ -17,5 +17,6 @@ namespace RMS_System.Database
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRoleMapping> UserRoleMappings { get; set; }
     }
 }

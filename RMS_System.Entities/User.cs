@@ -11,7 +11,7 @@ namespace RMS_System.Entities
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public virtual Role UserRole { get; set; }
+        public virtual string  Role { get; set; }
         public string ImageURL { get; set; }
     }
 }

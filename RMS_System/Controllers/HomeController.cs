@@ -13,18 +13,20 @@ namespace RMS_System.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult AdminDashboard()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult KitchenDashboard()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
+
+        public ActionResult BillingDashboard()
+        {
+            return View();
+        }
+
     }
 }
