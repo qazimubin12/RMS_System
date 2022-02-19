@@ -29,7 +29,7 @@ namespace RMS_System.Controllers
                 {
                    return RedirectToAction("AdminDashboard", "Home");
                 }
-                else if (user.Role == "Kitchen Staff")
+                else if (user.Role == "Waiter")
                 {
                     return RedirectToAction("KitchenDashboard", "Home");
                 }

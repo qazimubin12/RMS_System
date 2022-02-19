@@ -1,14 +1,15 @@
-﻿using System;
+﻿using RMS_System.Entities;
+using RMS_System.Services;
+using RMS_System.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using RMS_System.Entities;
-using RMS_System.Services;
-using RMS_System.ViewModels;
+
 namespace RMS_System.Controllers
 {
-    public class UserController : Controller
+    public class MenuItemController : Controller
     {
         bool role = false;
         public void CheckRole()
@@ -35,13 +36,13 @@ namespace RMS_System.Controllers
                 role = false;
             }
         }
-        // GET: User
+        // GET: MenuItem
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult UserListing(string search)
+        public ActionResult MenuListing(string search = null)
         {
             CheckRole();
             if (role == false)
@@ -50,20 +51,21 @@ namespace RMS_System.Controllers
             }
             else
             {
-                UserListingViewModel model = new UserListingViewModel();
-                model.Users = UsersService.Instance.GetAllUsers(search);
+                MenuItemListingViewModel model = new MenuItemListingViewModel();
+                model.MenuItems = MenuItemServices.Instance.GetMenuItems(search);
                 if (search == null)
                 {
-                    return View("UserListing", model);
+                    return View("MenuListing", model);
                 }
                 else
                 {
-                    return View("UserListing", model);
+                    return View("MenuListing", model);
                 }
 
             }
+
         }
-    
+
 
         [HttpGet]
         public ActionResult Create()
@@ -77,13 +79,12 @@ namespace RMS_System.Controllers
             }
             else
             {
-                var roles = UsersService.Instance.GetAllRoles();
-                return View(roles);
+                return View();
             }
         }
 
         [HttpPost]
-        public ActionResult Create(NewUserViewModel model)
+        public ActionResult Create(NewMenuItemViewModel model)
         {
             CheckRole();
             if (role == false)
@@ -93,14 +94,14 @@ namespace RMS_System.Controllers
             }
             else
             {
-                var newUser = new User();
-                newUser.UserName = model.UserName;
-                newUser.Email = model.Email;
-                newUser.Role = model.Role;
-                newUser.Password = model.Password;
-                newUser.ImageURL = model.ImageURL;
-                UsersService.Instance.SaveUser(newUser);
-                return RedirectToAction("UserListing","User");
+                var newItem = new MenuItem();
+                newItem.MenuName = model.MenuName;
+                newItem.CategoryName = model.CategoryName;
+                newItem.Description = model.Description;
+                newItem.Price = model.Price;
+                newItem.ImageURL = model.ImageURL;
+                MenuItemServices.Instance.SaveMenuItem(newItem);
+                return RedirectToAction("MenuListing", "MenuItem");
             }
         }
 
@@ -117,23 +118,21 @@ namespace RMS_System.Controllers
             }
             else
             {
-                EditUserViewModel model = new EditUserViewModel();
-                var user = UsersService.Instance.GetUser(ID);
-                model.ID = user.ID;
-                model.UserName = user.UserName;
-                model.Email = user.Email;
-                model.Password = user.Password;
-                model.Role = user.Role;
-                model.AllRoles = UsersService.Instance.GetAllRolesInString();
-                ViewBag.User_Role = model.Role;
-                model.ImageURL = user.ImageURL;
-                return PartialView("Edit",model);
+                EditMenuItemViewModel model = new EditMenuItemViewModel();
+                var menuItem = MenuItemServices.Instance.GetMenuItem(ID);
+                model.ID = menuItem.ID;
+                model.MenuName = menuItem.MenuName;
+                model.CategoryName = menuItem.CategoryName;
+                model.Description = menuItem.Description;
+                model.Price = menuItem.Price;
+                model.ImageURL = menuItem.ImageURL;
+                return View("Edit", model);
             }
 
         }
 
         [HttpPost]
-        public ActionResult Edit(EditUserViewModel model)
+        public ActionResult Edit(EditMenuItemViewModel model)
         {
             CheckRole();
 
@@ -144,22 +143,22 @@ namespace RMS_System.Controllers
             }
             else
             {
-                var existingUser = UsersService.Instance.GetUser(model.ID);
-                existingUser.UserName = model.UserName;
-                existingUser.Email = model.Email;
-                existingUser.Password = model.Password;
-                existingUser.Role = model.Role;
-                existingUser.ImageURL = model.ImageURL;
-                UsersService.Instance.UpdateUser(existingUser);
-                return RedirectToAction("UserListing", "User");
+                var existingMenuItem = MenuItemServices.Instance.GetMenuItem(model.ID);
+                existingMenuItem.MenuName = model.MenuName;
+                existingMenuItem.CategoryName = model.CategoryName;
+                existingMenuItem.Description = model.Description;
+                existingMenuItem.Price = model.Price;
+                existingMenuItem.ImageURL = model.ImageURL;
+                MenuItemServices.Instance.UpdateMenuItems(existingMenuItem);
+                return RedirectToAction("MenuListing", "MenuItem");
             }
         }
 
         [HttpPost]
         public ActionResult Delete(int ID)
         {
-            UsersService.Instance.DeleteUser(ID);
-            return RedirectToAction("UserListing", "User");
+            MenuItemServices.Instance.DeleteMenuItems(ID);
+            return RedirectToAction("MenuListing", "MenuItem");
         }
 
     }

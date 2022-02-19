@@ -6,9 +6,15 @@
     <title>RMS System</title>
 
     <script src="~/Content/themedata/dist/js/adminlte.min.js"></script>
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/Content/themedata/plugins/fontawesome-free/css/all.min.css">
+
+    <link rel="stylesheet" href="~/Content/themedata/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/themedata/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/themedata/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Content/themedata/dist/css/adminlte.min.css">
 
@@ -32,7 +38,29 @@
     <link rel="stylesheet" href="~/Content/themedata/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="~/Content/themedata/plugins/summernote/summernote-bs4.min.css">
+
+
+
+
     <script src="~/Content/themedata/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Content/themedata/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables  & Plugins -->
+    <script src="~/Content/themedata/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/themedata/plugins/jszip/jszip.min.js"></script>
+    <script src="~/Content/themedata/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/Content/themedata/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/themedata/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+
     <!-- jQuery UI 1.11.4 -->
     <script src="~/Content/themedata/plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -40,7 +68,6 @@
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
-    <script src="~/Content/themedata/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- ChartJS -->
     <script src="~/Content/themedata/plugins/chart.js/Chart.min.js"></script>
     <!-- Sparkline -->
@@ -91,7 +118,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
+            <a href="#" class="brand-link">
                 <img src="~/Content/themedata/dist/img/credit/kisspng-portable-network-graphics-food-fusion-cuisine-logo-restrokhana-your-online-restaurant-partner-br-5cfe4eadf40b99.7666644115601701579996.png" alt="RMS System" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">RMS System</span>
             </a>
@@ -134,8 +161,8 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="fas fa-user-plus"></i>
+                                        <a href="@Url.Action("Create","User")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
                                             <p>Add Users</p>
                                         </a>
                                     </li>
@@ -159,13 +186,13 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="@Url.Action("Create","MenuItem")" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Add Menu</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                                        <a href="@Url.Action("MenuListing","MenuItem")" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>List Menu</p>
                                         </a>

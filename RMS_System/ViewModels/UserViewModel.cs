@@ -19,7 +19,7 @@ namespace RMS_System.ViewModels
         public string Password { get; set; }
         public virtual string Role { get; set; }
         public string ImageURL { get; set; }
-
+        public List<string> AllRoles { get; set; }
         public List<Role> Roles { get; set; }
     }
 

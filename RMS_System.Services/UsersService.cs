@@ -42,7 +42,7 @@ namespace RMS_System.Services
             }
         }
 
-        public List<User> GetAllUsers(string search)
+        public List<User> GetAllUsers(string search =null)
         {
             using (var context = new RMContext())
             {
@@ -79,11 +79,31 @@ namespace RMS_System.Services
                 return result;  
             }
         }
+
+        public List<string> GetAllRolesInString()
+        {
+            using (var context = new RMContext())
+            {
+                var result = context.Roles.Select(x=>x.Roles).ToList();
+                return result;
+            }
+        }
         public void UpdateUser(User user)
         {
             using (var context = new RMContext())
             {
                 context.Entry(user).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteUser(int ID)
+        {
+            using (var context = new RMContext())
+            {
+
+                var User = context.Users.Find(ID);
+                context.Users.Remove(User);
                 context.SaveChanges();
             }
         }

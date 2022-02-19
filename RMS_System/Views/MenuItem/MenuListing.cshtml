@@ -1,0 +1,171 @@
+﻿@model RMS_System.ViewModels.MenuItemListingViewModel
+@{
+    ViewBag.Title = "MenuListing";
+    var PlaceholderURL = "/Content/themedata/dist/img/placeholder.png";
+    int count = 0;
+
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Menu List</h3>
+                <br />
+                @using (Html.BeginForm("MenuListing", "MenuItem", FormMethod.Get))
+                {
+                    <input type="text" class="form-control" name="Search" id="Search" placeholder="Search Menu Item">
+                    <button type="submit" id="btnSearch" class="btn btn-outline-info">Search</button>
+                    <button type="submit" id="btnViewAll" class="btn btn-outline-secondary">View All</button>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /.card-header -->
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.MenuItems)
+            {
+                if (count % 2 == 0)
+                {
+                    <table class="table-responsive table-condensed table-hover col-md-3" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td>
+                                @if (item.ImageURL == null)
+                                {
+                                    <img style="margin-top:-55px" height="70" width="100" src="@Url.Content(PlaceholderURL)" />
+                                }
+                                else
+                                {
+
+                                    <img style="margin-top:-55px" height="70" width="100" src="@Url.Content(item.ImageURL)" />
+                                }
+                            </td>
+                            <td>
+                                <table class="table-responsive">
+                                    <tr>
+                                        <td> @item.MenuName</td>
+                                    </tr>
+                                    <tr>
+                                        <td> @item.CategoryName</td>
+                                    </tr>
+                                    <tr>
+                                        <td> @item.Description</td>
+                                    </tr>
+                                    <tr>
+                                        <td> @item.Price</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="button" onclick="EditMenuItem(@item.ID)" class="btnEdit  btn btn-sm bg-gradient-primary" data-id="@item.ID">EDIT</button>
+                                            <button type="button" onclick="DeleteMenuItem(@item.ID)" data-id="@item.ID" class="btnDelete btn btn-sm bg-gradient-danger">DELETE</button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+                }
+
+
+            }
+        </div>
+    </div>
+
+
+<!-- /.card-body -->
+
+
+
+
+    <script>
+
+    function EditMenuItem(userId) {
+        $.ajax({
+            url: '@Url.Action("Edit", "MenuItem")',
+            type: "GET",
+            data: { ID: userId }
+        })
+            .done(function (response) {
+                window.location.href = "@Url.Action("Edit", "MenuItem")" +"/"+ userId;
+            })
+            .error(function (error) {
+                alert(error);
+            })
+
+    };
+
+     
+
+
+
+
+    function refreshPage() {
+        location.reload(true);
+    }
+
+     $("#btnSearch").click(function () {
+        var searchvalue = $("#txtSearch").val();
+
+        $.ajax({
+            url: '@Url.Action("MenuListing", "MenuItem")',
+            data: {
+                search: searchvalue
+            }
+        })
+            .done(function (response) {
+                $("#menuTable").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+     });
+
+
+    $("#btnViewAll").click(function () {
+		var searchValue = '';
+
+		$.ajax({
+            url: '@Url.Action("MenuListing", "MenuItem")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#menuTable").html(response);
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+
+
+    function DeleteMenuItem(userId) {
+        var confirmDelete = confirm("Are you sure want to delete this MenuItem?")
+        if (confirmDelete) {
+            $.ajax({
+                url: '@Url.Action("Delete", "MenuItem")',
+                type: "POST",
+                data: { id: userId }
+            })
+                .done(function (oData) {
+                    refreshPage();
+                })
+                .error(function (error) {
+                    alert(error);
+                })
+        }
+    };
+
+
+
+    </script>

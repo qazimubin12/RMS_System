@@ -1,5 +1,4 @@
-﻿@model List<RMS_System.Entities.Role>
-@{
+﻿@{
     ViewBag.Title = "Create";
     var imageURL = "/Content/themedata/dist/img/placeholder.png";
 }
@@ -13,7 +12,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Create User</h3>
+                            <h3 class="card-title">Create Menu Item</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -22,29 +21,26 @@
 
 
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">User Name</label>
-                                    <input type="text" class="form-control" name="UserName" id="UserName" placeholder="Enter User Name">
+                                    <label for="exampleInputEmail1">Menu Name</label>
+                                    <input type="text" class="form-control" name="MenuName" id="MenuName" placeholder="Enter Item Name">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" name="Email" id="Email" placeholder="Enter email">
+                                    <label for="exampleInputEmail1">Category Name</label>
+                                    <input type="text" class="form-control" name="CategoryName" id="CategoryName" placeholder="Enter Category Name">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" name="Password" id="Password" placeholder="Password">
+                                    <label for="exampleInputEmail1">Description</label>
+                                    <input type="text" class="form-control" name="Description" id="Description" placeholder="Enter Description">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Select Role</label>
-                                    <select class="form-control" name="Role">
-                                        @foreach (var role in Model)
-                                        {
-                                            <option class="form-control" value="@role.Roles">@role.Roles</option>
-                                        }
-                                    </select>
+                                    <label for="exampleInputEmail1">Price</label>
+                                    <input type="text" class="form-control" name="Price" id="Price" placeholder="Enter Price">
                                 </div>
+
+
                                 <div class="form-group">
                                     <label for="exampleInputFile">File input</label>
                                     <div class="input-group">

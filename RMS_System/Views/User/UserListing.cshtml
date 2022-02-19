@@ -1,6 +1,8 @@
 ﻿@model RMS_System.ViewModels.UserListingViewModel
 @{
     ViewBag.Title = "UserListing";
+    var PlaceholderURL = "/Content/themedata/dist/img/placeholder.png";
+
 }
 
 <section class="content">
@@ -10,10 +12,19 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">User Listing</h3>
+                        
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="usersTable" class="table table-bordered table-striped table-responsive">
+                        @using (Html.BeginForm("UserListing", "User", FormMethod.Get))
+                        {
+                            <label> Search</label>
+                        <input type="text" class="form-control" name="Search" id="Search" placeholder="Search Users">
+                        <button type="submit" id="btnSearch" class="btn-outline-info">Search</button>
+
+                        }
+                        <br />
+                        <table id="usersEditTable" class="table table-bordered table-striped table-responsive">
                             <thead>
                                 <tr>
                                     <th>Picture</th>
@@ -26,14 +37,26 @@
                             <tbody>
                                 @foreach (var item in Model.Users)
                                 {
-                                <tr>
-                                    <td><img src="@Url.Action(item.ImageURL)"></td>
-                                    <td>@item.UserName</td>
-                                    <td>@item.Email</td>
-                                    <td>@item.Role</td>
-                                    <td><button class="btn-primary">EDIT</button></td>
-                                    <td><button class="btn-danger">DELETE</button></td>
-                                </tr>
+                                    <tr>
+                                        <td>
+                                            @if (item.ImageURL == null)
+                                            {
+                                                <img height="70" width="70" src="@Url.Content(PlaceholderURL)" />
+                                            }
+                                            else
+                                            {
+
+                                                <img height="70" width="70" src="@Url.Content(item.ImageURL)" />
+                                            }
+
+                                        </td>
+
+                                        <td>@item.UserName</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Role</td>
+                                        <td><button type="button" class="btnEdit btn-primary" data-id="@item.ID">EDIT</button></td>
+                                        <td><button type="button" onclick="DeleteUser(@item.ID)" data-id="@item.ID" class="btnDelete btn-danger">DELETE</button></td>
+                                    </tr>
                                 }
                             </tbody>
                             <tfoot>
@@ -57,8 +80,68 @@
 
 
 
-<link href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet" />
-<script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
 <script>
-        $('#usersTable').DataTable();
+    $(".btnEdit").click(function () {
+        $.ajax({
+            url: '@Url.Action("Edit", "User")',
+            data: {
+
+                ID: $(this).attr('data-id')
+            }
+
+        })
+            .done(function (response) {
+                $("#usersEditTable").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+
+    });
+
+
+    function refreshPage() {
+        location.reload(true);
+    }
+
+     $("#btnSearch").click(function () {
+        var searchvalue = $("#Search").val();
+
+        $.ajax({
+            url: '@Url.Action("UserListing", "User")',
+            data: {
+                search: searchvalue
+            }
+        })
+            .done(function (response) {
+                $("#usersSearchTable").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+    function DeleteUser(userId) {
+        var confirmDelete = confirm("Are you sure want to delete this User?")
+        if (confirmDelete) {
+            $.ajax({
+                url: '@Url.Action("Delete", "User")',
+                type: "POST",
+                data: { id: userId }
+            })
+                .done(function (oData) {
+                    refreshPage();
+                })
+                .error(function (error) {
+                    alert(error);
+                })
+        }
+                };
+
+
+
 </script>
+
+

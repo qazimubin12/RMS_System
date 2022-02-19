@@ -14,9 +14,16 @@ namespace RMS_System.Database
         {
 
         }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Table>().Property(m => m.ServedBy).IsOptional();
+            base.OnModelCreating(modelBuilder);
+        }
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRoleMapping> UserRoleMappings { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<Table> Tables { get; set; }
     }
 }
