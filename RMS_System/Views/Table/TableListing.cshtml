@@ -1,0 +1,181 @@
+﻿@model RMS_System.ViewModels.TableViewModelListingInAdmin
+@{
+    ViewBag.Title = "Table Listing";
+
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Table Listing</h3>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        @using (Html.BeginForm("TableListing", "Table", FormMethod.Get))
+                        {
+                            <label> Search</label>
+                            <input type="text" class="form-control" name="Search" id="Search" placeholder="Search Tables">
+                            <button type="submit" id="btnSearch" class="btn btn-outline-info">Search</button>
+                            <button type="submit" id="btnViewAll" class="btn btn-outline-secondary">View All</button>
+
+                        }
+                        <br />
+                        <div class="table-responsive">
+                            <table id="tableTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Table Name</th>
+                                        <th>Floor Name</th>
+                                        <th>Seats</th>
+                                        <th colspan="2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Tables)
+                                    {
+                                        <tr>
+                                            <td>@item.TableName</td>
+                                            <td>@item.FloorName</td>
+                                            <td>@item.Seats</td>
+                                            <td>
+                                                <button type="button" class="btnEdit btn btn-sm bg-gradient-primary" data-id="@item.ID">EDIT</button>
+                                                <button type="button" onclick="DeleteTable(@item.ID)" data-id="@item.ID" class="btnDelete btnEdit btn btn-sm bg-gradient-danger">DELETE</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Table Name</th>
+                                        <th>Floor Name</th>
+                                        <th>Seats</th>
+                                        <th colspan="2">Action</th>
+
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Create Table</h3>
+                    </div>
+                    @using (Html.BeginForm("Create", "Table", FormMethod.Post))
+                    {
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <input type="text" id="TableName" name="TableName" class="form-control" placeholder="Enter Table Name">
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" id="FloorName" name="FloorName" class="form-control" placeholder="Enter Floor Name">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" id="Seats" name="Seats" class="form-control" placeholder="Seats">
+                                </div>
+                            </div>
+                            <br />
+                            <button type="submit" id="btnSave" class="btn btn-block btn-outline-primary">SAVE</button>
+                        </div>
+                    }
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<script>
+    $(".btnEdit").click(function () {
+        $.ajax({
+            url: '@Url.Action("Edit", "Table")',
+            data: {
+
+                ID: $(this).attr('data-id')
+            }
+
+        })
+            .done(function (response) {
+                $("#tableTable").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+
+    });
+
+
+    function refreshPage() {
+        location.reload(true);
+    }
+
+     $("#btnSearch").click(function () {
+        var searchvalue = $("#Search").val();
+
+        $.ajax({
+            url: '@Url.Action("TableListing", "Table")',
+            data: {
+                search: searchvalue
+            }
+        })
+            .done(function (response) {
+                $("#tableTable").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+     });
+
+
+     $("#btnViewAll").click(function () {
+		var searchValue = '';
+
+		$.ajax({
+            url: '@Url.Action("TableListing", "Table")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#tableTable").html(response);
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+
+
+    function DeleteTable(userId) {
+        var confirmDelete = confirm("Are you sure want to delete this Table?")
+        if (confirmDelete) {
+            $.ajax({
+                url: '@Url.Action("Delete", "Table")',
+                type: "POST",
+                data: { id: userId }
+            })
+                .done(function (oData) {
+                    refreshPage();
+                })
+                .error(function (error) {
+                    alert(error);
+                })
+        }
+                };
+
+
+
+</script>
+
+

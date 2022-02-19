@@ -23,6 +23,12 @@ namespace RMS_System.Controllers
             return View();
         }
 
+
+        public ActionResult WaiterApp()
+        {
+            return View();
+        }
+
         public ActionResult BillingDashboard()
         {
             return View();

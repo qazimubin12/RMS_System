@@ -9,6 +9,7 @@ namespace RMS_System.Entities
     public class Table:BaseEntity
     {
         public string TableName { get; set; }
+        public string FloorName { get; set; }
         public int Seats { get; set; }
         public int? OrderItems { get; set; }
         public int? ItemsServed { get; set; }

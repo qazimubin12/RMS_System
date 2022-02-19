@@ -7,18 +7,20 @@
 }
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Menu List</h3>
-                <br />
-                @using (Html.BeginForm("MenuListing", "MenuItem", FormMethod.Get))
-                {
-                    <input type="text" class="form-control" name="Search" id="Search" placeholder="Search Menu Item">
-                    <button type="submit" id="btnSearch" class="btn btn-outline-info">Search</button>
-                    <button type="submit" id="btnViewAll" class="btn btn-outline-secondary">View All</button>
-                }
+    <div class="container-fluid">
+        <div class="col-md-9">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Menu List</h3>
+                    <br />
+                    @using (Html.BeginForm("MenuListing", "MenuItem", FormMethod.Get))
+                    {
+                        <input type="text" class="form-control" name="Search" id="Search" placeholder="Search Menu Item">
+                        <button type="submit" id="btnSearch" class="btn btn-outline-info">Search</button>
+                        <button type="submit" id="btnViewAll" class="btn btn-outline-secondary">View All</button>
+                    }
 
+                </div>
             </div>
         </div>
     </div>
@@ -31,6 +33,7 @@
             {
                 if (count % 2 == 0)
                 {
+                   
                     <table class="table-responsive table-condensed table-hover col-md-3" cellpadding="0" cellspacing="0">
                         <tr>
                             <td>
@@ -50,13 +53,13 @@
                                         <td> @item.MenuName</td>
                                     </tr>
                                     <tr>
-                                        <td> @item.CategoryName</td>
+                                        <td><b> @item.CategoryName</b></td>
                                     </tr>
                                     <tr>
                                         <td> @item.Description</td>
                                     </tr>
                                     <tr>
-                                        <td> @item.Price</td>
+                                        <td><b>Rs @item.Price /-</b></td>
                                     </tr>
                                     <tr>
                                         <td>

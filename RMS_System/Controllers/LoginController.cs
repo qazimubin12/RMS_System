@@ -29,7 +29,7 @@ namespace RMS_System.Controllers
                 {
                    return RedirectToAction("AdminDashboard", "Home");
                 }
-                else if (user.Role == "Waiter")
+                else if (user.Role == "Kitchen Staff")
                 {
                     return RedirectToAction("KitchenDashboard", "Home");
                 }
@@ -38,7 +38,10 @@ namespace RMS_System.Controllers
                     return RedirectToAction("BillingDashboard", "Home");
                 }
 
-               
+                else if (user.Role == "Waiter")
+                {
+                    return RedirectToAction("WaiterApp", "Home");
+                }
             }
             else
             {
