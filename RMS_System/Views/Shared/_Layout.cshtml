@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>RMS System</title>
 
-    <script src="~/Content/themedata/dist/js/adminlte.min.js"></script>
 
+    <script src="~/Content/themedata/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="~/Content/themedata/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ekko Lightbox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="~/Content/themedata/plugins/ekko-lightbox/ekko-lightbox.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/Content/themedata/plugins/fontawesome-free/css/all.min.css">
@@ -124,138 +129,145 @@
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/Content/themedata/dist/img/credit/css logo-03.png" class="img-circle elevation-2" alt="User Image">
+           
+                <div class="sidebar">
+                    <!-- Sidebar user panel (optional) -->
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="~/Content/themedata/dist/img/credit/css logo-03.png" class="img-circle elevation-2" alt="User Image">
+                        </div>
+                        <div class="info">
+                            <a href="http://cybersoftservices.com/" class="d-block">By CSS</a>
+                        </div>
                     </div>
-                    <div class="info">
-                        <a href="http://cybersoftservices.com/" class="d-block">By CSS</a>
-                    </div>
+                    <!-- SidebarSearch Form -->
+                    <!-- Sidebar Menu -->
+
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <!-- Add icons to the links using the .nav-icon class
+                    with font-awesome or any other icon font library -->
+                            @if (Session["Role"] == null)
+                            {
+                                Response.Redirect(Url.Action("Index", "Login"));
+
+                            }
+                            @if (Session["Role"].ToString() == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a href="@Url.Action("AdminDashboard", "Home")" class="nav-link">
+                                        <i class="fa-regular fa-gauge"></i>
+                                        <p>
+                                            Dashboard
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <p>
+                                            Users
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("Create", "User")" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Add Users</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("UserListing", "User")" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>List Users</p>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-copy"></i>
+                                        <p>
+                                            Menu
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("Create", "MenuItem")" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Add Menu</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("MenuListing", "MenuItem")" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>List Menu</p>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                @*dropdown*@
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-copy"></i>
+                                        <p>
+                                            Reports
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Revenue Reports</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Dish Wise Reports</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Cancelled Reports</p>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                @*dropdown*@
+                                <li class="nav-item">
+                                    <a href="@Url.Action("TableListing", "Table")" class="nav-link">
+                                        <i class="nav-icon fas fa-concierge-bell"></i>
+                                        <p>
+                                            Tables
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Login")" class="nav-link">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <p>
+                                        Logout
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <!-- /.sidebar-menu -->
                 </div>
-                <!-- SidebarSearch Form -->
-                <!-- Sidebar Menu -->
-
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                        with font-awesome or any other icon font library -->
-                        @if (Session["Role"].ToString() == "Admin")
-                        {
-                            <li class="nav-item">
-                                <a href="@Url.Action("AdminDashboard", "Home")" class="nav-link">
-                                    <i class="fa-regular fa-gauge"></i>
-                                    <p>
-                                        Dashboard
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <p>
-                                        Users
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("Create","User")" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Add Users</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("UserListing","User")" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>List Users</p>
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-copy"></i>
-                                    <p>
-                                        Menu
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("Create","MenuItem")" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Add Menu</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("MenuListing","MenuItem")" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>List Menu</p>
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                            @*dropdown*@
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-copy"></i>
-                                    <p>
-                                        Reports
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Revenue Reports</p>
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dish Wise Reports</p>
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Cancelled Reports</p>
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                            @*dropdown*@
-                            <li class="nav-item">
-                                <a href="@Url.Action("TableListing", "Table")" class="nav-link">
-                                    <i class="nav-icon fas fa-concierge-bell"></i>
-                                    <p>
-                                        Tables
-                                    </p>
-                                </a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "Login")" class="nav-link">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <p>
-                                    Logout
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-
-                <!-- /.sidebar-menu -->
-            </div>
             <!-- /.sidebar -->
         </aside>
 

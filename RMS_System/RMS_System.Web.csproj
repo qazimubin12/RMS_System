@@ -140,6 +140,7 @@
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\TableViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\WaiterAppViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -203,6 +204,7 @@
     <Content Include="Content\themedata\dist\img\credit\paypal2.png" />
     <Content Include="Content\themedata\dist\img\credit\visa.png" />
     <Content Include="Content\themedata\dist\img\default-150x150.png" />
+    <Content Include="Content\themedata\dist\img\greenbg.jpg" />
     <Content Include="Content\themedata\dist\img\icons.png" />
     <Content Include="Content\themedata\dist\img\photo1.png" />
     <Content Include="Content\themedata\dist\img\photo2.png" />
@@ -2622,6 +2624,9 @@
     <Content Include="Views\MenuItem\Edit.cshtml" />
     <Content Include="Views\Table\TableListing.cshtml" />
     <Content Include="Views\Table\Edit.cshtml" />
+    <Content Include="Views\Home\WaiterApp.cshtml" />
+    <Content Include="Views\Home\GoToFoodEntry.cshtml" />
+    <Content Include="Views\Home\TableFoodEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

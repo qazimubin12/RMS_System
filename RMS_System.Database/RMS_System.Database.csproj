@@ -83,6 +83,10 @@
     <Compile Include="Migrations\202202191116040_floornameadded.designer.cs">
       <DependentUpon>202202191116040_floornameadded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202220658440_orderedquantity.cs" />
+    <Compile Include="Migrations\202202220658440_orderedquantity.designer.cs">
+      <DependentUpon>202202220658440_orderedquantity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RMContext.cs" />
@@ -121,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202202191116040_floornameadded.resx">
       <DependentUpon>202202191116040_floornameadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202220658440_orderedquantity.resx">
+      <DependentUpon>202202220658440_orderedquantity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -33,6 +33,22 @@ namespace RMS_System.Services
                 return context.MenuItems.Find(ID);
             }
         }
+        public List<string> GetAllCategories()
+        {
+            using(var context = new RMContext())
+            {
+                List <string> list = null;
+                try
+                {
+                    list = context.MenuItems.Select(x => x.CategoryName).Distinct().ToList();
+                }
+                catch (Exception ex)
+                {
+
+                }
+                return list;
+            }
+        }
 
         public List<MenuItem> GetMenuItems(string search = null)
         {

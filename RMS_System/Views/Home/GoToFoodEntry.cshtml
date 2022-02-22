@@ -1,0 +1,184 @@
+﻿@model RMS_System.ViewModels.TableEntryForFoodViewModel
+@{
+    ViewBag.Title = "GoToFoodEntry";
+    var PlaceholderURL = "/Content/themedata/dist/img/placeholder.png";
+    int count = 0;
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <table class="table col-md-12">
+                    <tr>
+                        <td class="col-md-4">
+                            <h4 class="card-title">Table Name: @Model.SelectedTableName.TableName</h4>
+                        </td>
+
+                        <td class="col-md-4">
+                            <h4 class="card-title">Waiter: @Model.WaiterName.UserName</h4>
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("WaiterApp", "Home", FormMethod.Get))
+                            {
+                                <button type="submit" class="btn btn-dark">BACK TO TABLES</button>
+                            }
+                        </td>
+
+                </table>
+
+
+
+                <div class="table-responsive scroll col-md-10">
+
+
+                    <table cellspacing="0" class="col-md-9">
+                        <tr>
+                            @foreach (var item in Model.MenuItmsCategories)
+                            {
+                                <td class="col-sm-1"> <a class="btn btn-info">@item </a></td>
+                            }
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <div class="scroll2 table-responsive">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            @foreach (var item in Model.MenuItems)
+                            {
+                                <div class="card text-center" style="margin-right:5px;width: 10rem; float:left">
+                                    <div class="card-header">
+                                        <label>@item.MenuName</label>
+                                    </div>
+                                    @if (item.ImageURL == null)
+                                    {
+                                        <img class="card-img-top" height="100" width="100" src="@Url.Content(PlaceholderURL)" />
+                                    }
+                                    else
+                                    {
+
+                                        <img class="card-img-top" height="100" width="100" src="@Url.Content(item.ImageURL)" />
+
+                                    }
+                                <div class="card-body">
+                                    <label>Rs @item.Price /-</label>
+                                    <table class="table table-responsive">
+                                        
+                                        <tr>
+
+                                            <td style="padding:0.3rem">
+                                                <button name="minusqty" value="-" onclick="subtractQty(@item.ID)"  type="button" style="float:left" class="btn btn-sm btn-primary">-</button>
+                                            </td>
+                                            <td style="padding:0.3rem">
+
+                                                <input class="Quantity" data-id="@item.ID" name="Quantity"  type="text" style="width:25px" value="0" id="@(item.ID)" />
+                                            </td>
+                                            <td style="padding:0.3rem">
+
+                                                <button name="addqty" type="button" style="float:left" onclick="AddQty(@item.ID)" class="btn btn-sm btn-primary btn-rounded" value="+" >+</button>
+
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                   
+                                        <button  data-id="@item.ID" class="btnOrder  btn btn-sm btn-block btn-danger">ORDER</button>
+                                   
+                                </div>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+            <div id="ActionContainer">
+         
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<style>
+
+    .center-block {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    div.scroll {
+        margin: 4px, 4px;
+        padding: 4px;
+        width: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+
+    div.scroll2 {
+        border: solid;
+        margin: 4px, 4px;
+        padding: 4px;
+        width: 68%;
+        height: 380px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        text-align: justify;
+    }
+</style>
+
+<script>
+
+
+
+
+    function AddQty(name) {
+      document.getElementById(name).value++;
+    }
+
+
+    function subtractQty(name) {
+        if (document.getElementById(name).value - 1 < 0) {
+            var foodID = document.getElementById(name).value;
+            return;
+        }
+        else {
+            document.getElementById(name).value--;
+            var foodID = document.getElementById(name).value;
+
+        }
+    }
+
+    $(".btnOrder").click(function () {
+        $.ajax({
+            
+            url: '@Url.Action("TableFoodEntry", "Home")',
+            type: 'GET',
+            data: {
+                ID: $(this).attr("data-id"),
+                Quantity: $(".Quantity").attr("data-id")
+
+            }
+        })
+            .done(function (response) {
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+</script>
+
+

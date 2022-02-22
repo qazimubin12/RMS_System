@@ -82,6 +82,7 @@ namespace RMS_System.Controllers
                 newTable.TableName = model.TableName;
                 newTable.FloorName = model.FloorName;
                 newTable.Seats = model.Seats;
+                newTable.TableStatus = model.TableStatus;
                 TableServices.Instance.SaveTable(newTable);
                 return RedirectToAction("TableListing", "Table");
             }
@@ -109,6 +110,7 @@ namespace RMS_System.Controllers
                 model.TableName = table.TableName;
                 model.FloorName = table.FloorName;
                 model.Seats = table.Seats;
+                model.TableStatus = table.TableStatus;
                 return PartialView("Edit", model);
             }
 
@@ -130,7 +132,7 @@ namespace RMS_System.Controllers
                 existingTable.TableName = model.TableName;
                 existingTable.FloorName = model.FloorName;
                 existingTable.Seats = model.Seats;
-           
+                existingTable.TableStatus = model.TableStatus;
                 TableServices.Instance.UpdateTable(existingTable);
                 return RedirectToAction("TableListing", "Table");
             }

@@ -100,6 +100,7 @@ namespace RMS_System.Controllers
                 newItem.Description = model.Description;
                 newItem.Price = model.Price;
                 newItem.ImageURL = model.ImageURL;
+                newItem.OrderedQuantity = 0;
                 MenuItemServices.Instance.SaveMenuItem(newItem);
                 return RedirectToAction("MenuListing", "MenuItem");
             }
@@ -126,6 +127,7 @@ namespace RMS_System.Controllers
                 model.Description = menuItem.Description;
                 model.Price = menuItem.Price;
                 model.ImageURL = menuItem.ImageURL;
+
                 return View("Edit", model);
             }
 

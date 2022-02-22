@@ -42,6 +42,14 @@ namespace RMS_System.Services
             }
         }
 
+        public User GetUserName(string UserName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Users.FirstOrDefault(x => x.UserName == UserName);
+            }
+        }
+
         public List<User> GetAllUsers(string search =null)
         {
             using (var context = new RMContext())

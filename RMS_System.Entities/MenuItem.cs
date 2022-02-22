@@ -13,5 +13,6 @@ namespace RMS_System.Entities
         public string Description { get; set; }
         public Double Price { get; set; }
         public string ImageURL { get; set; }
+        public int? OrderedQuantity { get; set; }
     }
 }

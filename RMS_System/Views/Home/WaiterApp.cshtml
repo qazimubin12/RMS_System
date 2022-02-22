@@ -1,0 +1,84 @@
+﻿@model RMS_System.ViewModels.WaiterAppViewModel
+@{
+    ViewBag.Title = "WaiterApp";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4 class="card-title">Waiter Dashboard</h4>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <div class="filter-container p-0 row">
+                                @foreach (var item in Model.Tables)
+                                {
+                                    <div onclick="UseTableInFoodEntry(@item.ID)" class="filtr-item col-sm-2" data-id="@item.ID">
+                                       
+                                        <a href="" data-toggle="lightbox" >
+                                            
+                                            <div class="rounded" id="tablecontainer">
+                                                <table class="table table-condensed table-sm" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td>
+                                                            <h3 style="font-family:Arial; color:white">@item.TableName</h3>
+                                                            <h6 style="font-family:Arial; color:white">@item.TableStatus</h6>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="center">
+                                                            <h6 style="font-family:Arial; color:white">Karte Hein Kuch Setup</h6>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                </table>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+
+                              
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<style>
+    #tablecontainer {
+       background: rgb(1,193,239);
+       background: linear-gradient(90deg, rgba(1,193,239,1) 66%, rgba(17,209,255,1) 100%);
+    }
+
+        #tablecontainer:hover {
+            background: rgb(7,135,166);
+            background: linear-gradient(90deg, rgba(7,135,166,1) 53%, rgba(10,168,206,1) 100%);
+        }
+</style>
+
+<script>
+    function UseTableInFoodEntry(tableID) {
+        $.ajax({
+            url: '@Url.Action("GoToFoodEntry", "Home")',
+            type: "GET",
+            data: { id: tableID }
+        })
+            .done(function (oData) {
+                window.location.href = "@Url.Action("GoToFoodEntry", "Home")" + "/" + tableID;
+            })
+            .error(function (error) {
+                alert(error);
+            })
+
+    };
+</script>
