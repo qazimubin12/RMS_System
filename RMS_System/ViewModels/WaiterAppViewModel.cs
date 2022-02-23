@@ -20,6 +20,9 @@ namespace RMS_System.ViewModels
         public List<MenuItem> MenuItems { get; set; }
 
         public int OrderedQuantity { get; set; }
+
+        public MenuItem MenuItem { get; set; }
+        public int Quantity { get; set; }
     }
 
 

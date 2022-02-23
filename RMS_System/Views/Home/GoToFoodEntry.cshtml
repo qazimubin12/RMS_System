@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "GoToFoodEntry";
     var PlaceholderURL = "/Content/themedata/dist/img/placeholder.png";
-    int count = 0;
+    int MenuIndex = 0;
 }
 
 <section class="content">
@@ -67,16 +67,16 @@
                                     }
                                 <div class="card-body">
                                     <label>Rs @item.Price /-</label>
+                                
                                     <table class="table table-responsive">
-                                        
                                         <tr>
-
                                             <td style="padding:0.3rem">
                                                 <button name="minusqty" value="-" onclick="subtractQty(@item.ID)"  type="button" style="float:left" class="btn btn-sm btn-primary">-</button>
                                             </td>
                                             <td style="padding:0.3rem">
 
-                                                <input class="Quantity" data-id="@item.ID" name="Quantity"  type="text" style="width:25px" value="0" id="@(item.ID)" />
+                                                {@MenuIndex = @item.ID};
+                                                <input class="quantityfield" name="quantityfield" data-id="@item.ID" type="text" style="width:25px" value="0" id="@item.ID" />
                                             </td>
                                             <td style="padding:0.3rem">
 
@@ -86,9 +86,9 @@
                                         </tr>
                                         
                                     </table>
-                                   
-                                        <button  data-id="@item.ID" class="btnOrder  btn btn-sm btn-block btn-danger">ORDER</button>
-                                   
+
+                                        <button type="button" data-id="@item.ID" class="btnOrder  btn btn-sm btn-block btn-danger">ORDER</button>
+                                    
                                 </div>
                                 </div>
                             }
@@ -157,14 +157,19 @@
         }
     }
 
+   
+
     $(".btnOrder").click(function () {
+        var abc = $(this).attr("data-id");
+        var tr = $(this).closest('tr');
+        var FirstCol = tr.find(`input[data-id=${abc}]`).val();
+            debugger
         $.ajax({
-            
             url: '@Url.Action("TableFoodEntry", "Home")',
             type: 'GET',
             data: {
                 ID: $(this).attr("data-id"),
-                Quantity: $(".Quantity").attr("data-id")
+                Quantity: FirstCol
 
             }
         })
