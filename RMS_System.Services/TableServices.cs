@@ -34,6 +34,49 @@ namespace RMS_System.Services
             }
         }
 
+        public Table GetTable(string Name)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Tables.Where(x => x.TableName == Name).FirstOrDefault();
+            }
+        }
+
+
+        public string GetTableStatus(int ID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Tables.Where(x=>x.ID == ID).Select(x=>x.TableStatus).FirstOrDefault();
+            }
+        }
+
+        public int GetItemsServed(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                int GetItemsServed = (int)context.Tables.Where(x => x.TableName == TableName).Select(x => x.ItemsServed).FirstOrDefault();
+                return GetItemsServed;
+            }
+        }
+
+        public int GetItemsOrdered(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                int GetItemsServed = (int)context.Tables.Where(x => x.TableName == TableName).Select(x => x.OrderItems).FirstOrDefault();
+                return GetItemsServed;
+            }
+        }
+
+        public Table ServingByTable(string WaiterName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Tables.Where(x => x.ServedBy == WaiterName).FirstOrDefault();
+            }
+        }
+
         public List<Table> GetTables(string search = null)
         {
             using (var context = new RMContext())
@@ -54,6 +97,7 @@ namespace RMS_System.Services
             }
         }
 
+
         public void SaveTable(Table table)
         {
             using (var context = new RMContext())
@@ -70,6 +114,65 @@ namespace RMS_System.Services
                 context.Entry(table).State = EntityState.Modified;
                 context.SaveChanges();
             }
+        }
+
+      
+
+        public void UpdateTableInfo(int TableID,string Status, int OrderedItems, string SessionStatus,string ServedBy)
+        {
+            var table = new Table();
+            table.ID = TableID;
+            table.TableStatus = Status;
+            table.OrderItems = OrderedItems;
+            table.ItemsServed = 0;
+            table.ServedBy = ServedBy;
+            table.SessionStatus = "Active";
+            using (var context = new RMContext())
+            {
+                context.Tables.Attach(table);
+                context.Entry(table).Property(x => x.TableStatus).IsModified = true;
+                context.Entry(table).Property(x => x.OrderItems).IsModified = true;
+                context.Entry(table).Property(x => x.SessionStatus).IsModified = true;
+                context.Entry(table).Property(x => x.ItemsServed).IsModified = true;
+                context.Entry(table).Property(x => x.ServedBy).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+
+        public void UpdateTableInfo(Table table,  int ServedItems)
+        {
+            ++ServedItems;
+            table.ItemsServed = ServedItems;
+            using (var context = new RMContext())
+            {
+                context.Tables.Attach(table);
+                context.Entry(table).Property(x => x.ItemsServed).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+
+        public void UpdateTableInfo(Table table, string TableStatus,string SessionStatus)
+        {
+            try
+            {
+                table.SessionStatus = SessionStatus;
+                table.TableStatus = TableStatus;
+                using (var context = new RMContext())
+                {
+                    context.Tables.Attach(table);
+                    context.Entry(table).Property(x => x.SessionStatus).IsModified = true;
+                    context.Entry(table).Property(x => x.TableStatus).IsModified = true;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+          
         }
 
         public void DeleteTable(int ID)

@@ -87,6 +87,66 @@
     <Compile Include="Migrations\202202220658440_orderedquantity.designer.cs">
       <DependentUpon>202202220658440_orderedquantity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202230936344_tableandordersentry.cs" />
+    <Compile Include="Migrations\202202230936344_tableandordersentry.designer.cs">
+      <DependentUpon>202202230936344_tableandordersentry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202230940204_removedorders.cs" />
+    <Compile Include="Migrations\202202230940204_removedorders.designer.cs">
+      <DependentUpon>202202230940204_removedorders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202231303461_ordetable.cs" />
+    <Compile Include="Migrations\202202231303461_ordetable.designer.cs">
+      <DependentUpon>202202231303461_ordetable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202231328254_removedorderid.cs" />
+    <Compile Include="Migrations\202202231328254_removedorderid.designer.cs">
+      <DependentUpon>202202231328254_removedorderid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202231329307_nowrmeovedirderid.cs" />
+    <Compile Include="Migrations\202202231329307_nowrmeovedirderid.designer.cs">
+      <DependentUpon>202202231329307_nowrmeovedirderid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202231540230_edsa.cs" />
+    <Compile Include="Migrations\202202231540230_edsa.designer.cs">
+      <DependentUpon>202202231540230_edsa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202231554336_littlefixed.cs" />
+    <Compile Include="Migrations\202202231554336_littlefixed.designer.cs">
+      <DependentUpon>202202231554336_littlefixed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202240802186_dispatchingwillbeginsoon.cs" />
+    <Compile Include="Migrations\202202240802186_dispatchingwillbeginsoon.designer.cs">
+      <DependentUpon>202202240802186_dispatchingwillbeginsoon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202241840223_spanedtime.cs" />
+    <Compile Include="Migrations\202202241840223_spanedtime.designer.cs">
+      <DependentUpon>202202241840223_spanedtime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202251220413_somefixes.cs" />
+    <Compile Include="Migrations\202202251220413_somefixes.designer.cs">
+      <DependentUpon>202202251220413_somefixes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202251337286_grandtotaladded.cs" />
+    <Compile Include="Migrations\202202251337286_grandtotaladded.designer.cs">
+      <DependentUpon>202202251337286_grandtotaladded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202251418133_sessionremoved.cs" />
+    <Compile Include="Migrations\202202251418133_sessionremoved.designer.cs">
+      <DependentUpon>202202251418133_sessionremoved.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202251435437_kitchendashbaordfixed.cs" />
+    <Compile Include="Migrations\202202251435437_kitchendashbaordfixed.designer.cs">
+      <DependentUpon>202202251435437_kitchendashbaordfixed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202251442503_tablefixesothername.cs" />
+    <Compile Include="Migrations\202202251442503_tablefixesothername.designer.cs">
+      <DependentUpon>202202251442503_tablefixesothername.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202260555163_ordereditemsfixes.cs" />
+    <Compile Include="Migrations\202202260555163_ordereditemsfixes.designer.cs">
+      <DependentUpon>202202260555163_ordereditemsfixes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RMContext.cs" />
@@ -128,6 +188,51 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202202220658440_orderedquantity.resx">
       <DependentUpon>202202220658440_orderedquantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202230936344_tableandordersentry.resx">
+      <DependentUpon>202202230936344_tableandordersentry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202230940204_removedorders.resx">
+      <DependentUpon>202202230940204_removedorders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202231303461_ordetable.resx">
+      <DependentUpon>202202231303461_ordetable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202231328254_removedorderid.resx">
+      <DependentUpon>202202231328254_removedorderid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202231329307_nowrmeovedirderid.resx">
+      <DependentUpon>202202231329307_nowrmeovedirderid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202231540230_edsa.resx">
+      <DependentUpon>202202231540230_edsa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202231554336_littlefixed.resx">
+      <DependentUpon>202202231554336_littlefixed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202240802186_dispatchingwillbeginsoon.resx">
+      <DependentUpon>202202240802186_dispatchingwillbeginsoon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202241840223_spanedtime.resx">
+      <DependentUpon>202202241840223_spanedtime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202251220413_somefixes.resx">
+      <DependentUpon>202202251220413_somefixes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202251337286_grandtotaladded.resx">
+      <DependentUpon>202202251337286_grandtotaladded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202251418133_sessionremoved.resx">
+      <DependentUpon>202202251418133_sessionremoved.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202251435437_kitchendashbaordfixed.resx">
+      <DependentUpon>202202251435437_kitchendashbaordfixed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202251442503_tablefixesothername.resx">
+      <DependentUpon>202202251442503_tablefixesothername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202260555163_ordereditemsfixes.resx">
+      <DependentUpon>202202260555163_ordereditemsfixes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

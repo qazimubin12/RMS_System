@@ -50,6 +50,14 @@ namespace RMS_System.Services
             }
         }
 
+        public int GetUserID(string UserName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Users.Where(x => x.UserName == UserName).Select(x => x.ID).FirstOrDefault();
+            }
+        }
+
         public List<User> GetAllUsers(string search =null)
         {
             using (var context = new RMContext())

@@ -137,6 +137,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\KitchenDashboardViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\TableViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -2627,10 +2628,12 @@
     <Content Include="Views\Home\WaiterApp.cshtml" />
     <Content Include="Views\Home\GoToFoodEntry.cshtml" />
     <Content Include="Views\Home\TableFoodEntry.cshtml" />
+    <Content Include="Views\Home\KitchenOrderDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Kitchen\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

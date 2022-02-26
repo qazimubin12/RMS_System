@@ -25,5 +25,8 @@ namespace RMS_System.Database
         public DbSet<UserRoleMapping> UserRoleMappings { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<Table> Tables { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<TableEntry> TableEntries { get; set; }
+  
     }
 }

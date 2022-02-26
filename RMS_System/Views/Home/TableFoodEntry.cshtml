@@ -1,9 +1,143 @@
 ﻿@model RMS_System.ViewModels.FoodEntryViewModel
 @{
     ViewBag.Title = "TableFoodEntry";
+    Double grosstotal = 0;
 }
 
-<h2>TableFoodEntry</h2>
-<table>
+<div class="table-responsive" id="tableContainer">
+    @if (Model.Entries.Count != 0)
+    {
 
-</table>
+    <table class="table table-hover ">
+
+        @foreach (var item in Model.Entries)
+        {
+            {
+                grosstotal += item.ProductTotal;
+            }
+            if (item.FoodDispatchedStatus == "Not Yet")
+            {
+
+                <tr style="background-color:mediumaquamarine">
+                    <td>@item.FoodItem  (@item.Quantity)</td>
+                    <td>@item.ProductTotal</td>
+                    @if (Model.TableStatus == "Fresh Table")
+                    {
+                        <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-danger" id="@item.ID">DELETE</button></td>
+                    }
+                </tr>
+
+            }
+            else if (item.FoodDispatchedStatus == "Dispatched")
+            {
+                <tr style="background-color:lightgreen">
+                    <td>@item.FoodItem  (@item.Quantity)</td>
+                    <td>@item.ProductTotal</td>
+                    @if (Model.TableStatus == "Fresh Table")
+                    {
+                        <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-danger" id="@item.ID">DELETE</button></td>
+                    }
+                </tr>
+            }
+
+
+     
+            else
+            {
+                <tr>
+                    <td>@item.FoodItem  (@item.Quantity)</td>
+                    <td>@item.ProductTotal</td>
+                    @if (Model.TableStatus == "Fresh Table")
+                    {
+                        <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-danger" id="@item.ID">DELETE</button></td>
+                    }
+                </tr>
+            }
+        }
+
+
+        <tr>
+            <td>Total Amount</td>
+            <td>@grosstotal.ToString()</td>
+        </tr>
+    </table>
+
+    }
+    else
+    {
+        <h4>No Items In Cart</h4>
+    }
+
+    @if (Model.Entries.Count != 0)
+    {
+        if (Model.TableStatus == "Fresh Table")
+        {
+            <button onclick="ConfirmOrder(@Model.SelectedTableName)" data-id="@Model.SelectedTableName" id="btnConfirmOrder" class="btn btn-danger btn-block">Confirm Order</button>
+        }
+        else
+        {
+            if (Model.TableStatus == "Order Delivered")
+            {
+            <button onclick="CloseSession(@Model.SelectedTableName)" data-id="@Model.SelectedTableName" id="btnCloseSession" class="btn btn-danger btn-block">Close Session</button>
+            }
+        }
+    }
+    </div>
+
+
+
+
+<script>
+    function DeleteEntriy(entryID) {
+        $.ajax({
+            url: '@Url.Action("Delete", "Home")',
+            type: "POST",
+            data: { id: entryID }
+        })
+            .done(function (oData) {
+                $("#tableContainer").html(oData);
+            })
+            .error(function (error) {
+                alert(error);
+            })
+
+    };
+
+
+    function ConfirmOrder(tableID) {
+         $.ajax({
+             url: '@Url.Action("ConfirmOrder", "Home")',
+             data: {
+                 ID: tableID
+             }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    };
+
+
+     function CloseSession(tableID) {
+         $.ajax({
+             url: '@Url.Action("CloseSession", "Home")',
+             data: {
+                 ID: tableID
+             }
+        })
+            .done(function (response) {
+                window.location.href = "@Url.Action("WaiterApp", "Home")";
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    };
+
+
+
+</script>

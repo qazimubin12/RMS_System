@@ -8,29 +8,35 @@ using System.Threading.Tasks;
 
 namespace RMS_System.Services
 {
-    public class QuantityServices
+    public class KitchenServices
     {
         #region Singleton
-        public static QuantityServices Instance
+        public static KitchenServices Instance
         {
             get
             {
-                if (instance == null) instance = new QuantityServices();
+                if (instance == null) instance = new KitchenServices();
                 return instance;
             }
         }
-        private static QuantityServices instance { get; set; }
-        private QuantityServices()
+        private static KitchenServices instance { get; set; }
+        private KitchenServices()
         {
         }
         #endregion
-        public List<MenuItem> GetMenuItemForQuantity(int ID)
+
+        public List<TableEntry> GetAllEntries()
         {
             using (var context = new RMContext())
             {
-                List<MenuItem> list = context.MenuItems.Where(p => p.ID == ID).ToList();
-                return list;
+                return context.TableEntries.ToList();
             }
         }
+
+
+     
+
+        
+
     }
 }

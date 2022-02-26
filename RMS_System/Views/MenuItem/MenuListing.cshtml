@@ -27,61 +27,43 @@
 </div>
 
 <!-- /.card-header -->
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model.MenuItems)
-            {
-                if (count % 2 == 0)
-                {
-                   
-                    <table class="table-responsive table-condensed table-hover col-md-3" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td>
-                                @if (item.ImageURL == null)
-                                {
-                                    <img style="margin-top:-55px" height="70" width="100" src="@Url.Content(PlaceholderURL)" />
-                                }
-                                else
-                                {
 
-                                    <img style="margin-top:-55px" height="70" width="100" src="@Url.Content(item.ImageURL)" />
-                                }
-                            </td>
-                            <td>
-                                <table class="table-responsive">
-                                    <tr>
-                                        <td> @item.MenuName</td>
-                                    </tr>
-                                    <tr>
-                                        <td><b> @item.CategoryName</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td> @item.Description</td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Rs @item.Price /-</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button type="button" onclick="EditMenuItem(@item.ID)" class="btnEdit  btn btn-sm bg-gradient-primary" data-id="@item.ID">EDIT</button>
-                                            <button type="button" onclick="DeleteMenuItem(@item.ID)" data-id="@item.ID" class="btnDelete btn btn-sm bg-gradient-danger">DELETE</button>
-                                        </td>
-                                    </tr>
-                                </table>
+<br />
+<div class="row col-md-12">
 
-
-
-                            </td>
-                        </tr>
-                    </table>
-
-
-                }
-
-
-            }
+    @foreach (var item in Model.MenuItems)
+    {
+        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <!-- Card-->
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4">
+                    @if (item.ImageURL == null)
+                    {
+                    <img style="height:100px; width:140px"  class="img-fluid d-block mx-auto mb-3" src="@Url.Content(PlaceholderURL)" />
+                    }
+                    else
+                    {
+                        <img style="height:100px; width:140px"  class="img-fluid d-block mx-auto mb-3" src="@Url.Content(item.ImageURL)" />
+                    }
+                    <h5> <a href="#" class="text-dark">@item.MenuName</a></h5>
+                    <ul class="list-inline medium">
+                        <li class="m-0">@item.CategoryName</li>
+                        <li class="m-0">@item.Description</li>
+                        <li class="m-0"><b>Rs: @item.Price \-</b></li>
+                        <li class="list-inline"><button type="button" onclick="EditMenuItem(@item.ID)" class="btnEdit  btn  bg-gradient-primary" data-id="@item.ID">EDIT</button>&nbsp;<button type="button" onclick="DeleteMenuItem(@item.ID)" data-id="@item.ID" class="btnDelete btn  bg-gradient-danger">DELETE</button></li>
+                        
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
+    }
+</div>
+
+    
+
+
+
+
 
 
 <!-- /.card-body -->
@@ -89,7 +71,8 @@
 
 
 
-    <script>
+
+<script>
 
     function EditMenuItem(userId) {
         $.ajax({
@@ -106,7 +89,7 @@
 
     };
 
-     
+
 
 
 
@@ -171,4 +154,5 @@
 
 
 
-    </script>
+</script>
+

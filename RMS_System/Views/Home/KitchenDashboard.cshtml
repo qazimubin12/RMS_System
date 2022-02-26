@@ -1,7 +1,48 @@
-﻿
+﻿@model RMS_System.ViewModels.KitchenDashboardViewModel
 @{
     ViewBag.Title = "KitchenDashboard";
 }
 
-<h2>KitchenDashboard</h2>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4 class="card-title">Kitchen Dashboard</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="ActionContainer">
+                            
+                        </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<script>
+
+    $(function () {
+        setInterval(function () {
+            $('#ActionContainer').load('@Url.Action("KitchenOrderDashboard","Home")');
+        }, 1000);
+    });
+</script>
+
+<style>
+    div.scroll2 {
+        border: solid;
+        margin: 4px, 4px;
+        padding: 4px;
+        width: 68%;
+        height: 200px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        text-align: justify;
+        margin-right: 10px;
+    }
+</style>

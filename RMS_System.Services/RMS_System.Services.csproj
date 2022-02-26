@@ -53,9 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KitchenServices.cs" />
     <Compile Include="MenuItemServices.cs" />
+    <Compile Include="OrderServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuantityServices.cs" />
+    <Compile Include="TableEntryServices.cs" />
     <Compile Include="TableServices.cs" />
     <Compile Include="UserRoleProvider.cs" />
     <Compile Include="UsersService.cs" />

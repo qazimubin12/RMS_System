@@ -23,6 +23,11 @@
                             {
                                 <button type="submit" class="btn btn-dark">BACK TO TABLES</button>
                             }
+
+                            
+                        </td>
+                        <td>
+                            <button onclick="LoadCart()" type="button" class="btn btn-info">LOAD CART</button>
                         </td>
 
                 </table>
@@ -74,8 +79,6 @@
                                                 <button name="minusqty" value="-" onclick="subtractQty(@item.ID)"  type="button" style="float:left" class="btn btn-sm btn-primary">-</button>
                                             </td>
                                             <td style="padding:0.3rem">
-
-                                                {@MenuIndex = @item.ID};
                                                 <input class="quantityfield" name="quantityfield" data-id="@item.ID" type="text" style="width:25px" value="0" id="@item.ID" />
                                             </td>
                                             <td style="padding:0.3rem">
@@ -96,10 +99,8 @@
                     </tr>
                 </table>
 
-
             </div>
             <div id="ActionContainer">
-         
             </div>
         </div>
 
@@ -132,11 +133,11 @@
         overflow-x: hidden;
         overflow-y: auto;
         text-align: justify;
+        margin-right:10px;
     }
 </style>
 
 <script>
-
 
 
 
@@ -157,13 +158,34 @@
         }
     }
 
-   
+    function LoadCart() {
+          $.ajax({
+            url: '@Url.Action("ShowCart", "Home")',
+            type: 'GET'
+        })
+            .done(function (response) {
+
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+
+    }
+
+
+    setInterval(function () {
+        LoadCart();
+    }, 1000);
+
+
 
     $(".btnOrder").click(function () {
         var abc = $(this).attr("data-id");
         var tr = $(this).closest('tr');
         var FirstCol = tr.find(`input[data-id=${abc}]`).val();
-            debugger
         $.ajax({
             url: '@Url.Action("TableFoodEntry", "Home")',
             type: 'GET',
@@ -174,6 +196,7 @@
             }
         })
             .done(function (response) {
+
                 $("#ActionContainer").html(response);
 
             })

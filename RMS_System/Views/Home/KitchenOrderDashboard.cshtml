@@ -1,0 +1,81 @@
+﻿@model RMS_System.ViewModels.KitchenDashboardViewModel
+
+@{
+    ViewBag.Title = "KitchenOrderDashboard";
+}
+
+<div class="filter-container p-0 row">
+
+    @*Foreach Will Be here*@
+    @foreach (var item2 in Model.Orders)
+    {
+        if (item2.OrderedItems != item2.ItemsServed)
+        {
+            <div class="scroll2 table-responsive col-sm-4">
+                <h5>@item2.WaiterName - @item2.TableName </h5>
+                <table class="table-hover table-condensed col-md-12">
+
+
+                    <tbody>
+                        @foreach (var item in Model.Entries)
+                        {
+                            if (item.TableName == item2.TableName)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @{ var CreateDate = @item.OrderedTime;
+                                            TimeSpan span = (DateTime.Now - CreateDate);
+                                            var seconds = span.Seconds;
+                                            var minutes = span.Minutes;
+                                            var hours = span.Hours;
+                                        }
+
+                                        <span>@hours : @minutes : @seconds</span>
+
+
+                                    </td>
+                                    <td>
+                                        (@item.Quantity) @item.FoodItem
+                                    </td>
+                                    <td>
+                                        <button class="dispatchbtn btn btn-sm btn-warning" data-id="@item.ID">DISPATCH</button>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+        }
+
+    }
+
+
+
+</div>
+
+<script>
+    $(".dispatchbtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("DispatchEntry", "Home")',
+            type: 'GET',
+            data: {
+                ID: $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+</script>

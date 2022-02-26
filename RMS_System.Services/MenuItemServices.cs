@@ -33,6 +33,25 @@ namespace RMS_System.Services
                 return context.MenuItems.Find(ID);
             }
         }
+
+
+        public string GetMenuItemName(int ID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.MenuItems.Where(x=>x.ID == ID).Select(x => x.MenuName).FirstOrDefault();
+            }
+        }
+
+
+        public Double GetMenuItemPrice(int ID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.MenuItems.Where(x => x.ID == ID).Select(x => x.Price).FirstOrDefault();
+            }
+        }
+
         public List<string> GetAllCategories()
         {
             using(var context = new RMContext())

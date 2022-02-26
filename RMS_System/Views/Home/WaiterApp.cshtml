@@ -16,26 +16,84 @@
                             <div class="filter-container p-0 row">
                                 @foreach (var item in Model.Tables)
                                 {
-                                    <div onclick="UseTableInFoodEntry(@item.ID)" class="filtr-item col-sm-2" data-id="@item.ID">
+                                    <div onclick="UseTableInFoodEntry(@item.ID)" style="padding-bottom:5px" class="filtr-item col-sm-2" data-id="@item.ID">
                                        
-                                        <a href="" data-toggle="lightbox" >
-                                            
-                                            <div class="rounded" id="tablecontainer">
-                                                <table class="table table-condensed table-sm" cellpadding="0" cellspacing="0">
-                                                    <tr>
-                                                        <td>
-                                                            <h3 style="font-family:Arial; color:white">@item.TableName</h3>
-                                                            <h6 style="font-family:Arial; color:white">@item.TableStatus</h6>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="center">
-                                                            <h6 style="font-family:Arial; color:white">Karte Hein Kuch Setup</h6>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                </table>
-                                            </div>
+                                        <a href="" data-toggle="lightbox">
+                                            @if (item.TableStatus == "Fresh Table")
+                                            {
+                                                <div class="rounded" id="tablecontainer" style=" height: 120px; width: 160px; background: rgb(1,193,239); background: linear-gradient(90deg, rgba(1,193,239,1) 66%, rgba(17,209,255,1) 100%);  ">
+                                                    <table class="table table-condensed table-sm" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td>
+                                                                <h3 style="font-family:Arial; color:white">@item.TableName</h3>
+                                                                <h6 style="font-family:Arial; color:white">@item.TableStatus</h6>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            }
+                                            @if (item.TableStatus == "Order Placed")
+                                            {
+                                                <div class="rounded" id="tablecontainer" style=" height: 120px; width: 160px; background: rgb(2,151,83); background: linear-gradient(90deg, rgba(2,151,83,1) 74%, rgba(32,181,113,1) 100%);">
+                                                    <table class="table table-condensed table-sm" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td>
+                                                                <h3 style="font-family:Arial; color:white">@item.TableName</h3>
+                                                                <h6 style="font-family:Arial; color:white">@item.TableStatus</h6>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+
+                                                            <td align="center">
+                                                                <h6 style="font-family:Arial; color:white">@item.ItemsServed / @item.OrderItems</h6>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            }
+                                            @if (item.TableStatus == "Order Delivered")
+                                            {
+                                                <div class="rounded" id="tablecontainer2" style=" height: 120px; width: 160px; background: rgb(224,78,60); background: linear-gradient(90deg, rgba(224,78,60,1) 74%, rgba(254,108,90,1) 100%);">
+                                                    <table class="table table-condensed table-sm" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td>
+                                                                <h3 style="font-family:Arial; color:white">@item.TableName</h3>
+                                                                <h6 style="font-family:Arial; color:white">@item.TableStatus</h6>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+
+                                                            <td align="center">
+                                                                <h6 style="font-family:Arial; color:white">@item.ItemsServed / @item.OrderItems</h6>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            }
+                                            @if (item.TableStatus == "Waiting for Billing")
+                                            {
+                                                <div class="rounded" id="tablecontainer2" style=" height: 120px; width: 160px; background: rgb(224,78,60); background: linear-gradient(90deg, rgba(224,78,60,1) 74%, rgba(254,108,90,1) 100%);">
+                                                    <table class="table table-condensed table-sm" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td>
+                                                                <h3 style="font-family:Arial; color:white">@item.TableName</h3>
+                                                                <h6 style="font-family:Arial; color:white">@item.TableStatus</h6>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+
+                                                            <td align="center">
+                                                                <h6 style="font-family:Arial; color:white">@item.ItemsServed / @item.OrderItems</h6>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            }
+
                                         </a>
                                     </div>
                                 }
@@ -54,17 +112,6 @@
 
 
 
-<style>
-    #tablecontainer {
-       background: rgb(1,193,239);
-       background: linear-gradient(90deg, rgba(1,193,239,1) 66%, rgba(17,209,255,1) 100%);
-    }
-
-        #tablecontainer:hover {
-            background: rgb(7,135,166);
-            background: linear-gradient(90deg, rgba(7,135,166,1) 53%, rgba(10,168,206,1) 100%);
-        }
-</style>
 
 <script>
     function UseTableInFoodEntry(tableID) {

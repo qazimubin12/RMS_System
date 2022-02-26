@@ -22,13 +22,18 @@ namespace RMS_System.ViewModels
         public int OrderedQuantity { get; set; }
 
         public MenuItem MenuItem { get; set; }
-        public int Quantity { get; set; }
     }
 
 
     public class FoodEntryViewModel
     {
+
         public MenuItem MenuItem { get; set; }
         public int Quantity { get; set; }
+        public int SelectedTableName { get; set; }
+        public int ProductTotal { get; set; }
+        public List<TableEntry> Entries { get; set; }
+        public string TableStatus { get; set; }
+
     }
 }
