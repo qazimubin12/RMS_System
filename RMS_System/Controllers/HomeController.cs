@@ -316,7 +316,21 @@ namespace RMS_System.Controllers
         {
             var Table = TableServices.Instance.GetTable(ID);
             TableServices.Instance.UpdateTableInfo(Table,"Waiting for Billing", "Non Active");
+
+            var Date = DateTime.Now;
+            var OrderID = OrderServices.Instance.GetOrderByTable(Table.TableName);
+            var EntriesList = TableEntryServices.Instance.GetTableEntries(Table.TableName);
+            var bill = new Bill();
+            bill.OrderDate = Date;
+            bill.OrderID = OrderID.ID;
+            foreach (var item in EntriesList)
+            {
+                bill.EntriesID = item.ID;
+                BillServices.Instance.SaveBill(bill);
+            }
+     
             return RedirectToAction("WaiterApp", "Home");
+
         }
 
 

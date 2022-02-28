@@ -1,68 +1,109 @@
 ﻿@model RMS_System.ViewModels.BillViewModel
 @{
     ViewBag.Title = "BillingOrderDashboard";
+    Double SGSTAmount = 0;
+    Double CGSTAmount = 0;
+    Double TotalAmount = 0;
+    Double DiscountAmount = 0;
+    Double DiscountedAmount = 0;
+    int Count = 0;
+    int Count2 = 0;
 }
 
 <div class="filter-container p-0 row">
 
-    @*Foreach Will Be here*@
     @foreach (var item2 in Model.Order)
     {
-        //if (item2 != item2.ItemsServed)
-        //{
-            <div style="border:solid" class="table-responsive col-md-4">
-                <h5>@item2.TableName </h5>
-                <table class="table-hover table-condensed col-md-12">
+
+        <div class="border border-dark table-responsive col-md-4">
+            <table class=" table-hover table-condensed col-md-12">
+                @{++Count;
+                    ++Count2;}
+                <thead>
+                    <tr>
+                        <td colspan="3">
+                            <h4 class="text-light bg-dark">@item2.TableName</h4>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            Amount
+                        </td>
+
+                        <td colspan="2">
+                            @item2.GrandTotal
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Discount<input class="textvalue" onkeyup="myFunction(@Count,@item2.GrandTotal,@Count2)" id="@Count" style="width:30px" type="text" /></td>
+                        @if (DiscountedAmount == 0)
+                        {
+
+                            <td id="discountdata_@Count2"></td>
+                        }
+                        else
+                        {
+                            <td>@DiscountedAmount</td>
+                        }
+                        @{
+                            DiscountedAmount = item2.GrandTotal / 100;
+                            DiscountedAmount = DiscountedAmount * DiscountAmount;
+                        }
+
+                    </tr>
+                    <tr>
+                        <td>SGST(@Model.configuration.SGST)</td>
+                        @{
+                            SGSTAmount = item2.GrandTotal / 100;
+                            SGSTAmount *= Model.configuration.SGST;
+                        }
+                        <td colspan="2">@SGSTAmount</td>
+                    </tr>
+
+                    <tr>
+                        <td>CGST(@Model.configuration.CGST)</td>
+                        @{
+                            CGSTAmount = item2.GrandTotal / 100;
+                            CGSTAmount *= Model.configuration.CGST;
+                        }
+                        <td colspan="2">@CGSTAmount</td>
+                    </tr>
 
 
-                    <tbody>
-                     
-                                <tr>
+                    <tr>
+                        <td>
+                            Total Amount
+                        </td>
+                        <td colspan="2">
+                            @{
+                                TotalAmount = CGSTAmount + SGSTAmount + item2.GrandTotal;
+                            }
+                            @TotalAmount
+                        </td>
 
-                                    <td>
-                                        Amount
-                                    </td>
-
-                                    <td>
-                                        @item2.GrandTotal
-
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>Discount</td>
-                                    <td>Will Add Soom</td>
-                                </tr>
-                                <tr>
-                                    <td>SGST</td>
-                                    <td>@Model.configuration.SGST</td>
-                                </tr>
-
-                                <tr>
-                                    <td>CGST</td>
-                                    <td>@Model.configuration.CGST</td>
-                                </tr>
-                            
-
-                        <tr>
-                            <td>
-                                Total Amount
-                            </td>
-                            <td>
-                                TOTAL WILL BE ADDEd
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><button class="btn btn-primary">PRINT</button></td>
-                            <td><button class="btn btn-primary">Paid by Cash</button></td>
-                            <td><button class="btn btn-primary">Paid By Card</button></td>
-                        </tr>
+                    </tr>
 
 
-                    </tbody>
-                </table>
-            </div>
+                    <tr>
+
+                        <td><button type="button"  data-id="@item2.ID" class="btnPrint btn btn-sm btn-primary">PRINT</button></td>
+                        <td><button type="button" data-id="@item2.ID" class="btnCash btn btn-sm btn-primary">Paid by Cash</button></td>
+                        <td><button type="button" data-id="@item2.ID" class="btnCard btn btn-sm btn-primary">Paid By Card</button></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <br />
+        </div>
+        <br />
+        <br />
         //}
 
     }
@@ -70,3 +111,42 @@
 
 
 </div>
+
+
+<script>
+
+    $(".btnOrder").click(function () {
+        var abc = $(this).attr("data-id");
+        var tr = $(this).closest('tr');
+        var FirstCol = tr.find(`input[data-id=${abc}]`).val();
+        $.ajax({
+            url: '@Url.Action("TableFoodEntry", "Home")',
+            type: 'GET',
+            data: {
+                ID: $(this).attr("data-id"),
+                Quantity: FirstCol
+
+            }
+        })
+            .done(function (response) {
+
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+
+    function myFunction(val,total,count) {
+        var asbc = document.getElementById(val).value;
+        var dec = (total / 100).toFixed(2);
+        var mult = asbc * dec;
+        $('#discountdata_' + count + '').html(mult);
+
+    }
+
+</script>

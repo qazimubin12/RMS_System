@@ -11,6 +11,20 @@ namespace RMS_System.Services
 {
     public class BillServices
     {
+        #region Singleton
+        public static BillServices Instance
+        {
+            get
+            {
+                if (instance == null) instance = new BillServices();
+                return instance;
+            }
+        }
+        private static BillServices instance { get; set; }
+        private BillServices()
+        {
+        }
+        #endregion
         public Bill GetBill(int ID)
         {
             using (var context = new RMContext())
@@ -28,6 +42,8 @@ namespace RMS_System.Services
                 context.SaveChanges();
             }
         }
+
+        
 
         public void UpdateBill(Bill Bill)
         {

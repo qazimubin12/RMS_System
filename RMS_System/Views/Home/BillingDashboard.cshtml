@@ -10,6 +10,7 @@
                 <div class="card card-primary">
                     <div class="card-header">
                         <h4 class="card-title">Billing Dashboard</h4>
+                        <button type="button" onclick="LoadCart()">LOAD</button>
                     </div>
                     <div class="card-body">
                         <div id="ActionContainer">
@@ -23,15 +24,37 @@
     </div><!-- /.container-fluid -->
 </section>
 
+<div>
+    
+</div>
+
 
 
 <script>
 
-    $(function () {
+    @*$(function () {
         setInterval(function () {
             $('#ActionContainer').load('@Url.Action("BillingOrderDashboard", "Home")');
-        }, 1000);
-    });
+        }, 5000);
+    });*@
+
+
+    function LoadCart() {
+          $.ajax({
+            url: '@Url.Action("BillingOrderDashboard", "Home")',
+            type: 'GET'
+        })
+            .done(function (response) {
+
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+
+    }
 </script>
 
 <style>
