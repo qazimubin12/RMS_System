@@ -69,13 +69,55 @@ namespace RMS_System.Services
             }
         }
 
-        public List<MenuItem> GetMenuItems(string search = null)
+        public List<MenuItem> GetMenuItems(string search = null, string Category = null)
+        {
+            using (var context = new RMContext())
+            {
+                if (search != null)
+                {
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        return context.MenuItems.Where(p => p.MenuName != null && p.MenuName.ToLower()
+                            .Contains(search.ToLower()))
+                            .OrderBy(x => x.MenuName)
+                            .ToList();
+                    }
+                    else
+                    {
+                        return context.MenuItems
+                            .OrderBy(x => x.MenuName)
+                            .ToList();
+                    }
+                }
+                else
+                {
+                    if (Category != null)
+                    {
+
+                        return context.MenuItems.Where(p => p.CategoryName != null && p.CategoryName.ToLower()
+                            .Contains(Category.ToLower()))
+                            .OrderBy(x => x.CategoryName)
+                            .ToList();
+                    }
+                    else
+                    {
+                        return context.MenuItems
+                            .OrderBy(x => x.CategoryName)
+                            .ToList();
+                    }
+                    
+                }
+            }
+        }
+
+
+        public List<MenuItem> GetMenuItemsWRT(string search = null)
         {
             using (var context = new RMContext())
             {
                 if (!string.IsNullOrEmpty(search))
                 {
-                    return context.MenuItems.Where(p => p.MenuName != null && p.MenuName.ToLower()
+                    return context.MenuItems.Where(p => p.CategoryName != null && p.CategoryName.ToLower()
                         .Contains(search.ToLower()))
                         .OrderBy(x => x.MenuName)
                         .ToList();

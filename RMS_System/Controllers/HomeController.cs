@@ -136,14 +136,28 @@ namespace RMS_System.Controllers
             }
         }
 
-        public ActionResult BillingDashboard()
+
+
+
+        public ActionResult BillingDashboard(BillViewModel model)
         {
-            return View();
+            model.TableEntries = TableEntryServices.Instance.GetTableEntries();
+            model.Order = OrderServices.Instance.GetOrders();
+            return View(model);
+        }
+
+
+        public ActionResult BillingOrderDashboard(BillViewModel model)
+        {
+            model.TableEntries = TableEntryServices.Instance.GetTableEntries();
+            model.Order = OrderServices.Instance.GetOrders();
+            model.configuration = ConfigurationServices.Instance.GetConfig();
+            return PartialView(model);
         }
 
 
         [HttpGet]
-        public ActionResult GoToFoodEntry(int ID)
+        public ActionResult GoToFoodEntry(int ID, string Category = null)
         {
             CheckRoleForWaiter();
             if (WaiterRole == false)
@@ -164,12 +178,22 @@ namespace RMS_System.Controllers
                 Session["TableName"] = model.SelectedTableName.TableName;
                 model.WaiterName = UsersService.Instance.GetUserName(Session["UserName"].ToString());
                 model.MenuItmsCategories = MenuItemServices.Instance.GetAllCategories();
-                model.MenuItems = MenuItemServices.Instance.GetMenuItems();
+                model.MenuItems = MenuItemServices.Instance.GetMenuItems(null,Category);
                 model.OrderedQuantity = 0;
-                return View("GoToFoodEntry", model);
+                if (Category == null)
+                {
+                    return View("GoToFoodEntry", model);
+                }
+                else
+                {
+                    return View("GoToFoodEntry", model);
+                }
             }
            
         }
+
+
+
 
         [HttpGet]
         public ActionResult ShowCart()

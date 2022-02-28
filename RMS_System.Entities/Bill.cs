@@ -8,6 +8,8 @@ namespace RMS_System.Entities
 {
     public class Bill : BaseEntity
     {
-
+        public virtual int OrderID { get; set; }
+        public virtual int EntriesID { get; set; }
+        public DateTime OrderDate { get; set; }
     }
 }

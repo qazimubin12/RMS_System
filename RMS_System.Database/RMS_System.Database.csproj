@@ -147,6 +147,10 @@
     <Compile Include="Migrations\202202260555163_ordereditemsfixes.designer.cs">
       <DependentUpon>202202260555163_ordereditemsfixes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202271519083_nowmakingbilling.cs" />
+    <Compile Include="Migrations\202202271519083_nowmakingbilling.designer.cs">
+      <DependentUpon>202202271519083_nowmakingbilling.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RMContext.cs" />
@@ -233,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202202260555163_ordereditemsfixes.resx">
       <DependentUpon>202202260555163_ordereditemsfixes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202271519083_nowmakingbilling.resx">
+      <DependentUpon>202202271519083_nowmakingbilling.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

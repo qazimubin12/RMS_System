@@ -1,0 +1,72 @@
+﻿@model RMS_System.ViewModels.BillViewModel
+@{
+    ViewBag.Title = "BillingOrderDashboard";
+}
+
+<div class="filter-container p-0 row">
+
+    @*Foreach Will Be here*@
+    @foreach (var item2 in Model.Order)
+    {
+        //if (item2 != item2.ItemsServed)
+        //{
+            <div style="border:solid" class="table-responsive col-md-4">
+                <h5>@item2.TableName </h5>
+                <table class="table-hover table-condensed col-md-12">
+
+
+                    <tbody>
+                     
+                                <tr>
+
+                                    <td>
+                                        Amount
+                                    </td>
+
+                                    <td>
+                                        @item2.GrandTotal
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Discount</td>
+                                    <td>Will Add Soom</td>
+                                </tr>
+                                <tr>
+                                    <td>SGST</td>
+                                    <td>@Model.configuration.SGST</td>
+                                </tr>
+
+                                <tr>
+                                    <td>CGST</td>
+                                    <td>@Model.configuration.CGST</td>
+                                </tr>
+                            
+
+                        <tr>
+                            <td>
+                                Total Amount
+                            </td>
+                            <td>
+                                TOTAL WILL BE ADDEd
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><button class="btn btn-primary">PRINT</button></td>
+                            <td><button class="btn btn-primary">Paid by Cash</button></td>
+                            <td><button class="btn btn-primary">Paid By Card</button></td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        //}
+
+    }
+
+
+
+</div>

@@ -27,6 +27,9 @@ namespace RMS_System.Database
         public DbSet<Table> Tables { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<TableEntry> TableEntries { get; set; }
-  
+
+        public DbSet<Bill> Bills { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
+
     }
 }

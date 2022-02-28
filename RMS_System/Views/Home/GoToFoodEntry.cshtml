@@ -39,9 +39,15 @@
 
                     <table cellspacing="0" class="col-md-9">
                         <tr>
-                            @foreach (var item in Model.MenuItmsCategories)
+                            @using (Html.BeginForm("GoToFoodEntry", "Home", FormMethod.Get))
                             {
-                                <td class="col-sm-1"> <a class="btn btn-info">@item </a></td>
+                                foreach (var item in Model.MenuItmsCategories)
+                                {
+                                    <td class="col-sm-1"><button name="Category" type="submit" value="@item" class="categoryBtn btn btn-info">@item </button></td>
+                                }
+                                <td>
+                                    <button type="submit" class="categoryBtn btn btn-info">VIEW ALL </button>
+                                </td>
                             }
                         </tr>
                     </table>
@@ -51,7 +57,7 @@
 
 
             <div class="scroll2 table-responsive">
-                <table class="table table-condensed">
+                <table id="MenuContainer" class="table table-condensed">
                     <tr>
                         <td>
                             @foreach (var item in Model.MenuItems)
@@ -180,6 +186,9 @@
         LoadCart();
     }, 1000);
 
+
+
+   
 
 
     $(".btnOrder").click(function () {

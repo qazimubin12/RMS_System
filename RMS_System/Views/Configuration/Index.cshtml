@@ -1,0 +1,134 @@
+﻿@model RMS_System.ViewModels.ConfigurationViewModel
+@{
+    ViewBag.Title = "Index";
+    var imageURL = "/Content/themedata/dist/img/placeholder.png";
+}
+
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">View Configurations</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id="ConfigForm">
+                            <div class="card-body">
+
+                                <div hidden class="form-group">
+                                    <label hidden for="exampleInputEmail1">CGST</label>
+                                    <input hidden disabled type="text" class="form-control" value="@Model.Configuration.ID" name="ID" id="ID" placeholder="Enter CGST Percentage">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">CGST</label>
+                                    <input disabled type="text" class="form-control" value="@Model.Configuration.CGST" name="CGST" id="CGST" placeholder="Enter CGST Percentage">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">SGST</label>
+                                    <input disabled type="text" class="form-control" value="@Model.Configuration.SGST" name="SGST" id="SGST" placeholder="Enter SGST Percentage">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Hotel Name</label>
+                                    <input disabled type="text" class="form-control" name="HotelName" value="@Model.Configuration.HotelName" id="HotelName" placeholder="Enter Hotel Name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">SGST</label>
+                                    <input disabled type="text" class="form-control" value="@Model.Configuration.HotelAddress" name="HotelAddress" id="HotelAddress" placeholder="Enter HotelAddress">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputFile">File input</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input class="form-control" name="ImageURL" value="@imageURL" id="ImageURL" type="hidden" />
+                                            <input disabled class="form-control" id="imageUpload" value="@imageURL" name="Image" type="file" accept=".png, .jpg, .jpeg" />
+                                        </div>
+                                    </div>
+
+                                    <div class="thumb">
+                                        <img style="height:70px; width:120px" class="img-thumbnail img-fluid" src="@imageURL" id="productimage" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="button" id="btnEdit" class="btn btn-primary">EDIT CONFIGURATIONS</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+
+
+        $("#imageUpload").change(function () {
+
+        var element = this;
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage", "Shared")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+
+                console.log(response);
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#productimage").attr("src", response.ImageURL);
+
+                }
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+    });
+
+
+
+    $("#btnEdit").click(function () {
+
+        $.ajax({
+            url: '@Url.Action("Edit", "Configuration")',
+            data: $("#ConfigForm").serialize()
+
+        })
+            .done(function (response) {
+                window.location.href = "@Url.Action("Edit", "Configuration")";
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+</script>

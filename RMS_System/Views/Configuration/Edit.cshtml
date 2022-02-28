@@ -1,0 +1,154 @@
+﻿@model RMS_System.ViewModels.EditConfigurationViewModel
+@{
+    ViewBag.Title = "Index";
+    var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/themedata/dist/img/placeholder.png";
+    var hotelName = !string.IsNullOrEmpty(Model.HotelName) ? Model.HotelName : "";
+    var hotelAddress = !string.IsNullOrEmpty(Model.HotelAddress) ? Model.HotelAddress : "";
+   
+    Double CGST = 0;
+    if(Model.CGST.ToString() == "" || Model.CGST == 0)
+    {
+        CGST = 0;
+    }
+    else
+    {
+        CGST = Model.CGST;
+    }
+    Double SGST = 0;
+    if (Model.SGST.ToString() == "" || Model.SGST == 0)
+    {
+        SGST = 0;
+    }
+    else
+    {
+        SGST = Model.SGST;
+    }
+
+
+}
+
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">View Configurations</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id="ConfigForm">
+                            <div class="card-body">
+
+                                <input hidden value="@Model.ID" type="text" class="form-control" name="ID" id="ID" placeholder="">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">CGST</label>
+                                    <input value="@CGST" type="text" class="form-control" name="CGST" id="CGST" placeholder="Enter CGST Percentage">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">SGST</label>
+                                    <input value="@SGST" type="text" class="form-control" name="SGST" id="SGST" placeholder="Enter SGST Percentage">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Hotel Name</label>
+                                    <input value="@hotelName" type="text" class="form-control" name="HotelName" id="HotelName" placeholder="Enter Hotel Name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">SGST</label>
+                                    <input value="@hotelAddress" type="text" class="form-control" name="HotelAddress" id="HotelAddress" placeholder="Enter HotelAddress">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputFile">File input</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input class="form-control" name="ImageURL" value="@imageURL" id="ImageURL" type="hidden" />
+                                            <input class="form-control" id="imageUpload" name="Image" type="file" accept=".png, .jpg, .jpeg" />
+                                        </div>
+                                    </div>
+
+                                    <div class="thumb">
+                                        <img style="height:70px; width:120px" class="img-thumbnail img-fluid" src="@imageURL" id="productimage" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="button" class="btnEdit btn btn-primary">EDIT CONFIGURATIONS</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+
+
+        $("#imageUpload").change(function () {
+
+        var element = this;
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage", "Shared")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+
+                console.log(response);
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#productimage").attr("src", response.ImageURL);
+
+                }
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+    });
+
+
+
+    $(".btnEdit").click(function () {
+        $.ajax({
+            url: '@Url.Action("Edit", "Configuration")',
+            data: $("#ConfigForm").serialize(),
+            type: 'POST'
+
+        })
+            .done(function (response) {
+                $("#ConfigForm").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+
+    });
+
+
+</script>
+s

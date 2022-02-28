@@ -3,4 +3,37 @@
     ViewBag.Title = "BillingDashboard";
 }
 
-<h2>BillingDashboard</h2>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4 class="card-title">Billing Dashboard</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="ActionContainer">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<script>
+
+    $(function () {
+        setInterval(function () {
+            $('#ActionContainer').load('@Url.Action("BillingOrderDashboard", "Home")');
+        }, 1000);
+    });
+</script>
+
+<style>
+    
+</style>
