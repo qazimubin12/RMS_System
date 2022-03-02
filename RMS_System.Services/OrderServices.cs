@@ -63,6 +63,14 @@ namespace RMS_System.Services
             }
         }
 
+        public Order GetOrder(int ID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Orders.Find(ID);
+            }
+        }
+
         public int GetItemsServedForOrder(string TableName)
         {
             using (var context = new RMContext())
@@ -81,6 +89,22 @@ namespace RMS_System.Services
             {
                 context.Orders.Attach(order);
                 context.Entry(order).Property(x => x.ItemsServed).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateOrderDiscount(Order order, Double Discount, Double DiscountPercentage,Double GrandTotal)
+        {
+
+            order.Discount = Discount;
+            order.DiscountPercentage = DiscountPercentage;
+            order.GrandTotal = GrandTotal;
+            using (var context = new RMContext())
+            {
+                context.Orders.Attach(order);
+                context.Entry(order).Property(x => x.Discount).IsModified = true;
+                context.Entry(order).Property(x => x.DiscountPercentage).IsModified = true;
+                context.Entry(order).Property(x => x.GrandTotal).IsModified = true;
                 context.SaveChanges();
             }
         }

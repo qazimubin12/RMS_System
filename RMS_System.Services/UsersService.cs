@@ -36,9 +36,18 @@ namespace RMS_System.Services
 
         public User GetUserForLogin(string UserName, string Password)
         {
-            using (var context = new RMContext())
+            try
             {
-                return context.Users.FirstOrDefault(x => x.UserName == UserName && x.Password == Password);
+                using (var context = new RMContext())
+                {
+                    return context.Users.FirstOrDefault(x => x.UserName == UserName && x.Password == Password);
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
 

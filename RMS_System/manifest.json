@@ -1,11 +1,15 @@
 {
+
+  "author": "CSS",
   "name": "RMS System",
-  "short_name": "RMS",
-  "description": "Restaurant Management System.",
-  "theme_color": "#2196f3",
-  "background_color": "#2196f3",
-  "display": "standalone",
+  "short_name": "RMS System",
+  "description": "RMS System by CSS",
+  "orientation": "portrait",
   "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "grey",
+  "theme_color": "#238ee0",
   "icons": [
     {
       "src": "Content/images/icons/icon-72x72.png",
@@ -59,5 +63,4 @@
       "url": "https://itunes.apple.com/app/example-app1/id123456789"
     }
   ]
-
 }

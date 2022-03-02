@@ -264,6 +264,7 @@ namespace RMS_System.Controllers
             order.GrandTotal = grandtotal;
             order.OrderedItems = OrderedItems.Count;
             order.ItemsServed = 0;
+          
             OrderServices.Instance.SaveOrder(order);
 
             return PartialView("TableFoodEntry", model);
@@ -311,6 +312,29 @@ namespace RMS_System.Controllers
 
         }
 
+        public ActionResult UpdateDiscount(string TableName, Double Discount, Double DiscountPercentage)
+        {
+            if (Discount != 0)
+            {
+                var Order = OrderServices.Instance.GetOrderByTable(TableName);
+                Double UpdatedGrandTotal = Order.GrandTotal - Discount;
+                Double CGST = BillServices.Instance.GetCGST(Order.ID);
+                Double SGST = BillServices.Instance.GetSGST(Order.ID);
+                UpdatedGrandTotal = UpdatedGrandTotal + CGST + SGST;
+                OrderServices.Instance.UpdateOrderDiscount(Order, Discount, DiscountPercentage,UpdatedGrandTotal);
+            }
+            else
+            {
+                var Order = OrderServices.Instance.GetOrderByTable(TableName);
+                Double UpdatedGrandTotal = Order.GrandTotal;
+                Double CGST = BillServices.Instance.GetCGST(Order.ID);
+                Double SGST = BillServices.Instance.GetSGST(Order.ID);
+                UpdatedGrandTotal = UpdatedGrandTotal + CGST + SGST;
+                OrderServices.Instance.UpdateOrderDiscount(Order, Discount, DiscountPercentage, UpdatedGrandTotal);
+
+            }
+            return PartialView("BillingOrderDashboard");
+        }
 
         public ActionResult CloseSession(int ID) //table ID
         {
@@ -319,25 +343,37 @@ namespace RMS_System.Controllers
 
             var Date = DateTime.Now;
             var OrderID = OrderServices.Instance.GetOrderByTable(Table.TableName);
+
+            var Config =  ConfigurationServices.Instance.GetConfig();
+            Double SGST = Config.SGST;
+            Double CGST = Config.CGST;
+            Double CGSTAmount = 0;
+            Double SGSTAmount = 0;
+
+            Double GrandTotal = OrderID.GrandTotal;
+            CGSTAmount = GrandTotal / 100;
+            CGSTAmount *= CGST;
+
+            SGSTAmount = GrandTotal / 100;
+            SGSTAmount *= SGST;
+
+
             var EntriesList = TableEntryServices.Instance.GetTableEntries(Table.TableName);
             var bill = new Bill();
             bill.OrderDate = Date;
             bill.OrderID = OrderID.ID;
+           
             foreach (var item in EntriesList)
             {
                 bill.EntriesID = item.ID;
+                bill.CGST = CGSTAmount;
+                bill.SGST = SGSTAmount;
                 BillServices.Instance.SaveBill(bill);
             }
      
             return RedirectToAction("WaiterApp", "Home");
 
         }
-
-
-
-
-
-
 
 
     }

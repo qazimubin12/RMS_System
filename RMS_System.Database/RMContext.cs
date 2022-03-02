@@ -10,7 +10,7 @@ namespace RMS_System.Database
 {
     public class RMContext : DbContext, IDisposable
     {
-        public RMContext() : base("RMS_Connection")
+        public RMContext() : base("RMSConnectionStrings")
         {
 
         }

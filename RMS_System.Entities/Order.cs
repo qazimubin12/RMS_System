@@ -17,5 +17,7 @@ namespace RMS_System.Entities
 
         public int ItemsServed { get; set; }
         public int OrderedItems { get; set; }
+        public Double DiscountPercentage { get; set; }
+        public Double Discount { get; set; }
     }
 }

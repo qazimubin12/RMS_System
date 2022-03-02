@@ -11,5 +11,7 @@ namespace RMS_System.Entities
         public virtual int OrderID { get; set; }
         public virtual int EntriesID { get; set; }
         public DateTime OrderDate { get; set; }
+        public Double SGST { get; set; }
+        public Double CGST  { get; set; }
     }
 }

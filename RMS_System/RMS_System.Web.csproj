@@ -220,7 +220,7 @@
     <Content Include="Content\themedata\dist\img\credit\cirrus.png" />
     <Content Include="Content\themedata\dist\img\credit\css logo-02.png" />
     <Content Include="Content\themedata\dist\img\credit\css logo-03.png" />
-    <Content Include="Content\themedata\dist\img\credit\kisspng-portable-network-graphics-food-fusion-cuisine-logo-restrokhana-your-online-restaurant-partner-br-5cfe4eadf40b99.7666644115601701579996.png" />
+    <Content Include="Content\themedata\dist\img\credit\littleicon.png" />
     <Content Include="Content\themedata\dist\img\credit\mastercard.png" />
     <Content Include="Content\themedata\dist\img\credit\paypal.png" />
     <Content Include="Content\themedata\dist\img\credit\paypal2.png" />
@@ -2610,6 +2610,9 @@
     <Content Include="Content\themedata\plugins\toastr\toastr.js.map" />
     <Content Include="Content\themedata\README.md" />
     <Content Include="manifest.json" />
+    <None Include="Properties\PublishProfiles\rmssystem - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\rmssystem - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\rmssystem - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

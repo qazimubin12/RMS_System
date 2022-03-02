@@ -11,5 +11,7 @@ namespace RMS_System.ViewModels
         public List<TableEntry> TableEntries { get; set; }
         public List<Order> Order { get; set; }
         public Configuration configuration { get; set; }
+        public Double SGST { get; set; }
+        public Double CGST { get; set; }
     }
 }

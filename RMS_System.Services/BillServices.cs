@@ -33,7 +33,6 @@ namespace RMS_System.Services
             }
         }
 
-
         public void SaveBill(Bill bill)
         {
             using (var context = new RMContext())
@@ -43,7 +42,25 @@ namespace RMS_System.Services
             }
         }
 
-        
+
+
+        public Double GetSGST(int OrderID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Bills.Where(x => x.OrderID == OrderID).Select(x => x.SGST).FirstOrDefault();
+            }
+        }
+
+        public Double GetCGST(int OrderID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Bills.Where(x => x.OrderID == OrderID).Select(x => x.CGST).FirstOrDefault();
+            }
+        }
+
+
 
         public void UpdateBill(Bill Bill)
         {

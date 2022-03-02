@@ -41,7 +41,10 @@
 
                     </tr>
                     <tr>
-                        <td>Discount<input class="textvalue" onkeyup="myFunction(@Count,@item2.GrandTotal,@Count2)" id="@Count" style="width:30px" type="text" /></td>
+                        @{ 
+                            string tabless = item2.TableName;
+                        }
+                        <td>Discount<input class="textvalue" onkeyup="myFunction(@Count,@item2.GrandTotal,@Count2, '@tabless')" id="@Count" style="width:30px" type="text" /></td>
                         @if (DiscountedAmount == 0)
                         {
 
@@ -115,37 +118,27 @@
 
 <script>
 
-    $(".btnOrder").click(function () {
-        var abc = $(this).attr("data-id");
-        var tr = $(this).closest('tr');
-        var FirstCol = tr.find(`input[data-id=${abc}]`).val();
-        $.ajax({
-            url: '@Url.Action("TableFoodEntry", "Home")',
-            type: 'GET',
-            data: {
-                ID: $(this).attr("data-id"),
-                Quantity: FirstCol
-
-            }
-        })
-            .done(function (response) {
-
-                $("#ActionContainer").html(response);
-
-            })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-
-            })
-
-    });
+ 
 
 
 
-    function myFunction(val,total,count) {
+    function myFunction(val,total,count,tablename) {
         var asbc = document.getElementById(val).value;
         var dec = (total / 100).toFixed(2);
         var mult = asbc * dec;
         $('#discountdata_' + count + '').html(mult);
+
+         $.ajax({
+            url: '@Url.Action("UpdateDiscount", "Home")',
+            type: 'GET',
+            data: {
+                TableName: tablename,
+                Discount: mult,
+                DiscountPercentage: asbc
+
+
+            }
+        })
 
     }
 
