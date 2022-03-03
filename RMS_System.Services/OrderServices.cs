@@ -50,7 +50,7 @@ namespace RMS_System.Services
         {
             using (var context = new RMContext())
             {
-                return context.Orders.ToList();
+                return context.Orders.Where(x=>x.PaymentStatus == "Waiting for Billing").ToList();
             }
         }
 
@@ -62,6 +62,9 @@ namespace RMS_System.Services
                 return context.Orders.Where(x => x.TableName == TableName).FirstOrDefault();
             }
         }
+
+     
+
 
         public Order GetOrder(int ID)
         {
@@ -81,6 +84,14 @@ namespace RMS_System.Services
         }
 
 
+        public string GetTableNameFromOrderID(int ID)
+        {
+            using (var context = new RMContext())
+            {
+                string table = context.Orders.Where(x => x.ID == ID).Select(x => x.TableName).FirstOrDefault();
+                return table;
+            }
+        }
         public void UpdateOrderInfo(Order order, int ServedItems)
         {
             

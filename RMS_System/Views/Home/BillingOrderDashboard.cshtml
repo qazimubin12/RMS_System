@@ -118,7 +118,7 @@
 
 <script>
 
- 
+
 
 
 
@@ -141,5 +141,44 @@
         })
 
     }
+
+
+    $(".btnPrint").click(function () {
+        var orderID = $(this).attr("data-id");
+        $.ajax({
+            url: '@Url.Action("ShowReceipt", "Home")',
+            type: 'GET',
+            data: {
+                ID: $(this).attr("data-id"),
+            }
+        })
+            .done(function (response) {
+                var url = "/Home/ShowReceipt/"+orderID;
+                window.open(url, "_blank");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("fail");
+            })
+
+    });
+
+
+    $(".btnCash").click(function () {
+        $.ajax({
+            url: '@Url.Action("CompleteOrder", "Home")',
+            type: 'GET',
+            data: {
+                ID: $(this).attr("data-id"),
+            }
+        })
+            .done(function (response) {
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("fail");
+            })
+
+    });
 
 </script>

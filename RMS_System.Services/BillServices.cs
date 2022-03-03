@@ -3,6 +3,7 @@ using RMS_System.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,14 @@ namespace RMS_System.Services
             }
         }
 
+
+        public List<int> GetTableEntires(int OrderID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Bills.Where(x => x.OrderID == OrderID).Select(x => x.EntriesID).ToList();
+            }
+        }
 
 
         public Double GetSGST(int OrderID)

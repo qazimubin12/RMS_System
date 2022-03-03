@@ -19,5 +19,7 @@ namespace RMS_System.Entities
         public int OrderedItems { get; set; }
         public Double DiscountPercentage { get; set; }
         public Double Discount { get; set; }
+        public DateTime OrderDate { get; set; }
+        public string PaymentStatus { get; set; }
     }
 }

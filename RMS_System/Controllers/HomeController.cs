@@ -1,8 +1,10 @@
-﻿using RMS_System.Entities;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using RMS_System.Entities;
 using RMS_System.Services;
 using RMS_System.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -96,6 +98,7 @@ namespace RMS_System.Controllers
             return View();
         }
 
+
         public ActionResult KitchenDashboard(KitchenDashboardViewModel model)
         {
             CheckRoleForKitchenStaff();
@@ -108,7 +111,7 @@ namespace RMS_System.Controllers
 
                 model.Orders = OrderServices.Instance.GetOrders();
                 model.Entries = TableEntryServices.Instance.GetTableEntries();
-                
+
                 return View(model);
             }
         }
@@ -264,7 +267,8 @@ namespace RMS_System.Controllers
             order.GrandTotal = grandtotal;
             order.OrderedItems = OrderedItems.Count;
             order.ItemsServed = 0;
-          
+            order.OrderDate = DateTime.Now;
+            order.PaymentStatus = "Waiting for Billing";
             OrderServices.Instance.SaveOrder(order);
 
             return PartialView("TableFoodEntry", model);
@@ -375,6 +379,29 @@ namespace RMS_System.Controllers
 
         }
 
+
+
+        public ActionResult ShowReceipt(int ID)//Order ID
+        {
+            ReceiptViewModel model = new ReceiptViewModel();
+            model.OrderID = ID;
+            model.Order = OrderServices.Instance.GetOrder(ID);
+            var tablename = OrderServices.Instance.GetTableNameFromOrderID(ID);
+            model.Table = TableServices.Instance.GetTable(tablename);
+            model.configuration = ConfigurationServices.Instance.GetConfig();
+            model.TableEntries = TableEntryServices.Instance.GetTableEntriesForBilling(model.Table.TableName);
+            model.CGST = BillServices.Instance.GetCGST(model.OrderID);
+            model.SGST = BillServices.Instance.GetSGST(model.OrderID);
+            return View("ShowReceipt", model);
+        }
+
+
+
+        public ActionResult CompleteOrder(int ID)
+        {
+            //Update Table Info and Order Payment Status
+            return RedirectToAction("BillingDashboard", "Home");
+        }
 
     }
 }

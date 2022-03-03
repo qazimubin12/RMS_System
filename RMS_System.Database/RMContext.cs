@@ -31,5 +31,9 @@ namespace RMS_System.Database
         public DbSet<Bill> Bills { get; set; }
         public DbSet<Configuration> Configurations { get; set; }
 
+
+
+       
+
     }
 }

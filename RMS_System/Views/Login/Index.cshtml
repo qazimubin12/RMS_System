@@ -7,6 +7,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2196f3" />
+    <link rel="manifest" href="~/manifest.json">
     <title>RMS System</title>
 
     <!-- Google Font: Source Sans Pro -->
@@ -86,7 +88,7 @@
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label text-md-right">Waiter Login</label>
@@ -268,6 +270,20 @@
 
 
 
+    <script>
+        //if ('serviceWorker' in navigator) {
+        //    navigator.serviceWorker
+        //        .register('/serviceworker.js')
+        //        .then(function () { console.log('Service Worker Registered'); });
+        //}
+
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/serviceworker.js');
+            });
+        }
+    </script>
 
 </body>
 

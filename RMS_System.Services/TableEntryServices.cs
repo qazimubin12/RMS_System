@@ -44,6 +44,8 @@ namespace RMS_System.Services
             }
         }
 
+        
+
 
         public List<TableEntry> GetNonDispatchedTableEntries()
         {
@@ -52,6 +54,18 @@ namespace RMS_System.Services
                 return context.TableEntries.Where(x=>x.FoodDispatchedStatus == "Not Yet").ToList();
             }
         }
+
+
+        public List<TableEntry> GetTableEntriesForBilling(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                var list = (from c in context.TableEntries join o in context.Bills on c.ID equals o.EntriesID where c.TableName == TableName where o.EntriesID == c.ID  select c).ToList();
+                return list;
+                //return context.TableEntries.Where(x => x.TableName == TableName).Join(context.Bills).ToList();
+            }
+        }
+
 
         public string GetTableNameFromEntryID(int ID)
         {
