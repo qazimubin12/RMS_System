@@ -141,7 +141,7 @@
 
         })
             .done(function (response) {
-                $("#ConfigForm").html(response);
+                window.location.href = "@Url.Action("Index", "Configuration")";
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert(errorThrown);
@@ -151,4 +151,3 @@
 
 
 </script>
-s

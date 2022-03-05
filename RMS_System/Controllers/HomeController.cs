@@ -1,5 +1,4 @@
-﻿using CrystalDecisions.CrystalReports.Engine;
-using RMS_System.Entities;
+﻿using RMS_System.Entities;
 using RMS_System.Services;
 using RMS_System.ViewModels;
 using System;
@@ -93,9 +92,24 @@ namespace RMS_System.Controllers
             return View();
         }
 
-        public ActionResult AdminDashboard()
+        [HttpPost]
+        [Obsolete]
+        public ActionResult AdminDashboard(DateTime date)
         {
-            return View();
+            Session["ProvidedDate"] = date.ToShortDateString();
+            AdminViewModel model = new AdminViewModel();
+            model.Orders = OrderServices.Instance.GetOrders(date);
+            model.TotalRevenueInfoBox = OrderServices.Instance.GetTotalRevenueOfGivenDate(date);
+            model.CashRevenueInfoBox = OrderServices.Instance.GetCashRevenueOfGivenDate(date);
+            model.CardRevenueInfoBox = OrderServices.Instance.GetCardRevenueOfGivenDate(date);
+            model.NoOfSessions = OrderServices.Instance.NoOfSessionRegardingGivenDate(date);
+            return View(model);
+        }
+
+        public ActionResult AdminDashboard(AdminViewModel model)
+        {
+            model.Orders = OrderServices.Instance.GetOrders(DateTime.Now);
+            return View(model);
         }
 
 
@@ -109,8 +123,7 @@ namespace RMS_System.Controllers
             else
             {
 
-                model.Orders = OrderServices.Instance.GetOrders();
-                model.Entries = TableEntryServices.Instance.GetTableEntries();
+                model.Orders = OrderServices.Instance.GetOrdersInKitchen();
 
                 return View(model);
             }
@@ -118,7 +131,7 @@ namespace RMS_System.Controllers
 
         public ActionResult KitchenOrderDashboard(KitchenDashboardViewModel model)
         {
-            model.Orders = OrderServices.Instance.GetOrders();
+            model.Orders = OrderServices.Instance.GetOrdersInKitchen();
             model.Entries = TableEntryServices.Instance.GetNonDispatchedTableEntries();
             return PartialView(model);
         }
@@ -138,9 +151,6 @@ namespace RMS_System.Controllers
                 return View(model);
             }
         }
-
-
-
 
         public ActionResult BillingDashboard(BillViewModel model)
         {
@@ -195,9 +205,6 @@ namespace RMS_System.Controllers
            
         }
 
-
-
-
         [HttpGet]
         public ActionResult ShowCart()
         {
@@ -205,6 +212,7 @@ namespace RMS_System.Controllers
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
             model.SelectedTableName = int.Parse(Session["Table"].ToString());
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
             return PartialView("TableFoodEntry", model);
         }
 
@@ -225,6 +233,8 @@ namespace RMS_System.Controllers
             FoodEntryViewModel model = new FoodEntryViewModel();
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
+
             model.SelectedTableName = int.Parse(Session["Table"].ToString());
      
 
@@ -242,6 +252,8 @@ namespace RMS_System.Controllers
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.SelectedTableName = int.Parse(Session["Table"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
+
             return PartialView("TableFoodEntry", model);
         }
 
@@ -259,7 +271,8 @@ namespace RMS_System.Controllers
             FoodEntryViewModel model = new FoodEntryViewModel();
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
-           
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
+
 
             var order = new Order();
             order.TableName = Session["TableName"].ToString();
@@ -268,7 +281,7 @@ namespace RMS_System.Controllers
             order.OrderedItems = OrderedItems.Count;
             order.ItemsServed = 0;
             order.OrderDate = DateTime.Now;
-            order.PaymentStatus = "Waiting for Billing";
+            order.PaymentStatus = "Order Placed";
             OrderServices.Instance.SaveOrder(order);
 
             return PartialView("TableFoodEntry", model);
@@ -289,6 +302,7 @@ namespace RMS_System.Controllers
 
 
             int ItemsServed =  TableServices.Instance.GetItemsServed(Table);
+            ItemsServed++;
             TableServices.Instance.UpdateTableInfo(ActualCompleteTable, ItemsServed);
 
             int FinalItemsServed = TableServices.Instance.GetItemsServed(Table);
@@ -301,12 +315,16 @@ namespace RMS_System.Controllers
 
 
             int ItemsServedForOrder = OrderServices.Instance.GetItemsServedForOrder(Table);
-            ++ItemsServedForOrder;
+            int ItemsOrderedForOrder = OrderServices.Instance.GetItemsOrderedForOrder(Table);
+            ItemsServedForOrder++;
             var ActualCompleteOrder = OrderServices.Instance.GetOrderByTable(Table);
 
 
             OrderServices.Instance.UpdateOrderInfo(ActualCompleteOrder, ItemsServedForOrder);
-
+            if(ItemsServedForOrder == ItemsOrderedForOrder)
+            {
+                OrderServices.Instance.UpdateOrderInfo(ActualCompleteOrder, "Order Delivered");
+            }
 
             KitchenDashboardViewModel model = new KitchenDashboardViewModel();
             model.Orders = OrderServices.Instance.GetOrders();
@@ -347,6 +365,7 @@ namespace RMS_System.Controllers
 
             var Date = DateTime.Now;
             var OrderID = OrderServices.Instance.GetOrderByTable(Table.TableName);
+            OrderServices.Instance.UpdateOrderInfo(OrderID, "Waiting for Billing");
 
             var Config =  ConfigurationServices.Instance.GetConfig();
             Double SGST = Config.SGST;
@@ -361,6 +380,8 @@ namespace RMS_System.Controllers
             SGSTAmount = GrandTotal / 100;
             SGSTAmount *= SGST;
 
+       
+
 
             var EntriesList = TableEntryServices.Instance.GetTableEntries(Table.TableName);
             var bill = new Bill();
@@ -369,10 +390,12 @@ namespace RMS_System.Controllers
            
             foreach (var item in EntriesList)
             {
+                TableEntryServices.Instance.UpdateTableEntryStatus(item, true);
                 bill.EntriesID = item.ID;
                 bill.CGST = CGSTAmount;
                 bill.SGST = SGSTAmount;
                 BillServices.Instance.SaveBill(bill);
+
             }
      
             return RedirectToAction("WaiterApp", "Home");
@@ -397,10 +420,20 @@ namespace RMS_System.Controllers
 
 
 
-        public ActionResult CompleteOrder(int ID)
+        public ActionResult CompleteOrder(int ID,string Method)
         {
             //Update Table Info and Order Payment Status
-            return RedirectToAction("BillingDashboard", "Home");
+            var Order = OrderServices.Instance.GetOrder(ID);
+            var Table = TableServices.Instance.GetTable(Order.TableName);
+            OrderServices.Instance.UpdateOrderInfo(Order, "Payment Done",Method);
+            TableServices.Instance.UpdateTableInfo(Table, "Fresh Table", 0, 0, "Non Active", null);
+
+
+            BillViewModel model = new BillViewModel();
+            model.TableEntries = TableEntryServices.Instance.GetTableEntries();
+            model.Order = OrderServices.Instance.GetOrders();
+            model.configuration = ConfigurationServices.Instance.GetConfig();
+            return PartialView("BillingOrderDashboard",model);
         }
 
     }

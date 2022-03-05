@@ -9,7 +9,7 @@
     {
 
     <table class="table table-hover ">
-
+  
         @foreach (var item in Model.Entries)
         {
             {
@@ -21,7 +21,7 @@
                 <tr style="background-color:mediumaquamarine">
                     <td>@item.FoodItem  (@item.Quantity)</td>
                     <td>@item.ProductTotal</td>
-                    @if (Model.TableStatus == "Fresh Table")
+                    @if (item.FoodDispatchedStatus != "Not Yet")
                     {
                         <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-danger" id="@item.ID">DELETE</button></td>
                     }
@@ -41,20 +41,20 @@
             }
 
 
-     
+
             else
             {
                 <tr>
                     <td>@item.FoodItem  (@item.Quantity)</td>
                     <td>@item.ProductTotal</td>
-                    @if (Model.TableStatus == "Fresh Table")
+                    @if (item.FoodDispatchedStatus != "null" || item.FoodDispatchedStatus != "Not Yet")
                     {
                         <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-danger" id="@item.ID">DELETE</button></td>
                     }
                 </tr>
             }
         }
-
+       
 
         <tr>
             <td>Total Amount</td>

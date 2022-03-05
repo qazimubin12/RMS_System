@@ -51,6 +51,14 @@ namespace RMS_System.Services
             }
         }
 
+        public string GetTableSessionStatus(int ID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Tables.Where(x => x.ID == ID).Select(x => x.SessionStatus).FirstOrDefault();
+            }
+        }
+
         public int GetItemsServed(string TableName)
         {
             using (var context = new RMContext())
@@ -126,7 +134,26 @@ namespace RMS_System.Services
             table.OrderItems = OrderedItems;
             table.ItemsServed = 0;
             table.ServedBy = ServedBy;
-            table.SessionStatus = "Active";
+            table.SessionStatus = SessionStatus;
+            using (var context = new RMContext())
+            {
+                context.Tables.Attach(table);
+                context.Entry(table).Property(x => x.TableStatus).IsModified = true;
+                context.Entry(table).Property(x => x.OrderItems).IsModified = true;
+                context.Entry(table).Property(x => x.SessionStatus).IsModified = true;
+                context.Entry(table).Property(x => x.ItemsServed).IsModified = true;
+                context.Entry(table).Property(x => x.ServedBy).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateTableInfo(Table table, string Status, int OrderedItems, int ServedItem,  string SessionStatus, string ServedBy)
+        {
+            table.TableStatus = Status;
+            table.OrderItems = OrderedItems;
+            table.ItemsServed = ServedItem;
+            table.ServedBy = ServedBy;
+            table.SessionStatus = SessionStatus;
             using (var context = new RMContext())
             {
                 context.Tables.Attach(table);
@@ -140,9 +167,9 @@ namespace RMS_System.Services
         }
 
 
+
         public void UpdateTableInfo(Table table,  int ServedItems)
         {
-            ++ServedItems;
             table.ItemsServed = ServedItems;
             using (var context = new RMContext())
             {

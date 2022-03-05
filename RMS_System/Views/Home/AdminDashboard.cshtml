@@ -1,12 +1,40 @@
-﻿
+﻿@model RMS_System.ViewModels.AdminViewModel
 @{
     ViewBag.Title = "AdminDashboard";
+    var date = Convert.ToDateTime(Session["ProvidedDate"]);
 }
-
 <div class="container body-content">
     <section class="content">
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("AdminDashboard", "Home", FormMethod.Post))
+                    {
+                        <table class="col-md-4">
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Date:</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <input placeholder="@date" name="date" type="text" class="form-control datetimepicker-input" data-target="#reservationdate" />
+                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-outline-dark">Generate Report</button>
+                                </td>
+                            </tr>
+
+                        </table>
+                    }
+                </div>
+            </div>
+            <br />
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box">
@@ -15,7 +43,7 @@
                         <div class="info-box-content">
                             <span class="info-box-text">Total Revenue</span>
                             <span class="info-box-number">
-                                000000
+                                @Model.TotalRevenueInfoBox
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -29,7 +57,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Cash Revenue</span>
-                            <span class="info-box-number">00000</span>
+                            <span class="info-box-number">@Model.CashRevenueInfoBox</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -45,7 +73,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Card Revenue</span>
-                            <span class="info-box-number">000000</span>
+                            <span class="info-box-number">@Model.CardRevenueInfoBox</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -58,7 +86,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Number of Sessions</span>
-                            <span class="info-box-number">00000</span>
+                            <span class="info-box-number">@Model.NoOfSessions</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -135,9 +163,51 @@
                 <!-- Left col -->
                 <!-- /.Left col -->
                 <!-- right col (We are only adding the ID to make the widgets sortable)-->
-                <section class="col-lg-6 connectedSortable">
-                    <table>
-                    </table>
+
+                <section class="col-lg-6">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-chart-bar"></i>
+                                Daily Orders
+                            </h3>
+
+
+                        </div>
+                        <div class="card-body">
+                            <div id="daily-orders" style="height: 300px;">
+                                <table class="table table-bordered table-condensed">
+                                    <tr>
+                                        <td>Table</td>
+                                        <td>Waiter</td>
+                                        <td>Time</td>
+                                        <td>Revenue</td>
+                                        <td style="width:20px;"></td>
+                                    </tr>
+
+                                    @foreach (var item in Model.Orders)
+                                    {
+                                        <tr>
+                                            <td>@item.TableName</td>
+                                            <td>@item.WaiterName</td>
+                                            <td>@item.OrderDate</td>
+                                            <td><a target="_blank" href="/Home/ShowReceipt/@item.ID">@item.GrandTotal</a></td>
+                                            @if (item.PaidBy == "Card")
+                                            {
+                                                <td><img src="~/Content/credit-card.png" /></td>
+
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card-body-->
+                    </div>
 
                     <!-- /.card -->
                     <!-- solid sales graph -->
@@ -145,6 +215,19 @@
                     <!-- Calendar -->
                     <!-- /.card -->
                 </section>
+
+
+
+
+
+
+
+
+                <!-- /.card -->
+                <!-- solid sales graph -->
+                <!-- /.card -->
+                <!-- Calendar -->
+                <!-- /.card -->
                 <section class="col-lg-6 connectedSortable">
                     <table>
                     </table>
@@ -167,9 +250,23 @@
 </div><!-- /.container-fluid -->
 <!-- /.content -->
 
-
-
+<script src="~/Content/themedata/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="~/Content/themedata/plugins/jquery/jquery.min.js"></script>
+<script src="~/Content/themedata/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/Content/themedata/plugins/select2/js/select2.full.min.js"></script>
+<script src="~/Content/themedata/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="~/Content/themedata/plugins/moment/moment.min.js"></script>
+<script src="~/Content/themedata/plugins/inputmask/jquery.inputmask.min.js"></script>
+<script src="~/Content/themedata/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="~/Content/themedata/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="~/Content/themedata/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript">
+
+
+    $('#reservationdate').datetimepicker({
+        format: 'Y-M-D'
+       
+    });
 
     window.onload = function () {
         var chart = new CanvasJS.Chart("chartContainer", {

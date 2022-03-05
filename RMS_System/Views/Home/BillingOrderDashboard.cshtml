@@ -85,7 +85,16 @@
                         </td>
                         <td colspan="2">
                             @{
-                                TotalAmount = CGSTAmount + SGSTAmount + item2.GrandTotal;
+                                if (DiscountedAmount == 0)
+                                {
+                                    TotalAmount = CGSTAmount + SGSTAmount + item2.GrandTotal;
+                                }
+                                else
+                                {
+                                    TotalAmount = CGSTAmount + SGSTAmount + item2.GrandTotal;
+                                    //TotalAmount -= DiscountedAmount;
+
+                                }
                             }
                             @TotalAmount
                         </td>
@@ -96,8 +105,8 @@
                     <tr>
 
                         <td><button type="button"  data-id="@item2.ID" class="btnPrint btn btn-sm btn-primary">PRINT</button></td>
-                        <td><button type="button" data-id="@item2.ID" class="btnCash btn btn-sm btn-primary">Paid by Cash</button></td>
-                        <td><button type="button" data-id="@item2.ID" class="btnCard btn btn-sm btn-primary">Paid By Card</button></td>
+                        <td><button type="button" data-method="Cash" data-id="@item2.ID" class="btnCash btn btn-sm btn-primary">Paid by Cash</button></td>
+                        <td><button type="button" data-method="Card" data-id="@item2.ID" class="btnCard btn btn-sm btn-primary">Paid By Card</button></td>
                     </tr>
 
 
@@ -169,6 +178,26 @@
             type: 'GET',
             data: {
                 ID: $(this).attr("data-id"),
+                Method: $(this).attr("data-method")
+            }
+        })
+            .done(function (response) {
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("fail");
+            })
+
+    });
+
+    $(".btnCard").click(function () {
+        $.ajax({
+            url: '@Url.Action("CompleteOrder", "Home")',
+            type: 'GET',
+            data: {
+                ID: $(this).attr("data-id"),
+                Method: $(this).attr("data-method")
             }
         })
             .done(function (response) {

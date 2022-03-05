@@ -35,5 +35,7 @@ namespace RMS_System.ViewModels
         public List<TableEntry> Entries { get; set; }
         public string TableStatus { get; set; }
 
+        public string SessionStatus { get; set; }
+
     }
 }

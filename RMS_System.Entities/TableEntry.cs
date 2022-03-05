@@ -14,5 +14,6 @@ namespace RMS_System.Entities
         public string TableName { get; set; }
         public string FoodDispatchedStatus { get; set; }
         public DateTime OrderedTime { get; set; }
+        public bool BillingDone { get; set; }
     }
 }

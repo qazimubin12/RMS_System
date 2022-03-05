@@ -9,8 +9,16 @@
             <div class="col-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h4 class="card-title">Billing Dashboard</h4>
-                        <button type="button" onclick="LoadCart()">LOAD</button>
+                        <table class="col-md-12">
+                            <tr>
+                                <td>
+                                    <h4 class="card-title">Billing Dashboard</h4>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" type="button" onclick="LoadCart()">LOAD BILLS</button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="card-body">
                         <div id="ActionContainer">
@@ -35,7 +43,7 @@
     @*$(function () {
         setInterval(function () {
             $('#ActionContainer').load('@Url.Action("BillingOrderDashboard", "Home")');
-        }, 5000);
+        }, 2000);
     });*@
 
 

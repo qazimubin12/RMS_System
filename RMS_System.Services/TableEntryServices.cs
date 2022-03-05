@@ -60,12 +60,21 @@ namespace RMS_System.Services
         {
             using (var context = new RMContext())
             {
-                var list = (from c in context.TableEntries join o in context.Bills on c.ID equals o.EntriesID where c.TableName == TableName where o.EntriesID == c.ID  select c).ToList();
+                var list = (from c in context.TableEntries join o in context.Bills on c.ID equals o.EntriesID  where c.TableName == TableName where o.EntriesID == c.ID  select c).ToList();
                 return list;
                 //return context.TableEntries.Where(x => x.TableName == TableName).Join(context.Bills).ToList();
             }
         }
 
+
+        //public List<TableEntry> GetTableEntriesForWaiter(string TableName)
+        //{
+        //    using (var context = new RMContext())
+        //    {
+        //        var list = (from c in context.TableEntries join o in context.Tables on c.TableName equals o.TableName where c.TableName == TableName where o.SessionStatus == "Active"  select c).ToList();
+        //        return list;
+        //    }
+        //}
 
         public string GetTableNameFromEntryID(int ID)
         {
@@ -87,19 +96,34 @@ namespace RMS_System.Services
         {
             using (var context = new RMContext())
             {
-                return context.TableEntries.Where(x=>x.TableName == TableName).ToList();
+                return context.TableEntries.Where(x => x.TableName == TableName && x.BillingDone == false).ToList();
             }
         }
 
+
         public void UpdateTableEntryStatus(TableEntry entry, string Status)
         {
-            
-            entry.FoodDispatchedStatus= Status;
-          
+
+            entry.FoodDispatchedStatus = Status;
+
             using (var context = new RMContext())
             {
                 context.TableEntries.Attach(entry);
                 context.Entry(entry).Property(x => x.FoodDispatchedStatus).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+
+        public void UpdateTableEntryStatus(TableEntry entry, bool BillingDone)
+        {
+            
+            entry.BillingDone = BillingDone;
+          
+            using (var context = new RMContext())
+            {
+                context.TableEntries.Attach(entry);
+                context.Entry(entry).Property(x => x.BillingDone).IsModified = true;
                 context.SaveChanges();
             }
         }

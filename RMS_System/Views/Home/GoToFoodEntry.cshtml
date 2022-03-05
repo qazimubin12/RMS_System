@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "GoToFoodEntry";
     var PlaceholderURL = "/Content/themedata/dist/img/placeholder.png";
-    int MenuIndex = 0;
 }
 
 <section class="content">
@@ -195,23 +194,28 @@
         var abc = $(this).attr("data-id");
         var tr = $(this).closest('tr');
         var FirstCol = tr.find(`input[data-id=${abc}]`).val();
-        $.ajax({
-            url: '@Url.Action("TableFoodEntry", "Home")',
-            type: 'GET',
-            data: {
-                ID: $(this).attr("data-id"),
-                Quantity: FirstCol
+        if (FirstCol != 0) {
+            $.ajax({
+                url: '@Url.Action("TableFoodEntry", "Home")',
+                type: 'GET',
+                data: {
+                    ID: $(this).attr("data-id"),
+                    Quantity: FirstCol
 
-            }
-        })
-            .done(function (response) {
-
-                $("#ActionContainer").html(response);
-
+                }
             })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                .done(function (response) {
 
-            })
+                    $("#ActionContainer").html(response);
+
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+                })
+        }
+        else {
+            alert("Quantity Should Not Be Zero");
+        }
 
     });
 

@@ -21,5 +21,6 @@ namespace RMS_System.Entities
         public Double Discount { get; set; }
         public DateTime OrderDate { get; set; }
         public string PaymentStatus { get; set; }
+        public string PaidBy { get; set; }
     }
 }

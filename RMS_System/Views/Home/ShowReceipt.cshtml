@@ -5,106 +5,124 @@
     float ProducTotls = 0;
 }
 
-<div style="width: 400px; min-height: 300px; border: 0px solid;">
-    <div style="text-align: center;">
-        <img src="@Model.configuration.ImageURL" width="220">
-    </div>
-    <div style="text-align: center; margin-top: -26px;">
-        <h1>@Model.configuration.HotelName</h1>
-        <div style="margin-top: -20px; font-weight: bold;">@Model.configuration.HotelAddress</div>
-    </div>
-    <div>&nbsp;</div>
-    <div style="width: 100%;">
-        <table style="width: 100%;">
-            <tbody>
-                <tr>
-                    <td style="width: 33%;">@Model.Order.OrderDate</td>
-
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="width: 33%; font-weight: bold;">Table: @Model.Table.TableName</td>
-
-                    <td>&nbsp;</td>
-                    <td style="text-align: right; width: 33%;">Waiter: @Model.Order.WaiterName</td>
-
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <hr>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>Dish</b></td>
-                    <td style="text-align: center;"><b>Quantity</b></td>
-                    <td style="text-align: right;"><b>Price</b></td>
-                </tr>
-                @foreach (var item in Model.TableEntries)
-                {
+<body onload="yourFunction()">
+    <div style="width: 400px; min-height: 300px; border: 0px solid;">
+        <div style="text-align: center;">
+            <img src="@Url.Content(Model.configuration.ImageURL)" width="220">
+        </div>
+        <div style="text-align: center; margin-top: -26px;">
+            <h1>@Model.configuration.HotelName</h1>
+            <div style="margin-top: -20px; font-weight: bold;">@Model.configuration.HotelAddress</div>
+        </div>
+        <div>&nbsp;</div>
+        <div style="width: 100%;">
+            <table style="width: 100%;">
+                <tbody>
                     <tr>
-                        <td>@item.FoodItem</td>
-                        <td style="text-align: center;">@item.Quantity</td>
-                        <td style="text-align: right;" class="money">₹ @item.ProductTotal</td>
+                        <td style="width: 33%;">@Model.Order.OrderDate</td>
+
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 33%; font-weight: bold;">Table: @Model.Table.TableName</td>
+
+                        <td>&nbsp;</td>
+                        <td style="text-align: right; width: 33%;">Waiter: @Model.Order.WaiterName</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <hr>
+                        </td>
                     </tr>
 
+                    <tr>
+                        <td><b>Dish</b></td>
+                        <td style="text-align: center;"><b>Quantity</b></td>
+                        <td style="text-align: right;"><b>Price</b></td>
+                    </tr>
+                    @foreach (var item in Model.TableEntries)
                     {
-                        ProducTotls += item.ProductTotal;
+                        <tr>
+                            <td>@item.FoodItem</td>
+                            <td style="text-align: center;">@item.Quantity</td>
+                            <td style="text-align: right;" class="money">₹ @item.ProductTotal</td>
+                        </tr>
+
+                        {
+                            ProducTotls += item.ProductTotal;
+                        }
+
+                    }
+                    <tr>
+                        <td colspan="3">
+                            <hr>
+                        </td>
+                    </tr>
+                    @if (Model.Order.Discount == 0)
+                    {
+                        <tr>
+
+                            <td colspan="2">Amount</td>
+                            <td style="text-align: right;" class="money">₹ @ProducTotls</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">Discount:</td>
+                            <td style="text-align: right;" class="money">(@Model.Order.DiscountPercentage%) ₹@Model.Order.Discount </td>
+                            </tr>
+                            <tr>
+                            <td colspan="2">Amount</td>
+                            @{ProducTotls -= float.Parse(Model.Order.Discount.ToString()); }
+                            <td style="text-align: right;" class="money">₹@ProducTotls</td>
+                        </tr>
                     }
 
-                }
-                <tr>
-                    <td colspan="3">
-                        <hr>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">Amount</td>
-                    <td style="text-align: right;" class="money">₹ @ProducTotls</td>
 
-                </tr>
-                <tr>
-                    <td colspan="2">SGST <span>(@Model.configuration.SGST %)</span></td>
-                    <td style="text-align: right;" class="money">₹ @Model.SGST</td>
-                </tr>
-                <tr>
-                    <td colspan="2">CGST <span>(@Model.configuration.CGST %)</span></td>
-                    <td style="text-align: right;" class="money">₹ @Model.CGST</td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <hr>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="font-weight: bold;">Total Amount</td>
-                    <td style="text-align: right; font-weight: bold;" class="money">₹ @Model.Order.GrandTotal </td>
+                    <tr>
+                        <td colspan="2">SGST <span>(@Model.configuration.SGST %)</span></td>
+                        <td style="text-align: right;" class="money">₹ @Model.SGST</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">CGST <span>(@Model.configuration.CGST %)</span></td>
+                        <td style="text-align: right;" class="money">₹ @Model.CGST</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="font-weight: bold;">Total Amount</td>
+                        <td style="text-align: right; font-weight: bold;" class="money">₹ @Model.Order.GrandTotal </td>
 
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <hr>
-                    </td>
-                </tr>
-                <tr id="spanGST">
-                    <td colspan="3" style="font-weight: bold; text-align: center;">
-                        GST Number:<span id="gstCode">36AAEFH1819A1ZX</span><br>
-                        SAC CODE: <span id="sacCode">996331</span>
-                    </td>
-                </tr>
-                <tr class="shadabdxb" style="display:none;">
-                    <td colspan="3" style="text-align: right; font-weight: bold; text-align: center;">TRN#  100338750100003</td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="text-align: right; font-weight: bold; text-align: center;">
-                        <i>Thank You, Please visit again.</i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr id="spanGST">
+                        <td colspan="3" style="font-weight: bold; text-align: center;">
+                            GST Number:<span id="gstCode">36AAEFH1819A1ZX</span><br>
+                            SAC CODE: <span id="sacCode">996331</span>
+                        </td>
+                    </tr>
+                    <tr class="shadabdxb" style="display:none;">
+                        <td colspan="3" style="text-align: right; font-weight: bold; text-align: center;">TRN#  100338750100003</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right; font-weight: bold; text-align: center;">
+                            <i>Thank You, Please visit again.</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
+</body>
 <style>
     h1 {
         display: block;
@@ -134,3 +152,10 @@
     }
 </style>
 
+
+<script>
+   
+    function yourFunction() {
+        window.print();
+    }
+</script>

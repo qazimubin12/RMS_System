@@ -167,6 +167,14 @@
     <Compile Include="Migrations\202203031426017_paymentstatus.designer.cs">
       <DependentUpon>202203031426017_paymentstatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202203031807339_paidbycardorcash.cs" />
+    <Compile Include="Migrations\202203031807339_paidbycardorcash.designer.cs">
+      <DependentUpon>202203031807339_paidbycardorcash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203050544185_billingdoneornot.cs" />
+    <Compile Include="Migrations\202203050544185_billingdoneornot.designer.cs">
+      <DependentUpon>202203050544185_billingdoneornot.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RMContext.cs" />
@@ -268,6 +276,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202203031426017_paymentstatus.resx">
       <DependentUpon>202203031426017_paymentstatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203031807339_paidbycardorcash.resx">
+      <DependentUpon>202203031807339_paidbycardorcash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203050544185_billingdoneornot.resx">
+      <DependentUpon>202203050544185_billingdoneornot.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
