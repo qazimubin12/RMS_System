@@ -129,25 +129,47 @@ namespace RMS_System.Services
             }
         }
 
-
+        [Obsolete]
         public List<Order> GetOrders(DateTime date)
         {
+            DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
             using (var context = new RMContext())
             {
-                return context.Orders.Where(x => x.OrderDate >= date).ToList();
+                return context.Orders.Where(x=> EntityFunctions.TruncateTime(x.OrderDate) == date2).ToList();
             }
         }
+
+  
+       
 
 
         public Order GetOrderByTable(string TableName)
         {
             using (var context = new RMContext())
             {
-                return context.Orders.Where(x => x.TableName == TableName).FirstOrDefault();
+                return context.Orders.Where(x => x.TableName == TableName && x.PaymentStatus == "Waiting for Billing").FirstOrDefault();
             }
         }
 
-     
+
+        public Order GetOrderOfOrderPlaced(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => x.TableName == TableName &&x.PaymentStatus == "Order Placed").FirstOrDefault();
+            }
+        }
+
+
+        public Order GetOrderOfOrderDeliverted(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => x.TableName == TableName && x.PaymentStatus == "Order Delivered").FirstOrDefault();
+            }
+        }
+
+
 
 
         public Order GetOrder(int ID)
@@ -158,20 +180,20 @@ namespace RMS_System.Services
             }
         }
 
-        public int GetItemsServedForOrder(string TableName)
+        public int GetItemsServedForOrder(string TableName, int ID)
         {
             using (var context = new RMContext())
             {
-                int GetItemsServed = (int)context.Orders.Where(x => x.TableName == TableName).Select(x => x.ItemsServed).FirstOrDefault();
+                int GetItemsServed = (int)context.Orders.Where(x => x.TableName == TableName && x.ID == ID).Select(x => x.ItemsServed).FirstOrDefault();
                 return GetItemsServed;
             }
         }
 
-        public int GetItemsOrderedForOrder(string TableName)
+        public int GetItemsOrderedForOrder(string TableName, int ID)
         {
             using (var context = new RMContext())
             {
-                int GetItemsServed = (int)context.Orders.Where(x => x.TableName == TableName).Select(x => x.OrderedItems).FirstOrDefault();
+                int GetItemsServed = (int)context.Orders.Where(x => x.TableName == TableName && x.ID == ID ).Select(x => x.OrderedItems).FirstOrDefault();
                 return GetItemsServed;
             }
         }

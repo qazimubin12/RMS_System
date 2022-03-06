@@ -34,6 +34,15 @@ namespace RMS_System.Services
             }
         }
 
+        public List<Bill> GetBillFor(int OrderID)
+        {
+            using (var context = new RMContext())
+            {
+                var bills =  context.Bills.Where(x=>x.OrderID == OrderID).ToList();
+                return bills;
+            }
+        }
+
         public void SaveBill(Bill bill)
         {
             using (var context = new RMContext())

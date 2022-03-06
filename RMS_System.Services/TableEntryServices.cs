@@ -44,8 +44,6 @@ namespace RMS_System.Services
             }
         }
 
-        
-
 
         public List<TableEntry> GetNonDispatchedTableEntries()
         {
@@ -56,11 +54,11 @@ namespace RMS_System.Services
         }
 
 
-        public List<TableEntry> GetTableEntriesForBilling(string TableName)
+        public List<TableEntry> GetTableEntriesForBilling(string TableName, int OrderID)
         {
             using (var context = new RMContext())
             {
-                var list = (from c in context.TableEntries join o in context.Bills on c.ID equals o.EntriesID  where c.TableName == TableName where o.EntriesID == c.ID  select c).ToList();
+                var list = (from c in context.TableEntries join o in context.Bills on c.ID equals o.EntriesID  where c.TableName == TableName where o.EntriesID == c.ID  where o.OrderID == OrderID   select c).ToList();
                 return list;
                 //return context.TableEntries.Where(x => x.TableName == TableName).Join(context.Bills).ToList();
             }

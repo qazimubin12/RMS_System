@@ -1,11 +1,14 @@
-﻿using RMS_System.Entities;
+﻿using Newtonsoft.Json;
+using RMS_System.Entities;
 using RMS_System.Services;
 using RMS_System.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace RMS_System.Controllers
@@ -96,6 +99,7 @@ namespace RMS_System.Controllers
         [Obsolete]
         public ActionResult AdminDashboard(DateTime date)
         {
+            
             Session["ProvidedDate"] = date.ToShortDateString();
             AdminViewModel model = new AdminViewModel();
             model.Orders = OrderServices.Instance.GetOrders(date);
@@ -103,9 +107,23 @@ namespace RMS_System.Controllers
             model.CashRevenueInfoBox = OrderServices.Instance.GetCashRevenueOfGivenDate(date);
             model.CardRevenueInfoBox = OrderServices.Instance.GetCardRevenueOfGivenDate(date);
             model.NoOfSessions = OrderServices.Instance.NoOfSessionRegardingGivenDate(date);
+            model.date = date;
+            List<DataPoint> dataPoints = new List<DataPoint>();
+            var Orders = OrderServices.Instance.GetOrders(date);
+            foreach (var item in Orders)
+            {
+                dataPoints.Add(new DataPoint(item.OrderDate, item.GrandTotal));
+            }
+            JsonSerializerSettings _jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints, _jsonSetting);
             return View(model);
+         
         }
 
+      
+      
+
+        [Obsolete]
         public ActionResult AdminDashboard(AdminViewModel model)
         {
             model.Orders = OrderServices.Instance.GetOrders(DateTime.Now);
@@ -313,11 +331,11 @@ namespace RMS_System.Controllers
                 TableServices.Instance.UpdateTableInfo(ActualCompleteTable, "Order Delivered", "Active");
             }
 
+            var ActualCompleteOrder = OrderServices.Instance.GetOrderOfOrderPlaced(Table);
 
-            int ItemsServedForOrder = OrderServices.Instance.GetItemsServedForOrder(Table);
-            int ItemsOrderedForOrder = OrderServices.Instance.GetItemsOrderedForOrder(Table);
+            int ItemsServedForOrder = OrderServices.Instance.GetItemsServedForOrder(Table,ActualCompleteOrder.ID);
+            int ItemsOrderedForOrder = OrderServices.Instance.GetItemsOrderedForOrder(Table,ActualCompleteOrder.ID);
             ItemsServedForOrder++;
-            var ActualCompleteOrder = OrderServices.Instance.GetOrderByTable(Table);
 
 
             OrderServices.Instance.UpdateOrderInfo(ActualCompleteOrder, ItemsServedForOrder);
@@ -339,16 +357,31 @@ namespace RMS_System.Controllers
             if (Discount != 0)
             {
                 var Order = OrderServices.Instance.GetOrderByTable(TableName);
-                Double UpdatedGrandTotal = Order.GrandTotal - Discount;
+
+                var BillsBasedOnOrderId = BillServices.Instance.GetBillFor(Order.ID);
+                Double UpdatedGrandTotal = 0;
+                foreach (var item in BillsBasedOnOrderId)
+                {
+                    var Entry = TableEntryServices.Instance.GetTableEntry(item.EntriesID);
+                    UpdatedGrandTotal += Entry.ProductTotal;
+                }
+
                 Double CGST = BillServices.Instance.GetCGST(Order.ID);
                 Double SGST = BillServices.Instance.GetSGST(Order.ID);
                 UpdatedGrandTotal = UpdatedGrandTotal + CGST + SGST;
+                UpdatedGrandTotal -= Discount;
                 OrderServices.Instance.UpdateOrderDiscount(Order, Discount, DiscountPercentage,UpdatedGrandTotal);
             }
             else
             {
                 var Order = OrderServices.Instance.GetOrderByTable(TableName);
-                Double UpdatedGrandTotal = Order.GrandTotal;
+                var BillsBasedOnOrderId = BillServices.Instance.GetBillFor(Order.ID);
+                Double UpdatedGrandTotal = 0;
+                foreach (var item in BillsBasedOnOrderId)
+                {
+                    var Entry = TableEntryServices.Instance.GetTableEntry(item.EntriesID);
+                    UpdatedGrandTotal += Entry.ProductTotal;
+                }
                 Double CGST = BillServices.Instance.GetCGST(Order.ID);
                 Double SGST = BillServices.Instance.GetSGST(Order.ID);
                 UpdatedGrandTotal = UpdatedGrandTotal + CGST + SGST;
@@ -364,7 +397,7 @@ namespace RMS_System.Controllers
             TableServices.Instance.UpdateTableInfo(Table,"Waiting for Billing", "Non Active");
 
             var Date = DateTime.Now;
-            var OrderID = OrderServices.Instance.GetOrderByTable(Table.TableName);
+            var OrderID = OrderServices.Instance.GetOrderOfOrderDeliverted(Table.TableName);
             OrderServices.Instance.UpdateOrderInfo(OrderID, "Waiting for Billing");
 
             var Config =  ConfigurationServices.Instance.GetConfig();
@@ -412,7 +445,7 @@ namespace RMS_System.Controllers
             var tablename = OrderServices.Instance.GetTableNameFromOrderID(ID);
             model.Table = TableServices.Instance.GetTable(tablename);
             model.configuration = ConfigurationServices.Instance.GetConfig();
-            model.TableEntries = TableEntryServices.Instance.GetTableEntriesForBilling(model.Table.TableName);
+            model.TableEntries = TableEntryServices.Instance.GetTableEntriesForBilling(model.Table.TableName,ID);
             model.CGST = BillServices.Instance.GetCGST(model.OrderID);
             model.SGST = BillServices.Instance.GetSGST(model.OrderID);
             return View("ShowReceipt", model);
