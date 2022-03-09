@@ -2721,6 +2721,7 @@
     <Content Include="Views\Offline\Index.cshtml" />
     <Content Include="Views\Home\ShowReceipt.cshtml" />
     <Content Include="Views\Home\ChartPartial.cshtml" />
+    <Content Include="Views\Home\RevenueReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

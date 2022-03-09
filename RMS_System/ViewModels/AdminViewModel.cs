@@ -11,7 +11,9 @@ namespace RMS_System.ViewModels
     {
         public List<Order> Orders { get; set; }
 
-        public Double TotalRevenueInfoBox { get; set; }
+		public List<DateTime?> RevenueOrders { get; set; }
+
+		public Double TotalRevenueInfoBox { get; set; }
         public Double CashRevenueInfoBox { get; set; }
         public Double CardRevenueInfoBox { get; set; }
         public int NoOfSessions { get; set; }
@@ -19,8 +21,10 @@ namespace RMS_System.ViewModels
         public DateTime date { get; set; }
 
 		public List<DishWiseData> DishWiseData { get; set; }
+        public List<OrderWiseData> OrderWiseData { get; set; }
 
-	}
+
+    }
 
 	public class DishWiseData
 	{
@@ -28,6 +32,16 @@ namespace RMS_System.ViewModels
 		public int OrderCount { get; set; }
 		public double Revenue { get; set; }
 	}
+
+
+	public class OrderWiseData
+	{
+		public int OrderCount { get; set; }
+		public double CashRevenue { get; set; }
+		public double CardRevenue { get; set; }
+		public double TotalRevenue { get; set; }
+        public DateTime OrderDate { get; set; }
+    }
 
 
 

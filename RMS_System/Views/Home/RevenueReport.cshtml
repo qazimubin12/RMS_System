@@ -1,0 +1,218 @@
+﻿@model RMS_System.ViewModels.AdminViewModel
+@{
+    ViewBag.Title = "RevenueReport";
+   
+}
+
+
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+
+                @using (Html.BeginForm("RevenueReport", "Home", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-clock"></i></span>
+                            </div>
+                            <input name="date" type="text" class="form-control float-right" id="reservationtime">
+                        </div>
+                        <!-- /.input group -->
+
+
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary " type="submit">Get Report</button>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Revenue</span>
+                        <span class="info-box-number">
+                            @Model.TotalRevenueInfoBox
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Cash Revenue</span>
+                        <span class="info-box-number">@Model.CashRevenueInfoBox</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <div class="clearfix hidden-md-up"></div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Card Revenue</span>
+                        <span class="info-box-number">@Model.CardRevenueInfoBox</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Number of Sessions</span>
+                        <span class="info-box-number">@Model.NoOfSessions</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+
+        <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Daily Sales</h3>
+
+
+                    </div>
+                    <div class="card-body">
+                        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </section>
+            <!-- /.Left col -->
+            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            <!-- /.card-body-->
+            <!-- /.card -->
+            <!-- solid sales graph -->
+            <!-- /.card -->
+            <!-- Calendar -->
+            <!-- /.card -->
+        </div>
+
+        <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-12">
+                <div class="card-body">
+                    <div id="daily-orders" style="height: 300px;">
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <td>Date</td>
+                                <td>Number of Sessions</td>
+                                <td>Cash Revenue</td>
+                                <td>Card Revenue</td>
+                                <td>Total Revenue</td>
+                            </tr>
+
+                            @foreach (var item in Model.OrderWiseData)
+                            {
+                        <tr>
+                            <td>@item.OrderDate</td>
+                            <td>@item.OrderCount</td>
+                            <td>@item.CashRevenue</td>
+                            <td>@item.CardRevenue</td>
+                            <td>@item.TotalRevenue</td>
+                        </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</section>
+<script>
+
+    $('#reservationtime').daterangepicker({
+        timePickerIncrement: 30,
+        locale: {
+            format: 'MM/DD/YYYY'
+        }
+    })
+
+             var dataPoints = [];
+    var result=@Html.Raw(ViewBag.dataPoints);
+
+    for (var i = 0; i < result.length; i++) {
+            dataPoints.push({
+                x: new Date(result[i].x),
+                y: result[i].y
+            });
+        }
+
+    window.onload = function () {
+
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "Daily Sales Data"
+            },
+            axisY: {
+                title: "Amount",
+                titleFontSize: 24,
+                prefix: "₹",
+                crosshair: {
+                    enabled: true,
+                    valueFormatString: "$#,##0.##",
+                    snapToDataPoint: true
+                }
+            },
+            axisX: {
+                crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true,
+                    valueFormatString: "DD/MM/YYYY HH:MM TT",
+                },
+                 interval: 1,
+                intervalType: "day"
+            },
+            data: [{
+                type: "line",
+                yValueFormatString: "$#,##0.##",
+                xValueFormatString: "DD/MM/YYYY HH:MM TT",
+                dataPoints: dataPoints
+            }]
+        });
+        chart.render();
+
+
+
+
+    }
+
+
+
+
+</script>

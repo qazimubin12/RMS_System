@@ -139,6 +139,44 @@ namespace RMS_System.Services
             }
         }
 
+        [Obsolete]
+        public List<Order> GetOrdersReport(DateTime startdate, DateTime enddate)
+        {
+            DateTime date1 = DateTime.Parse(startdate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(enddate.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) >= date1 && EntityFunctions.TruncateTime(x.OrderDate) <= date2).ToList();
+            }
+        }
+
+
+        [Obsolete]
+        public List<DateTime?> GetOrdersReportDatesOnly(DateTime startdate, DateTime enddate)
+        {
+            DateTime date1 = DateTime.Parse(startdate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(enddate.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) >= date1 && EntityFunctions.TruncateTime(x.OrderDate) <= date2).Select(x=>EntityFunctions.TruncateTime(x.OrderDate)).Distinct().ToList();
+            }
+        }
+
+
+        [Obsolete]
+        public List<DateTime?> GetOrdersReportDatesOnly(DateTime date)
+        {
+            DateTime date1 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) == date1 ).Select(x => EntityFunctions.TruncateTime(x.OrderDate)).Distinct().ToList();
+            }
+        }
+
+
+
+
+
 
         [Obsolete]
         public List<Order> GetTop5Orders(DateTime date)
@@ -316,6 +354,86 @@ namespace RMS_System.Services
                 var entry = context.TableEntries.Find(ID);
                 context.TableEntries.Remove(entry);
                 context.SaveChanges();
+            }
+        }
+
+
+
+
+        [Obsolete]
+        public Double GetTotalRevenueOfGivenDateReport(DateTime startdate, DateTime enddate)
+        {
+            DateTime date1 = DateTime.Parse(startdate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(enddate.ToString("yyyy-MM-dd"));
+
+            using (var context = new RMContext())
+            {
+                Double Revenue = 0;
+
+                var data = context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) >= date1 && EntityFunctions.TruncateTime(x.OrderDate) <= date2).ToList();
+                foreach (var item in data)
+                {
+                    Revenue += item.GrandTotal;
+                }
+                return Revenue;
+            }
+        }
+
+
+        [Obsolete]
+        public int NoOfSessionRegardingGivenDateReport(DateTime startdate, DateTime enddate)
+        {
+
+            DateTime date1 = DateTime.Parse(startdate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(enddate.ToString("yyyy-MM-dd"));
+      
+            using (var context = new RMContext())
+            {
+
+                var data = context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) >= date1 && EntityFunctions.TruncateTime(x.OrderDate) <= date2).ToList();
+
+                return data.Count;
+            }
+        }
+
+
+
+        [Obsolete]
+        public Double GetCashRevenueOfGivenDateReport(DateTime startdate, DateTime enddate)
+        {
+            DateTime date1 = DateTime.Parse(startdate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(enddate.ToString("yyyy-MM-dd"));
+
+            using (var context = new RMContext())
+            {
+                Double Revenue = 0;
+
+                var data = context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) >= date1 && EntityFunctions.TruncateTime(x.OrderDate) <= date2 && x.PaidBy == "Cash").ToList();
+                foreach (var item in data)
+                {
+                    Revenue += item.GrandTotal;
+                }
+                return Revenue;
+            }
+        }
+
+        [Obsolete]
+        public Double GetCardRevenueOfGivenDateReport(DateTime startdate, DateTime enddate)
+        {
+
+            DateTime date1 = DateTime.Parse(startdate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(enddate.ToString("yyyy-MM-dd"));
+
+            using (var context = new RMContext())
+            {
+                Double Revenue = 0;
+
+                var data = context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) >= date1 && EntityFunctions.TruncateTime(x.OrderDate) <= date2 && x.PaidBy == "Card").ToList();
+                foreach (var item in data)
+                {
+                    Revenue += item.GrandTotal;
+                }
+                return Revenue;
             }
         }
     }

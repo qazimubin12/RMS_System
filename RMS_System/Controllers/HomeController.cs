@@ -177,6 +177,77 @@ namespace RMS_System.Controllers
         }
 
 
+        [HttpGet]
+        [Obsolete]
+        public ActionResult RevenueReport(AdminViewModel model)
+        {
+            model.Orders = OrderServices.Instance.GetOrders(DateTime.Now);
+            List<DataPoint> dataPoints = new List<DataPoint>();
+            model.TotalRevenueInfoBox = OrderServices.Instance.GetTotalRevenueOfGivenDate(DateTime.Now);
+            model.CashRevenueInfoBox = OrderServices.Instance.GetCashRevenueOfGivenDate(DateTime.Now);
+            model.CardRevenueInfoBox = OrderServices.Instance.GetCardRevenueOfGivenDate(DateTime.Now);
+            model.NoOfSessions = OrderServices.Instance.NoOfSessionRegardingGivenDate(DateTime.Now);
+            model.RevenueOrders = OrderServices.Instance.GetOrdersReportDatesOnly(DateTime.Now);
+            foreach (var item in model.Orders)
+            {
+                dataPoints.Add(new DataPoint(item.OrderDate, item.GrandTotal));
+            }
+            JsonSerializerSettings _jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+            ViewBag.dataPoints = JsonConvert.SerializeObject(dataPoints, _jsonSetting);
+
+            var list = new List<OrderWiseData>();
+
+            int ordercount = OrderServices.Instance.NoOfSessionRegardingGivenDate(DateTime.Now);
+            double cash = OrderServices.Instance.GetCashRevenueOfGivenDate(DateTime.Now);
+            double card = OrderServices.Instance.GetCardRevenueOfGivenDate(DateTime.Now);
+            double total = OrderServices.Instance.GetTotalRevenueOfGivenDate(DateTime.Now);
+            list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total, OrderDate = DateTime.Now });
+            model.OrderWiseData = list;
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [Obsolete]
+        public ActionResult RevenueReport(string date)
+        {
+            AdminViewModel model = new AdminViewModel();
+
+            DateTime myStartDate = DateTime.Now;
+            DateTime myEndDate = DateTime.Now;
+            string[] datedata = date.Split(' ');
+            string startDate = datedata[0];
+            string endDate = datedata[2];
+            myStartDate = DateTime.Parse(startDate);
+            myEndDate = DateTime.Parse(endDate);
+            model.Orders = OrderServices.Instance.GetOrdersReport(myStartDate, myEndDate);
+            model.RevenueOrders = OrderServices.Instance.GetOrdersReportDatesOnly(myStartDate, myEndDate);
+            model.TotalRevenueInfoBox = OrderServices.Instance.GetTotalRevenueOfGivenDateReport(myStartDate, myEndDate);
+            model.CashRevenueInfoBox = OrderServices.Instance.GetCashRevenueOfGivenDateReport(myStartDate, myEndDate);
+            model.CardRevenueInfoBox = OrderServices.Instance.GetCardRevenueOfGivenDateReport(myStartDate, myEndDate);
+            model.NoOfSessions = OrderServices.Instance.NoOfSessionRegardingGivenDateReport(myStartDate, myEndDate);
+            model.date = DateTime.Parse(startDate);
+            List<DataPoint> dataPoints = new List<DataPoint>();
+            foreach (var item in model.Orders)
+            {
+                dataPoints.Add(new DataPoint(item.OrderDate, item.GrandTotal));
+            }
+            var list = new List<OrderWiseData>();
+            foreach (var item in model.RevenueOrders)
+            {
+                int ordercount = OrderServices.Instance.NoOfSessionRegardingGivenDate(DateTime.Parse(item.ToString()));
+                double cash = OrderServices.Instance.GetCashRevenueOfGivenDate(DateTime.Parse(item.ToString()));
+                double card = OrderServices.Instance.GetCardRevenueOfGivenDate(DateTime.Parse(item.ToString()));
+                double total = OrderServices.Instance.GetTotalRevenueOfGivenDate(DateTime.Parse(item.ToString()));
+                list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total ,OrderDate = DateTime.Parse(item.ToString())});
+            }
+            JsonSerializerSettings _jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+            ViewBag.dataPoints = JsonConvert.SerializeObject(dataPoints, _jsonSetting);
+            model.OrderWiseData = list;
+            return View(model);
+        }
+
+
 
 
         [Obsolete]
