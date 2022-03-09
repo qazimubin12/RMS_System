@@ -109,24 +109,91 @@ namespace RMS_System.Controllers
             model.NoOfSessions = OrderServices.Instance.NoOfSessionRegardingGivenDate(date);
             model.date = date;
             List<DataPoint> dataPoints = new List<DataPoint>();
-            var Orders = OrderServices.Instance.GetOrders(date);
+            List<DataPoint2> dataPoint2 = new List<DataPoint2>();
+            List<DataPoint3> dataPoint3 = new List<DataPoint3>();
+            var Orders = OrderServices.Instance.GetTop5Orders(date);
+            string tempdata = "";
+            bool checkiteminlist = false;
+            List<string> tempdata2 = new List<string>();
             foreach (var item in Orders)
             {
                 dataPoints.Add(new DataPoint(item.OrderDate, item.GrandTotal));
+                var Count = OrderServices.Instance.GetWaiterNameWithNumberOfOrderTheyServed(date, item.WaiterName);
+                if (item.WaiterName == tempdata)
+                {
+                    continue;
+                }
+                else
+                {
+                    dataPoint2.Add(new DataPoint2(item.WaiterName, Count));
+                }
+                tempdata = item.WaiterName;
+            }
+            var TableEntries = TableEntryServices.Instance.GetTableEntries(date);
+            foreach (var item in TableEntries)
+            {
+                var Count = TableEntryServices.Instance.GetNoFoodServed(date, item.FoodItem);
+                foreach (var item2 in tempdata2)
+                {
+                    if (item2 == item.FoodItem)
+                    {
+                        checkiteminlist = true;
+                        break;
+                    }
+                    else
+                    {
+                        checkiteminlist = false;
+                    }
+                }
+                if (checkiteminlist == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    tempdata2.Add(item.FoodItem);
+                    dataPoint3.Add(new DataPoint3(item.FoodItem, Count));
+                }
             }
             JsonSerializerSettings _jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints, _jsonSetting);
+            ViewBag.DataPoints2 = JsonConvert.SerializeObject(dataPoint2, _jsonSetting);
+            ViewBag.DataPoints3 = JsonConvert.SerializeObject(dataPoint3, _jsonSetting);
+
+            var DishesName = TableEntryServices.Instance.GetTableEntriesDishWise(date);
+
+            var list = new List<DishWiseData>();
+            foreach (var item in DishesName)
+            {
+                int totalcount = TableEntryServices.Instance.GetNoFoodServed(date, item);
+                double MenuItemRate = MenuItemServices.Instance.GetMenuItemPrice(item);
+                double revenue = totalcount * MenuItemRate;
+                list.Add(new DishWiseData { ItemName = item, OrderCount = totalcount, Revenue = revenue });
+            }
+            model.DishWiseData = list;
+
             return View(model);
          
         }
 
-      
-      
+
+
 
         [Obsolete]
         public ActionResult AdminDashboard(AdminViewModel model)
         {
             model.Orders = OrderServices.Instance.GetOrders(DateTime.Now);
+           var DishesName = TableEntryServices.Instance.GetTableEntriesDishWise(DateTime.Now);
+            var list = new List<DishWiseData>();
+            foreach (var item in DishesName)
+            {
+                int totalcount = TableEntryServices.Instance.GetNoFoodServed(DateTime.Now,item);
+                double MenuItemRate = MenuItemServices.Instance.GetMenuItemPrice(item);
+                double revenue = totalcount * MenuItemRate;
+                list.Add(new DishWiseData { ItemName = item, OrderCount = totalcount, Revenue = revenue });
+            }
+
+            model.DishWiseData = list;
             return View(model);
         }
 

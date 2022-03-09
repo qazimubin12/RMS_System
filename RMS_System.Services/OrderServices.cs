@@ -139,8 +139,40 @@ namespace RMS_System.Services
             }
         }
 
-  
+
+        [Obsolete]
+        public List<Order> GetTop5Orders(DateTime date)
+        {
+            DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) == date2).Take(5).ToList();
+            }
+        }
+
+
+
+
+
+
+        [Obsolete]
+        public int GetWaiterNameWithNumberOfOrderTheyServed(DateTime date, string WaiterName)
+        {
+            DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                var result =  context.Orders.Where(x => EntityFunctions.TruncateTime(x.OrderDate) == date2 && x.WaiterName == WaiterName).Count();
+                return result;
+                
+            }
+        }
+
        
+
+
+
+
+
 
 
         public Order GetOrderByTable(string TableName)

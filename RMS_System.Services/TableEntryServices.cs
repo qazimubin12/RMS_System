@@ -3,6 +3,7 @@ using RMS_System.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,12 +36,60 @@ namespace RMS_System.Services
             }
         }
 
+        [Obsolete]
+        public int GetNoFoodServed(DateTime date, string ItemName)
+        {
+            DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                var result = context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) == date2 && x.FoodItem == ItemName).Count();
+                return result;
+
+            }
+        }
+
+        [Obsolete]
+        public IQueryable<TableEntry> GetNoFoodServed(DateTime date)
+        {
+            DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                var result = context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) == date2).Select(x => new { x.FoodItem, x.ProductTotal }).ToList();
+                return (IQueryable<TableEntry>)result;
+
+            }
+        }
+
+
+
+
+
 
         public List<TableEntry> GetTableEntries()
         {
             using (var context = new RMContext())
             {
                 return context.TableEntries.ToList();
+            }
+        }
+
+        [Obsolete]
+        public List<TableEntry> GetTableEntries(DateTime date)
+        {
+            DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                return context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) == date2).Take(5).ToList();
+            }
+        }
+
+        [Obsolete]
+        public List<string> GetTableEntriesDishWise(DateTime date)
+        {
+            DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                return context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) == date2).Select(x=>x.FoodItem).Distinct().ToList();
             }
         }
 
@@ -65,14 +114,7 @@ namespace RMS_System.Services
         }
 
 
-        //public List<TableEntry> GetTableEntriesForWaiter(string TableName)
-        //{
-        //    using (var context = new RMContext())
-        //    {
-        //        var list = (from c in context.TableEntries join o in context.Tables on c.TableName equals o.TableName where c.TableName == TableName where o.SessionStatus == "Active"  select c).ToList();
-        //        return list;
-        //    }
-        //}
+      
 
         public string GetTableNameFromEntryID(int ID)
         {

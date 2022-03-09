@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "AdminDashboard";
     var date = Convert.ToDateTime(Session["ProvidedDate"]);
-    if(date.ToString() == "1/1/0001 12:00:00 AM")
+    if (date.ToString() == "1/1/0001 12:00:00 AM")
     {
         date = DateTime.Now;
     }
@@ -34,6 +34,8 @@
     <!-- dropzonejs -->
     <link rel="stylesheet" href="~/Content/themedata/plugins/dropzone/min/dropzone.min.css">
     <!-- Theme style -->
+    <script src="~/Content/themedata/dist/js/adminlte.min.js"></script>
+
     <link rel="stylesheet" href="~/Content/themedata/dist/css/adminlte.min.css">
 
 </head>
@@ -51,12 +53,14 @@
                                 <td>
                                     <div class="form-group">
                                         <label>Date:</label>
-                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                            <input id="date" value="@date"  name="date" type="text" class="form-control datetimepicker-input" data-target="#reservationdate" />
-                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                            </div>
-                                        </div>
+                                        <input type="date" name="date" id="datepicker" class="form-control" />
+                                        <b>Date: <span id="datehere"></span></b>
+                                        @*<div class="input-group date" id="reservationdate" data-target-input="nearest" style="display:none">
+                                                <input id="date" value="@date" name="date" type="text" class="form-control datetimepicker-input" data-target="#reservationdate" />
+                                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>*@
                                     </div>
                                 </td>
                                 <td>
@@ -159,11 +163,13 @@
 
 
                         </div>
-                        <div class="card-body">
-                            <div id="waiter-performance" style="height: 300px;"></div>
-                        </div>
+
                         <!-- /.card-body-->
+                        <div class="card-body">
+                            <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+                        </div>
                     </div>
+                    
 
                     <!-- /.card -->
                     <!-- solid sales graph -->
@@ -180,7 +186,7 @@
                             </h3>
                         </div>
                         <div class="card-body">
-                            <div id="top5dishes" style="height: 300px;"></div>
+                            <div id="chartContainer3" style="height: 370px; width: 100%;"></div>
                         </div>
                     </div>
 
@@ -211,7 +217,7 @@
 
                         </div>
                         <div class="card-body">
-                            <div id="daily-orders" style="height: 300px;">
+                            <div class="table-responsive" id="daily-orders" style="height: 300px;">
                                 <table class="table table-bordered table-condensed">
                                     <tr>
                                         <td>Table</td>
@@ -223,6 +229,7 @@
 
                                     @foreach (var item in Model.Orders)
                                     {
+
                                         <tr>
                                             <td>@item.TableName</td>
                                             <td>@item.WaiterName</td>
@@ -238,7 +245,25 @@
                                                 <td></td>
                                             }
                                         </tr>
+
                                     }
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2">Cash Revenue</td>
+                                            <td colspan="2">@Model.CashRevenueInfoBox</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Card Revenue</td>
+                                            <td colspan="2">@Model.CardRevenueInfoBox</td>
+                                            <td><img src="~/Content/credit-card.png" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Total Revenue</td>
+                                            <td colspan="2">@Model.TotalRevenueInfoBox</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -264,11 +289,44 @@
                 <!-- /.card -->
                 <!-- Calendar -->
                 <!-- /.card -->
-                <section class="col-lg-6 connectedSortable">
-                    <table>
-                    </table>
+                <section class="col-lg-6">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-chart-bar"></i>
+                                Dish Wise Count
+                            </h3>
 
-                    <!-- /.card-body-->
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive" id="daily-orders" style="height: 300px;">
+                                <table class="table table-bordered table-condensed">
+                                    <tr>
+                                        <td>Dish</td>
+                                        <td>Number of Orders</td>
+                                        <td>Revenue</td>
+                                    </tr>
+
+                                    @foreach (var item in Model.DishWiseData)
+                                    {
+                                <tr>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.OrderCount</td>
+                                    <td>@item.Revenue</td>
+                                </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card-body-->
+                    </div>
+
+                    <!-- /.card -->
+                    <!-- solid sales graph -->
+                    <!-- /.card -->
+                    <!-- Calendar -->
+                    <!-- /.card -->
                 </section>
 
                 <!-- /.card-body-->
@@ -311,9 +369,25 @@
 <!-- dropzonejs -->
 <script src="~/Content/themedata/plugins/dropzone/min/dropzone.min.js"></script>
 <!-- AdminLTE App -->
-<script src="~/Content/themedata/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script type="text/javascript">
+
+    function formatDate(date) {
+    var today = new Date(date);
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+        today = dd + '/' + mm + '/' + yyyy;
+        return today;
+    }
+    $("#datepicker").on('change', function () {
+        $("#datehere").html(formatDate($(this).val()));
+    });
+
 
 
     var dataPoints = [];
@@ -323,6 +397,9 @@
             x: new Date(result[i].x),
             y: result[i].y
         });
+    }
+
+
 
     window.onload = function () {
 
@@ -355,32 +432,67 @@
                 dataPoints: dataPoints
             }]
         });
+        chart.render();
+
+        var chart2 = new CanvasJS.Chart("chartContainer2", {
+            animationEnabled: true,
+            theme: "light2",
+
+            axisY: {
+                title: "No of Orders",
+                interval: 1
+            },
+            data: [
+                {
+                    type: "column",
+                    dataPoints: @Html.Raw(ViewBag.DataPoints2),
+                }
+            ]
+        });
+        chart2.render();
 
 
+        var chart3 = new CanvasJS.Chart("chartContainer3", {
+            animationEnabled: true,
+            theme: "light2",
 
-            chart.render();
+            axisY: {
+                title: "No of Times Placed",
+                interval: 1
+            },
+            data: [
+                {
+                    type: "column",
+                    dataPoints: @Html.Raw(ViewBag.DataPoints3),
+                }
+            ]
+        });
+        chart3.render();
 
-        }
 
-            $('#reservationdate').datetimepicker({
-                
-            });
-       
-
-
-
-        //$.getJSON("/home/Json/", addData);
 
     }
 
 
 
+    $('#reservationdate').datetimepicker({
+
+    });
 
 
 
 
 
-   
+
+
+
+
+
+
+
+
+
+
 
 
 </script>

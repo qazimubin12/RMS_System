@@ -52,6 +52,14 @@ namespace RMS_System.Services
             }
         }
 
+        public Double GetMenuItemPrice(string ItemName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.MenuItems.Where(x => x.MenuName == ItemName).Select(x => x.Price).FirstOrDefault();
+            }
+        }
+
         public List<string> GetAllCategories()
         {
             using(var context = new RMContext())
