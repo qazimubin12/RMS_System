@@ -19,6 +19,7 @@ namespace RMS_System.ViewModels
         public int NoOfSessions { get; set; }
         public (string,string) ChartData { get; set; }
         public DateTime date { get; set; }
+		public string ProvidedDate { get; set; }
 
 		public List<DishWiseData> DishWiseData { get; set; }
         public List<OrderWiseData> OrderWiseData { get; set; }
