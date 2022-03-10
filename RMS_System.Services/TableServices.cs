@@ -147,6 +147,19 @@ namespace RMS_System.Services
             }
         }
 
+        public void UpdateTableInfoData(Table table, int OrderedItems)
+        {
+          
+            table.OrderItems = OrderedItems;
+           
+            using (var context = new RMContext())
+            {
+                context.Tables.Attach(table);
+                context.Entry(table).Property(x => x.OrderItems).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
         public void UpdateTableInfo(Table table, string Status, int OrderedItems, int ServedItem,  string SessionStatus, string ServedBy)
         {
             table.TableStatus = Status;

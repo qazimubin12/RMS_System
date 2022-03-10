@@ -289,6 +289,31 @@ namespace RMS_System.Services
             }
         }
 
+        public void UpdateOrderInfo(Order order, Double GrandTotal)
+        {
+
+            order.GrandTotal = GrandTotal;
+            using (var context = new RMContext())
+            {
+                context.Orders.Attach(order);
+                context.Entry(order).Property(x => x.GrandTotal).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+
+        public void UpdateOrderDeletion(Order order, int OrderedItems)
+        {
+
+            order.OrderedItems = OrderedItems;
+            using (var context = new RMContext())
+            {
+                context.Orders.Attach(order);
+                context.Entry(order).Property(x => x.OrderedItems).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
         public void UpdateOrderInfo(Order order, string PaymentStatus, string PaidBy)
         {
 
@@ -351,8 +376,8 @@ namespace RMS_System.Services
             using (var context = new RMContext())
             {
 
-                var entry = context.TableEntries.Find(ID);
-                context.TableEntries.Remove(entry);
+                var order = context.Orders.Find(ID);
+                context.Orders.Remove(order);
                 context.SaveChanges();
             }
         }

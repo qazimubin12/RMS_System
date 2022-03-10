@@ -122,41 +122,45 @@
         <div class="row">
             <!-- Left col -->
             <section class="col-lg-12">
-                <div class="card-header">
-                    <h3 class="card-title">Day Wise Revenue</h3>
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Day Wise Revenue</h3>
+
+                    </div>
                     @using (Html.BeginForm("Export", "Home", FormMethod.Post))
                     {
 
-                        <input hidden name="date" type="text" value="@Model.ProvidedDate"  />
-                        <button class="btn btn-outline-success" type="submit">EXPORT TO EXCEL</button>
+                        <input hidden name="date" type="text" value="@Model.ProvidedDate" />
+                        <button style="margin: 20px; margin-top: 5px;" class="btn btn-outline-success" type="submit">EXPORT TO EXCEL</button>
 
                     }
-                    </div>
 
-                <div class="card-body">
-                    <div id="daily-orders" style="height: 300px;">
-                        <table class="table table-bordered table-condensed">
-                            <tr>
-                                <td>Date</td>
-                                <td>Number of Sessions</td>
-                                <td>Cash Revenue</td>
-                                <td>Card Revenue</td>
-                                <td>Total Revenue</td>
-                            </tr>
-
-                            @foreach (var item in Model.OrderWiseData)
-                            {
+                    <div class="card-body">
+                        <div id="daily-orders" style="height: 100%;">
+                            <table class="table table-bordered table-condensed">
                                 <tr>
-                                    <td>@item.OrderDate</td>
-                                    <td>@item.OrderCount</td>
-                                    <td>@item.CashRevenue</td>
-                                    <td>@item.CardRevenue</td>
-                                    <td>@item.TotalRevenue</td>
+                                    <td>Date</td>
+                                    <td>Number of Sessions</td>
+                                    <td>Cash Revenue</td>
+                                    <td>Card Revenue</td>
+                                    <td>Total Revenue</td>
                                 </tr>
-                            }
-                        </table>
+
+                                @foreach (var item in Model.OrderWiseData)
+                                {
+                                    <tr>
+                                        <td>@item.OrderDate</td>
+                                        <td>@item.OrderCount</td>
+                                        <td>@item.CashRevenue</td>
+                                        <td>@item.CardRevenue</td>
+                                        <td>@item.TotalRevenue</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
                     </div>
                 </div>
+
             </section>
         </div>
 

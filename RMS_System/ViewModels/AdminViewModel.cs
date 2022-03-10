@@ -32,7 +32,10 @@ namespace RMS_System.ViewModels
 		public string ItemName { get; set; }
 		public int OrderCount { get; set; }
 		public double Revenue { get; set; }
-	}
+        public string StartDate { get; set; }
+		public string EndDate { get; set; }
+        public string Date { get; set; }
+    }
 
 
 	public class OrderWiseData
@@ -41,7 +44,7 @@ namespace RMS_System.ViewModels
 		public double CashRevenue { get; set; }
 		public double CardRevenue { get; set; }
 		public double TotalRevenue { get; set; }
-        public DateTime OrderDate { get; set; }
+        public string OrderDate { get; set; }
     }
 
 

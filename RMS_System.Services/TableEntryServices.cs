@@ -50,6 +50,20 @@ namespace RMS_System.Services
 
 
         [Obsolete]
+        public int GetNoFoodServedReport(DateTime startDate,DateTime endDate, string ItemName)
+        {
+            DateTime date1 = DateTime.Parse(startDate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(endDate.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                var result = context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) >= date1 && EntityFunctions.TruncateTime(x.OrderedTime) <= date2 && x.FoodItem == ItemName).Count();
+                return result;
+
+            }
+        }
+
+
+        [Obsolete]
         public int GetNoFoodServedForReport(DateTime date, string ItemName)
         {
             DateTime date2 = DateTime.Parse(date.ToString("yyyy-MM-dd"));
@@ -104,6 +118,18 @@ namespace RMS_System.Services
             using (var context = new RMContext())
             {
                 return context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) == date2).Select(x=>x.FoodItem).Distinct().ToList();
+            }
+        }
+
+
+        [Obsolete]
+        public List<string> GetTableEntriesDishWiseReport(DateTime startDate, DateTime endDate)
+        {
+            DateTime date1 = DateTime.Parse(startDate.ToString("yyyy-MM-dd"));
+            DateTime date2 = DateTime.Parse(endDate.ToString("yyyy-MM-dd"));
+            using (var context = new RMContext())
+            {
+                return context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) >= date1 && EntityFunctions.TruncateTime(x.OrderedTime) <= date2).Select(x => x.FoodItem).Distinct().ToList();
             }
         }
 

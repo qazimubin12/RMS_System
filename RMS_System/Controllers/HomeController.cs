@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
-using OfficeOpenXml;
 using RMS_System.Entities;
 using RMS_System.Services;
 using RMS_System.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace RMS_System.Controllers
 {
@@ -73,7 +75,7 @@ namespace RMS_System.Controllers
             string[] roles = System.Web.Security.Roles.GetRolesForUser(Convert.ToString(Session["UserName"]));
             if (roles.Length != 0)
             {
-                if (roles[0] == "Kitchen Staff")
+                if (roles[0] == "Kitchen Staff" || roles[0]=="Kitchen Master")
                 {
                     KitchenRole = true;
                 }
@@ -112,54 +114,79 @@ namespace RMS_System.Controllers
                 double cash = OrderServices.Instance.GetCashRevenueOfGivenDate(DateTime.Parse(item.ToString()));
                 double card = OrderServices.Instance.GetCardRevenueOfGivenDate(DateTime.Parse(item.ToString()));
                 double total = OrderServices.Instance.GetTotalRevenueOfGivenDate(DateTime.Parse(item.ToString()));
-                list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total, OrderDate = DateTime.Parse(item.ToString()) });
+                list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total, OrderDate = DateTime.Parse(item.ToString()).ToShortDateString() });
             }
             model.OrderWiseData = list;
 
+            var gv = new GridView();
+            gv.DataSource = list;
+            gv.DataBind();
 
-            // If you use EPPlus in a noncommercial context
-            // according to the Polyform Noncommercial license:
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            ExcelPackage pck = new ExcelPackage();
-            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Revenue Report");
-            var Config = ConfigurationServices.Instance.GetConfig();
-            ws.Cells["A1"].Value = Config.HotelName;
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=RevenueReport.xls");
+            Response.ContentType = "application/ms-excel";
 
-            ws.Cells["A4"].Value = "Date";
-            ws.Cells["B4"].Value = "Number of Sessions";
-            ws.Cells["C4"].Value = "Cash Revenue";
-            ws.Cells["D4"].Value = "Card Revenue";
-            ws.Cells["E4"].Value = "Total Revenue";
+            Response.Charset = "";
+            StringWriter objStringWriter = new StringWriter();
+            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
 
-            int rowStart = 4;
+            gv.RenderControl(objHtmlTextWriter);
 
-            foreach (var item in list)
-            {
-                if(item.CardRevenue.ToString() != "0")
-                {
-                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("pink")));
-                }
-                else if(item.CashRevenue.ToString() != "0")
-                {
-                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("yellow")));
-                }
-
-                ws.Cells[string.Format("A{0}", rowStart)].Value = item.OrderDate;
-                ws.Cells[string.Format("B{0}", rowStart)].Value = item.OrderCount;
-                ws.Cells[string.Format("C{0}", rowStart)].Value = item.CashRevenue;
-                ws.Cells[string.Format("D{0}", rowStart)].Value = item.CardRevenue;
-                ws.Cells[string.Format("E{0}", rowStart)].Value =  item.TotalRevenue;
-
-                rowStart++;
-            }
-            ws.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment: filename=" + "ExcelReport.xlsx");
-            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.Output.Write(objStringWriter.ToString());
+            Response.Flush();
             Response.End();
+
+
+
+        }
+
+
+        [Obsolete]
+        [HttpPost]
+        public void ExportDishWise(string date)
+        {
+            AdminViewModel model = new AdminViewModel();
+            DateTime myStartDate = DateTime.Now;
+            DateTime myEndDate = DateTime.Now;
+            string[] datedata = date.Split(' ');
+            string startDate = datedata[0];
+            string endDate = datedata[2];
+            myStartDate = DateTime.Parse(startDate);
+            myEndDate = DateTime.Parse(endDate);
+
+
+            var DishesName = TableEntryServices.Instance.GetTableEntriesDishWiseReport(myStartDate, myEndDate);
+            var list = new List<DishWiseData>();
+            foreach (var item in DishesName)
+            {
+                int totalcount = TableEntryServices.Instance.GetNoFoodServedReport(myStartDate, myEndDate, item);
+                double MenuItemRate = MenuItemServices.Instance.GetMenuItemPrice(item);
+                double revenue = totalcount * MenuItemRate;
+                list.Add(new DishWiseData { ItemName = item, OrderCount = totalcount, Revenue = revenue, Date= Convert.ToString(myStartDate.ToShortDateString() +"-"+ myEndDate.ToShortDateString()) });
+            }
+
+            var gv = new GridView();
+            gv.DataSource = list;
+            gv.DataBind();
+
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=DishWiseReport.xls");
+            Response.ContentType = "application/ms-excel";
+
+            Response.Charset = "";
+            StringWriter objStringWriter = new StringWriter();
+            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+
+            gv.RenderControl(objHtmlTextWriter);
+
+            Response.Output.Write(objStringWriter.ToString());
+            Response.Flush();
+            Response.End();
+
+
+
         }
 
         [HttpPost]
@@ -269,8 +296,58 @@ namespace RMS_System.Controllers
             double card = OrderServices.Instance.GetCardRevenueOfGivenDate(DateTime.Now);
             double total = OrderServices.Instance.GetTotalRevenueOfGivenDate(DateTime.Now);
             model.ProvidedDate = DateTime.Now.ToString();
-            list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total, OrderDate = DateTime.Now });
+            list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total, OrderDate = DateTime.Now.ToShortDateString() });
             model.OrderWiseData = list;
+            return View(model);
+        }
+
+
+        [HttpGet]
+        [Obsolete]
+        public ActionResult DishWiseReport(AdminViewModel model)    
+        {
+            model.Orders = OrderServices.Instance.GetOrders(DateTime.Now);
+            var DishesName = TableEntryServices.Instance.GetTableEntriesDishWise(DateTime.Now);
+            var list = new List<DishWiseData>();
+            foreach (var item in DishesName)
+            {
+                int totalcount = TableEntryServices.Instance.GetNoFoodServed(DateTime.Now, item);
+                double MenuItemRate = MenuItemServices.Instance.GetMenuItemPrice(item);
+                double revenue = totalcount * MenuItemRate;
+                list.Add(new DishWiseData { ItemName = item, OrderCount = totalcount, Revenue = revenue,StartDate = DateTime.Now.ToShortDateString(),EndDate = DateTime.Now.ToShortDateString() });
+            }
+
+            model.DishWiseData = list;
+            return View(model);
+        }
+
+        [HttpPost]
+        [Obsolete]
+        public ActionResult DishWiseReport(string date)
+        {
+            AdminViewModel model = new AdminViewModel();
+            DateTime myStartDate = DateTime.Now;
+            DateTime myEndDate = DateTime.Now;
+            string[] datedata = date.Split(' ');
+            string startDate = datedata[0];
+            string endDate = datedata[2];
+            myStartDate = DateTime.Parse(startDate);
+            myEndDate = DateTime.Parse(endDate);
+
+
+            var DishesName = TableEntryServices.Instance.GetTableEntriesDishWiseReport(myStartDate,myEndDate);
+            var list = new List<DishWiseData>();
+            foreach (var item in DishesName)
+            {
+                int totalcount = TableEntryServices.Instance.GetNoFoodServedReport(myStartDate,myEndDate, item);
+                double MenuItemRate = MenuItemServices.Instance.GetMenuItemPrice(item);
+                double revenue = totalcount * MenuItemRate;
+                list.Add(new DishWiseData { ItemName = item, OrderCount = totalcount, Revenue = revenue,StartDate =myStartDate.ToShortDateString(),EndDate = myEndDate.ToShortDateString() });
+            }
+
+
+            model.ProvidedDate = date;
+            model.DishWiseData = list;
             return View(model);
         }
 
@@ -307,7 +384,7 @@ namespace RMS_System.Controllers
                 double cash = OrderServices.Instance.GetCashRevenueOfGivenDate(DateTime.Parse(item.ToString()));
                 double card = OrderServices.Instance.GetCardRevenueOfGivenDate(DateTime.Parse(item.ToString()));
                 double total = OrderServices.Instance.GetTotalRevenueOfGivenDate(DateTime.Parse(item.ToString()));
-                list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total, OrderDate = DateTime.Parse(item.ToString()) });
+                list.Add(new OrderWiseData { OrderCount = ordercount, CashRevenue = cash, CardRevenue = card, TotalRevenue = total, OrderDate = DateTime.Parse(item.ToString()).ToShortDateString() });
             }
             JsonSerializerSettings _jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
             ViewBag.dataPoints = JsonConvert.SerializeObject(dataPoints, _jsonSetting);
@@ -316,14 +393,13 @@ namespace RMS_System.Controllers
         }
 
 
-
-
         [Obsolete]
         public ActionResult AdminDashboard(AdminViewModel model)
         {
             model.Orders = OrderServices.Instance.GetOrders(DateTime.Now);
             var DishesName = TableEntryServices.Instance.GetTableEntriesDishWise(DateTime.Now);
             var list = new List<DishWiseData>();
+            model.date = DateTime.Now;
             foreach (var item in DishesName)
             {
                 int totalcount = TableEntryServices.Instance.GetNoFoodServed(DateTime.Now, item);
@@ -346,17 +422,19 @@ namespace RMS_System.Controllers
             }
             else
             {
-
+                string[] roles = System.Web.Security.Roles.GetRolesForUser(Convert.ToString(Session["UserName"]));
                 model.Orders = OrderServices.Instance.GetOrdersInKitchen();
-
+                model.Role = roles[0];
                 return View(model);
             }
         }
 
         public ActionResult KitchenOrderDashboard(KitchenDashboardViewModel model)
         {
+            string[] roles = System.Web.Security.Roles.GetRolesForUser(Convert.ToString(Session["UserName"]));
             model.Orders = OrderServices.Instance.GetOrdersInKitchen();
             model.Entries = TableEntryServices.Instance.GetNonDispatchedTableEntries();
+            model.Role = roles[0];
             return PartialView(model);
         }
 
@@ -380,6 +458,7 @@ namespace RMS_System.Controllers
         {
             model.TableEntries = TableEntryServices.Instance.GetTableEntries();
             model.Order = OrderServices.Instance.GetOrders();
+            model.configuration = ConfigurationServices.Instance.GetConfig();
             return View(model);
         }
 
@@ -557,7 +636,69 @@ namespace RMS_System.Controllers
             return PartialView("KitchenOrderDashboard", model);
 
         }
+        
 
+
+        public ActionResult DeleteOrderEntries(int ID)
+        {
+            var Table = TableEntryServices.Instance.GetTableNameFromEntryID(ID);
+            var ActualCompleteTable = TableServices.Instance.GetTable(Table);
+
+            int FinalItemsOrdered = TableServices.Instance.GetItemsOrdered(Table);
+            int FinalItemsServed = TableServices.Instance.GetItemsServed(Table);
+            var ActualCompleteOrder = OrderServices.Instance.GetOrderOfOrderPlaced(Table);
+            int ItemsOrderedForOrder = OrderServices.Instance.GetItemsOrderedForOrder(Table, ActualCompleteOrder.ID);
+            int ItemsServedForOrder = OrderServices.Instance.GetItemsServedForOrder(Table, ActualCompleteOrder.ID);
+            ItemsOrderedForOrder--;
+            if (ItemsOrderedForOrder == 0 && ItemsServedForOrder == 0)
+            {
+                var BillListWRTToOrderID = BillServices.Instance.GetBillFor(ActualCompleteOrder.ID);
+                foreach (var item in BillListWRTToOrderID)
+                {
+                    BillServices.Instance.DeleteBill(item.ID);
+                }
+                OrderServices.Instance.DeleteOrder(ActualCompleteOrder.ID);
+                TableServices.Instance.UpdateTableInfo(ActualCompleteTable, "Fresh Table", 0, 0, "Non Active", null);
+
+            }
+            else
+            {
+                OrderServices.Instance.UpdateOrderDeletion(ActualCompleteOrder, ItemsOrderedForOrder);
+                FinalItemsOrdered--;
+                TableServices.Instance.UpdateTableInfoData(ActualCompleteTable, FinalItemsOrdered);
+
+                if (FinalItemsOrdered == FinalItemsServed)
+                {
+                    TableServices.Instance.UpdateTableInfo(ActualCompleteTable, "Order Delivered", "Active");
+                }
+
+                int FinalItemsOrderedForOrder = OrderServices.Instance.GetItemsOrderedForOrder(Table, ActualCompleteOrder.ID);
+                int FinalItemsServedForOrder = OrderServices.Instance.GetItemsServedForOrder(Table, ActualCompleteOrder.ID);
+
+                if (FinalItemsOrderedForOrder == FinalItemsServedForOrder)
+                {
+                    OrderServices.Instance.UpdateOrderInfo(ActualCompleteOrder, "Order Delivered");
+                }
+
+                Double grandtotal = 0;
+                var OrderedItems = TableEntryServices.Instance.GetTableEntries(ActualCompleteTable.TableName);
+                foreach (var item in OrderedItems)
+                {
+                    grandtotal += item.ProductTotal;
+                }
+
+                OrderServices.Instance.UpdateOrderInfo(ActualCompleteOrder,grandtotal);
+            }
+
+
+            TableEntryServices.Instance.DeleteTableEntry(ID);
+            KitchenDashboardViewModel model = new KitchenDashboardViewModel();
+            model.Orders = OrderServices.Instance.GetOrders();
+            model.Entries = TableEntryServices.Instance.GetNonDispatchedTableEntries();
+
+            return PartialView("KitchenOrderDashboard", model);
+
+        }
         public ActionResult UpdateDiscount(string TableName, Double Discount, Double DiscountPercentage)
         {
             if (Discount != 0)

@@ -100,5 +100,17 @@ namespace RMS_System.Services
             }
         }
 
+
+        public void DeleteBillWRTEntryID(int EntryID)
+        {
+            using (var context = new RMContext())
+            {
+
+                var Bills = context.Bills.Where(x => x.EntriesID == EntryID).FirstOrDefault();
+                context.Bills.Remove(Bills);
+                context.SaveChanges();
+            }
+        }
+
     }
 }

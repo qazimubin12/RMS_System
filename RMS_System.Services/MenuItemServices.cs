@@ -60,6 +60,8 @@ namespace RMS_System.Services
             }
         }
 
+
+       
         public List<string> GetAllCategories()
         {
             using(var context = new RMContext())

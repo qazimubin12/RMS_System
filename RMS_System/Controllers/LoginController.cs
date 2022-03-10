@@ -42,6 +42,10 @@ namespace RMS_System.Controllers
                 {
                     return RedirectToAction("WaiterApp", "Home");
                 }
+                else if(user.Role == "Kitchen Master")
+                {
+                    return RedirectToAction("KitchenDashboard", "Home");
+                }
             }
             else
             {

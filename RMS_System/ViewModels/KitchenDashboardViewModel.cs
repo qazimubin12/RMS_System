@@ -10,5 +10,6 @@ namespace RMS_System.ViewModels
     {
         public List<TableEntry> Entries { get; set; }
         public List<Order> Orders { get; set; }
+        public string Role { get; set; }
     }
 }

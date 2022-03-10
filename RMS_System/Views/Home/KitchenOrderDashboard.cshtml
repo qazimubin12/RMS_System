@@ -41,7 +41,13 @@
                                     <td>
                                         <button class="dispatchbtn btn btn-sm btn-warning" data-id="@item.ID">DISPATCH</button>
                                     </td>
+                                    @if (Model.Role == "Kitchen Master")
+                                    {
 
+                                        <td>
+                                            <button class="deletebtn btn btn-sm btn-danger" data-id="@item.ID">DELETE</button>
+                                        </td>
+                                    }
                                 </tr>
                             }
 
@@ -63,6 +69,27 @@
     $(".dispatchbtn").click(function () {
         $.ajax({
             url: '@Url.Action("DispatchEntry", "Home")',
+            type: 'GET',
+            data: {
+                ID: $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+
+                $("#ActionContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+
+    $(".deletebtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("DeleteOrderEntries", "Home")',
             type: 'GET',
             data: {
                 ID: $(this).attr("data-id")
