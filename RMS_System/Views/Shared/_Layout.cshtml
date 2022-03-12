@@ -10,8 +10,8 @@
 
     <script src="~/Content/themedata/dist/js/adminlte.min.js"></script>
     <link rel="stylesheet" href="~/Content/themedata/plugins/fontawesome-free/css/all.min.css">
-
-    <link rel="stylesheet" href="~/Content/themedata/plugins/fontawesome-free/css/all.min.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <!-- daterange picker -->
     <link rel="stylesheet" href="~/Content/themedata/plugins/daterangepicker/daterangepicker.css">
     <!-- iCheck for checkboxes and radio inputs -->
@@ -36,7 +36,6 @@
     <link rel="stylesheet" href="~/Content/themedata/plugins/ekko-lightbox/ekko-lightbox.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/Content/themedata/plugins/fontawesome-free/css/all.min.css">
 
     <link rel="stylesheet" href="~/Content/themedata/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/Content/themedata/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -48,7 +47,6 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/Content/themedata/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
@@ -167,7 +165,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                        with font-awesome or any other icon font library -->
+    with font-awesome or any other icon font library -->
                         @if (Session["Role"] == null)
                         {
                             Response.Redirect(Url.Action("Index", "Login"));
@@ -176,16 +174,23 @@
                         @if (Session["Role"].ToString() == "Admin")
                         {
                             <li class="nav-item">
+
                                 <a href="@Url.Action("AdminDashboard", "Home")" class="nav-link">
-                                    <i class="fa-regular fa-gauge"></i>
+                                    <i class="nav-icon fas fa-th" aria-hidden="true"></i>
+
                                     <p>
                                         Dashboard
                                     </p>
                                 </a>
                             </li>
 
+                            
+
+
+
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
+                                    <i class="nav-icon fa fa-user"></i>
                                     <p>
                                         Users
                                         <i class="fas fa-angle-left right"></i>
@@ -208,9 +213,12 @@
                                 </ul>
                             </li>
 
+
+
+
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-copy"></i>
+                                    <i class="nav-icon fas fa-hamburger"></i>
                                     <p>
                                         Menu
                                         <i class="fas fa-angle-left right"></i>
@@ -278,7 +286,7 @@
 
                             <li class="nav-item">
                                 <a href="@Url.Action("Index", "Configuration")" class="nav-link">
-                                    <i class="nav-icon fas fa-concierge-bell"></i>
+                                    <i class="nav-icon fas fa-wrench	"></i>
                                     <p>
                                         Settings
                                     </p>
@@ -288,7 +296,7 @@
 
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "Login")" class="nav-link">
-                                <i class="fas fa-sign-out-alt"></i>
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>
                                     Logout
                                 </p>

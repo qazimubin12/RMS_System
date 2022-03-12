@@ -491,12 +491,7 @@ namespace RMS_System.Controllers
             model.TableEntries = TableEntryServices.Instance.GetTableEntries();
             model.Order = OrderServices.Instance.GetOrders();
             model.configuration = ConfigurationServices.Instance.GetConfig();
-            Double totalamount = 0;
-            foreach (var item in model.TableEntries)
-            {
-                totalamount += item.ProductTotal;  
-            }
-            model.TotalAmount = totalamount;
+            
             return View(model);
         }
 
@@ -506,12 +501,7 @@ namespace RMS_System.Controllers
             model.TableEntries = TableEntryServices.Instance.GetTableEntries();
             model.Order = OrderServices.Instance.GetOrders();
             model.configuration = ConfigurationServices.Instance.GetConfig();
-            Double totalamount = 0;
-            foreach (var item in model.TableEntries)
-            {
-                totalamount += item.ProductTotal;
-            }
-            model.TotalAmount = totalamount;
+         
             return PartialView(model);
         }
 
@@ -808,9 +798,6 @@ namespace RMS_System.Controllers
 
             SGSTAmount = GrandTotal / 100;
             SGSTAmount *= SGST;
-
-
-
 
             var EntriesList = TableEntryServices.Instance.GetTableEntries(Table.TableName);
             var bill = new Bill();

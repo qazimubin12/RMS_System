@@ -20,10 +20,10 @@
                         {
                             <label> Search</label>
                             <input type="text" class="form-control" name="Search" id="Search" placeholder="Search Users">
-                            <button type="submit" id="btnSearch" class="btn btn-outline-info">Search</button>
+                            <button type="submit" id="btnSearch" class="btn btn-outline-info">Search</button> 
                             <button type="submit" id="btnViewAll" class="btn btn-outline-secondary">View All</button>
-
                         }
+                        <button  onclick="location.href='@Url.Action("Create","User")'" class="btn btn-outline-success">Create New</button>
                         <br />
                         <div class="table-responsive">
                             <table id="usersEditTable" class="table table-hover">
@@ -56,8 +56,10 @@
                                             <td>@item.UserName</td>
                                             <td>@item.Email</td>
                                             <td>@item.Role</td>
-                                            <td><button type="button" class="btnEdit btn btn-sm bg-gradient-primary" data-id="@item.ID">EDIT</button>
-                                            <button type="button" onclick="DeleteUser(@item.ID)" data-id="@item.ID" class="btnDelete btn btn-sm bg-gradient-danger">DELETE</button></td>
+                                            <td>
+                                                <button type="button" class="btnEdit btn btn-sm btn-outline-primary" data-id="@item.ID">EDIT</button>
+                                                <button type="button" onclick="DeleteUser(@item.ID)" data-id="@item.ID" class="btnDelete btn btn-sm btn-outline-danger">DELETE</button>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

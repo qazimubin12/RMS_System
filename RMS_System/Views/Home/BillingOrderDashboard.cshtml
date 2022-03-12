@@ -35,7 +35,7 @@
                         </td>
 
                         <td colspan="2">
-                            @Model.TotalAmount
+                            @item2.GrossTotal
 
                         </td>
 
@@ -44,7 +44,7 @@
                         @{ 
                             string tabless = item2.TableName;
                         }
-                        <td>Discount<input class="textvalue" onkeyup="myFunction(@Count,@Model.TotalAmount,@Count2, '@tabless')" id="@Count" style="width:30px" type="text" /></td>
+                        <td>Discount<input class="textvalue" onkeyup="myFunction(@Count,@item2.GrossTotal,@Count2, '@tabless')" id="@Count" style="width:30px" type="text" /></td>
                         @if (DiscountedAmount == 0)
                         {
 
@@ -55,7 +55,7 @@
                             <td>@DiscountedAmount</td>
                         }
                         @{
-                            DiscountedAmount = Model.TotalAmount / 100;
+                            DiscountedAmount = item2.GrossTotal / 100;
                             DiscountedAmount = DiscountedAmount * DiscountAmount;
                         }
 
@@ -63,7 +63,7 @@
                     <tr>
                         <td>SGST(@Model.configuration.SGST)</td>
                         @{
-                            SGSTAmount = Model.TotalAmount / 100;
+                            SGSTAmount = item2.GrossTotal / 100;
                             SGSTAmount *= Model.configuration.SGST;
                         }
                         <td colspan="2"><span id="SGST_@Count2">@SGSTAmount</span></td>
@@ -72,7 +72,7 @@
                     <tr>
                         <td>CGST(@Model.configuration.CGST)</td>
                         @{
-                            CGSTAmount = Model.TotalAmount / 100;
+                            CGSTAmount = item2.GrossTotal / 100;
                             CGSTAmount *= Model.configuration.CGST;
                         }
                         <td colspan="2"><span id="CGST_@Count2">@CGSTAmount</span></td>
@@ -87,11 +87,11 @@
                             @{
                                 if (DiscountedAmount == 0)
                                 {
-                                    TotalAmount = CGSTAmount + SGSTAmount + Model.TotalAmount;
+                                    TotalAmount = CGSTAmount + SGSTAmount + item2.GrossTotal;
                                 }
                                 else
                                 {
-                                    TotalAmount = CGSTAmount + SGSTAmount + Model.TotalAmount;
+                                    TotalAmount = CGSTAmount + SGSTAmount + item2.GrossTotal;
                                     //TotalAmount -= DiscountedAmount;
 
                                 }
@@ -104,9 +104,9 @@
 
                     <tr>
 
-                        <td><button type="button"  data-id="@item2.ID" class="btnPrint btn btn-sm btn-primary">PRINT</button></td>
-                        <td><button type="button" data-method="Cash" data-id="@item2.ID" class="btnCash btn btn-sm btn-primary">Paid by Cash</button></td>
-                        <td><button type="button" data-method="Card" data-id="@item2.ID" class="btnCard btn btn-sm btn-primary">Paid By Card</button></td>
+                        <td><button type="button"  data-id="@item2.ID" class="btnPrint btn btn-sm btn-outline-secondary">PRINT</button></td>
+                        <td><button type="button" data-method="Cash" data-id="@item2.ID" class="btnCash btn btn-sm btn-outline-primary">Paid by Cash</button></td>
+                        <td><button type="button" data-method="Card" data-id="@item2.ID" class="btnCard btn btn-sm btn-outline-primary">Paid By Card</button></td>
                     </tr>
 
 

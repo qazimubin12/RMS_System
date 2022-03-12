@@ -187,6 +187,10 @@
     <Compile Include="Migrations\202203120525479_tableforcancelledadded.designer.cs">
       <DependentUpon>202203120525479_tableforcancelledadded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202203121046084_grosstotaladded.cs" />
+    <Compile Include="Migrations\202203121046084_grosstotaladded.designer.cs">
+      <DependentUpon>202203121046084_grosstotaladded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RMContext.cs" />
@@ -303,6 +307,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202203120525479_tableforcancelledadded.resx">
       <DependentUpon>202203120525479_tableforcancelledadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203121046084_grosstotaladded.resx">
+      <DependentUpon>202203121046084_grosstotaladded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,8 +14,6 @@
             <div class="scroll2 table-responsive col-sm-4">
                 <h5>@item2.WaiterName - @item2.TableName </h5>
                 <table class="table-hover table-condensed col-md-12">
-
-
                     <tbody>
                         @foreach (var item in Model.Entries)
                         {
@@ -39,13 +37,13 @@
                                         (@item.Quantity) @item.FoodItem
                                     </td>
                                     <td>
-                                        <button class="dispatchbtn btn btn-sm btn-warning" data-id="@item.ID">DISPATCH</button>
+                                        <button class="dispatchbtn btn btn-sm btn-outline-warning" data-id="@item.ID">DISPATCH</button>
                                     </td>
                                     @if (Model.Role == "Kitchen Master")
                                     {
 
                                         <td>
-                                            <button class="deletebtn btn btn-sm btn-danger" data-id="@item.ID">DELETE</button>
+                                            <button class="deletebtn btn btn-sm btn-outline-danger" data-id="@item.ID">DELETE</button>
                                         </td>
                                     }
                                 </tr>

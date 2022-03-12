@@ -10,21 +10,22 @@
 
                 @using (Html.BeginForm("DishWiseReport", "Home", FormMethod.Post))
                 {
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="far fa-clock"></i></span>
-                            </div>
-                            <input name="date" type="text" value="@Model.ProvidedDate" class="form-control float-right" id="reservationtime">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-clock"></i></span>
                         </div>
-                        <!-- /.input group -->
-
-
-                        <div class="col-md-3">
-                            <button class="btn btn-outline-primary " type="submit">Get Report</button>
-
-                        </div>
+                        <input name="date" type="text" value="@Model.ProvidedDate" class="form-control float-right" id="reservationtime">
                     </div>
+                    <!-- /.input group -->
+                    <hr />
+
+
+                    <div class="col-md-3">
+                        <button class="btn btn-outline-primary " type="submit">Get Report</button>
+
+                    </div>
+                </div>
                 }
 
             </div>
@@ -41,7 +42,7 @@
                     {
 
                         <input hidden name="date" type="text" value="@Model.ProvidedDate" />
-                        <button  style="margin: 20px; margin-top: 5px;" class="btn btn-outline-success" type="submit">EXPORT TO EXCEL</button>
+                        <button style="margin: 20px; margin-top: 5px;" class="btn btn-outline-success" type="submit"><i class="fas fa-file-export"></i>EXPORT TO EXCEL</button>
 
                     }
 

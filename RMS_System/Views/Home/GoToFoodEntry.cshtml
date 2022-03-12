@@ -1,4 +1,4 @@
-﻿@model RMS_System.ViewModels.TableEntryForFoodViewModel
+﻿    @model RMS_System.ViewModels.TableEntryForFoodViewModel
 @{
     ViewBag.Title = "GoToFoodEntry";
     var PlaceholderURL = "/Content/themedata/dist/img/placeholder.png";
@@ -20,13 +20,13 @@
                         <td>
                             @using (Html.BeginForm("WaiterApp", "Home", FormMethod.Get))
                             {
-                                <button type="submit" class="btn btn-dark">BACK TO TABLES</button>
+                                <button type="submit" class="btn btn-outline-dark">BACK TO TABLES</button>
                             }
 
                             
                         </td>
                         <td>
-                            <button onclick="LoadCart()" type="button" class="btn btn-info">LOAD CART</button>
+                            <button onclick="LoadCart()" type="button" class="btn btn-outline-info">LOAD CART</button>
                         </td>
 
                 </table>
@@ -42,10 +42,10 @@
                             {
                                 foreach (var item in Model.MenuItmsCategories)
                                 {
-                                    <td class="col-sm-1"><button name="Category" type="submit" value="@item" class="categoryBtn btn btn-info">@item </button></td>
+                                    <td class="col-sm-1"><button name="Category" type="submit" value="@item" class="categoryBtn btn btn-outline-info">@item </button></td>
                                 }
                                 <td>
-                                    <button type="submit" class="categoryBtn btn btn-info">VIEW ALL </button>
+                                    <button type="submit" class="categoryBtn btn btn-outline-secondary">VIEW ALL </button>
                                 </td>
                             }
                         </tr>
@@ -81,21 +81,21 @@
                                     <table class="table table-responsive">
                                         <tr>
                                             <td style="padding:0.3rem">
-                                                <button name="minusqty" value="-" onclick="subtractQty(@item.ID)"  type="button" style="float:left" class="btn btn-sm btn-primary">-</button>
+                                                <button name="minusqty" value="-" onclick="subtractQty(@item.ID)"  type="button" style="float:left" class="btn btn-sm btn-outline-primary">-</button>
                                             </td>
                                             <td style="padding:0.3rem">
                                                 <input class="quantityfield" name="quantityfield" data-id="@item.ID" type="text" style="width:25px" value="0" id="@item.ID" />
                                             </td>
                                             <td style="padding:0.3rem">
 
-                                                <button name="addqty" type="button" style="float:left" onclick="AddQty(@item.ID)" class="btn btn-sm btn-primary btn-rounded" value="+" >+</button>
+                                                <button name="addqty" type="button" style="float:left" onclick="AddQty(@item.ID)" class="btn btn-sm btn-outline-primary btn-rounded" value="+" >+</button>
 
                                             </td>
                                         </tr>
                                         
                                     </table>
 
-                                        <button type="button" data-id="@item.ID" class="btnOrder  btn btn-sm btn-block btn-danger">ORDER</button>
+                                        <button type="button" data-id="@item.ID" class="btnOrder  btn btn-sm btn-block btn-outline-danger">ORDER</button>
                                     
                                 </div>
                                 </div>
