@@ -3,12 +3,14 @@
     ViewBag.Title = "Print Receipt";
     Layout = null;
     float ProducTotls = 0;
+    var imageURL = !string.IsNullOrEmpty(Model.configuration.ImageURL) ? Model.configuration.ImageURL : "/Content/themedata/dist/img/placeholder.png";
+
 }
 
 <body onload="yourFunction()">
     <div style="width: 400px; min-height: 300px; border: 0px solid;">
         <div style="text-align: center;">
-            <img src="@Url.Content(Model.configuration.ImageURL)" width="220">
+            <img src="@imageURL" width="220">
         </div>
         <div style="text-align: center; margin-top: -26px;">
             <h1>@Model.configuration.HotelName</h1>
@@ -156,6 +158,7 @@
 <script>
    
     function yourFunction() {
+       
         window.print();
     }
 </script>

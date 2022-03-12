@@ -13,6 +13,7 @@ namespace RMS_System.ViewModels
         public Configuration configuration { get; set; }
         public Double SGST { get; set; }
         public Double CGST { get; set; }
+        public Double TotalAmount { get; set; }
     }
 
 
@@ -26,5 +27,6 @@ namespace RMS_System.ViewModels
         public Table Table { get; set; }
         public Double SGST { get; set; }
         public Double CGST { get; set; }
+        public Double TotalAmount { get; set; }
     }
 }

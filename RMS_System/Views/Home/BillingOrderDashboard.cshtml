@@ -35,7 +35,7 @@
                         </td>
 
                         <td colspan="2">
-                            @item2.GrandTotal
+                            @Model.TotalAmount
 
                         </td>
 
@@ -44,7 +44,7 @@
                         @{ 
                             string tabless = item2.TableName;
                         }
-                        <td>Discount<input class="textvalue" onkeyup="myFunction(@Count,@item2.GrandTotal,@Count2, '@tabless')" id="@Count" style="width:30px" type="text" /></td>
+                        <td>Discount<input class="textvalue" onkeyup="myFunction(@Count,@Model.TotalAmount,@Count2, '@tabless')" id="@Count" style="width:30px" type="text" /></td>
                         @if (DiscountedAmount == 0)
                         {
 
@@ -55,7 +55,7 @@
                             <td>@DiscountedAmount</td>
                         }
                         @{
-                            DiscountedAmount = item2.GrandTotal / 100;
+                            DiscountedAmount = Model.TotalAmount / 100;
                             DiscountedAmount = DiscountedAmount * DiscountAmount;
                         }
 
@@ -63,19 +63,19 @@
                     <tr>
                         <td>SGST(@Model.configuration.SGST)</td>
                         @{
-                            SGSTAmount = item2.GrandTotal / 100;
+                            SGSTAmount = Model.TotalAmount / 100;
                             SGSTAmount *= Model.configuration.SGST;
                         }
-                        <td colspan="2">@SGSTAmount</td>
+                        <td colspan="2"><span id="SGST_@Count2">@SGSTAmount</span></td>
                     </tr>
 
                     <tr>
                         <td>CGST(@Model.configuration.CGST)</td>
                         @{
-                            CGSTAmount = item2.GrandTotal / 100;
+                            CGSTAmount = Model.TotalAmount / 100;
                             CGSTAmount *= Model.configuration.CGST;
                         }
-                        <td colspan="2">@CGSTAmount</td>
+                        <td colspan="2"><span id="CGST_@Count2">@CGSTAmount</span></td>
                     </tr>
 
 
@@ -87,16 +87,16 @@
                             @{
                                 if (DiscountedAmount == 0)
                                 {
-                                    TotalAmount = CGSTAmount + SGSTAmount + item2.GrandTotal;
+                                    TotalAmount = CGSTAmount + SGSTAmount + Model.TotalAmount;
                                 }
                                 else
                                 {
-                                    TotalAmount = CGSTAmount + SGSTAmount + item2.GrandTotal;
+                                    TotalAmount = CGSTAmount + SGSTAmount + Model.TotalAmount;
                                     //TotalAmount -= DiscountedAmount;
 
                                 }
                             }
-                            @TotalAmount
+                            <span id="FinalTotalAmount_@Count2">@TotalAmount</span>
                         </td>
 
                     </tr>
@@ -133,8 +133,11 @@
 
     function myFunction(val,total,count,tablename) {
         var asbc = document.getElementById(val).value;
+        var cgst = parseFloat($('#CGST_' + count + '').html());
+        var sgst = parseFloat($('#SGST_' + count + '').html());
         var dec = (total / 100).toFixed(2);
         var mult = asbc * dec;
+        var gdtotal = total - mult + cgst + sgst;
         $('#discountdata_' + count + '').html(mult);
 
          $.ajax({
@@ -147,7 +150,9 @@
 
 
             }
-        })
+         })
+        $('#FinalTotalAmount_' + count + '').html(gdtotal);
+
 
     }
 
