@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿    using Newtonsoft.Json;
 using RMS_System.Entities;
 using RMS_System.Services;
 using RMS_System.ViewModels;
@@ -304,7 +304,7 @@ namespace RMS_System.Controllers
 
         [HttpGet]
         [Obsolete]
-        public ActionResult DishWiseReport(AdminViewModel model)    
+        public ActionResult DishWiseReport(AdminViewModel model)
         {
             model.Orders = OrderServices.Instance.GetOrders(DateTime.Now);
             var DishesName = TableEntryServices.Instance.GetTableEntriesDishWise(DateTime.Now);
@@ -320,6 +320,38 @@ namespace RMS_System.Controllers
             model.DishWiseData = list;
             return View(model);
         }
+
+
+
+
+        [HttpGet]
+        [Obsolete]
+        public ActionResult CancelledOrders(AdminViewModel model)
+        {
+            model.CancelledOrders = CancelledOrderServices.Instance.GetCancelledOrders(DateTime.Now);
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [Obsolete]
+        public ActionResult CancelledOrders(string date)
+        {
+            AdminViewModel model = new AdminViewModel();
+            DateTime myStartDate = DateTime.Now;
+            DateTime myEndDate = DateTime.Now;
+            string[] datedata = date.Split(' ');
+            string startDate = datedata[0];
+            string endDate = datedata[2];
+            myStartDate = DateTime.Parse(startDate);
+            myEndDate = DateTime.Parse(endDate);
+            model.ProvidedDate = date;
+            model.CancelledOrders = CancelledOrderServices.Instance.GetCancelledOrdersReport(myStartDate,myEndDate);
+            return View(model);
+        }
+
+
+
 
         [HttpPost]
         [Obsolete]
@@ -690,7 +722,12 @@ namespace RMS_System.Controllers
                 OrderServices.Instance.UpdateOrderInfo(ActualCompleteOrder,grandtotal);
             }
 
-
+            var cancelledOrder = new CancelledOrders();
+            cancelledOrder.CancelledDate = DateTime.Now;
+            cancelledOrder.ItemName = TableEntryServices.Instance.GetItemNameFromEntryID(ID); 
+            cancelledOrder.TableName = Table;
+            cancelledOrder.WaiterName = TableServices.Instance.GetTableServedBy(Table);
+            CancelledOrderServices.Instance.SaveOrder(cancelledOrder);
             TableEntryServices.Instance.DeleteTableEntry(ID);
             KitchenDashboardViewModel model = new KitchenDashboardViewModel();
             model.Orders = OrderServices.Instance.GetOrders();

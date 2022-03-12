@@ -2749,6 +2749,7 @@
     <Content Include="Views\Home\ShowReceipt.cshtml" />
     <Content Include="Views\Home\RevenueReport.cshtml" />
     <Content Include="Views\Home\DishWiseReport.cshtml" />
+    <Content Include="Views\Home\CancelledOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

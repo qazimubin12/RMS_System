@@ -23,6 +23,7 @@ namespace RMS_System.ViewModels
 
 		public List<DishWiseData> DishWiseData { get; set; }
         public List<OrderWiseData> OrderWiseData { get; set; }
+        public List<CancelledOrders> CancelledOrders { get; set; }
 
 
     }
@@ -46,6 +47,9 @@ namespace RMS_System.ViewModels
 		public double TotalRevenue { get; set; }
         public string OrderDate { get; set; }
     }
+
+
+	
 
 
 

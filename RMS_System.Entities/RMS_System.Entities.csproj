@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Bill.cs" />
+    <Compile Include="CancelledOrders.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Order.cs" />

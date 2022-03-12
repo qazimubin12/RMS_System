@@ -175,6 +175,18 @@
     <Compile Include="Migrations\202203050544185_billingdoneornot.designer.cs">
       <DependentUpon>202203050544185_billingdoneornot.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202203120504584_cancelstatus.cs" />
+    <Compile Include="Migrations\202203120504584_cancelstatus.designer.cs">
+      <DependentUpon>202203120504584_cancelstatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203120524112_separatecancelled.cs" />
+    <Compile Include="Migrations\202203120524112_separatecancelled.designer.cs">
+      <DependentUpon>202203120524112_separatecancelled.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203120525479_tableforcancelledadded.cs" />
+    <Compile Include="Migrations\202203120525479_tableforcancelledadded.designer.cs">
+      <DependentUpon>202203120525479_tableforcancelledadded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RMContext.cs" />
@@ -282,6 +294,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202203050544185_billingdoneornot.resx">
       <DependentUpon>202203050544185_billingdoneornot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203120504584_cancelstatus.resx">
+      <DependentUpon>202203120504584_cancelstatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203120524112_separatecancelled.resx">
+      <DependentUpon>202203120524112_separatecancelled.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203120525479_tableforcancelledadded.resx">
+      <DependentUpon>202203120525479_tableforcancelledadded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

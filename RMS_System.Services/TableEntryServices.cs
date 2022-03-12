@@ -122,6 +122,18 @@ namespace RMS_System.Services
         }
 
 
+        public string GetItemNameFromEntryID(int ID)
+        {
+            using (var context = new RMContext())
+            {
+                return context.TableEntries.Where(x =>x.ID == ID).Select(x => x.FoodItem).FirstOrDefault();
+            }
+        }
+
+
+
+
+
         [Obsolete]
         public List<string> GetTableEntriesDishWiseReport(DateTime startDate, DateTime endDate)
         {
@@ -132,6 +144,8 @@ namespace RMS_System.Services
                 return context.TableEntries.Where(x => EntityFunctions.TruncateTime(x.OrderedTime) >= date1 && EntityFunctions.TruncateTime(x.OrderedTime) <= date2).Select(x => x.FoodItem).Distinct().ToList();
             }
         }
+
+
 
         [Obsolete]
         public List<string> GetTableEntriesDishWiseForReport(DateTime startDate, DateTime endDate)

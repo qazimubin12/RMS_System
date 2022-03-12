@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AdminServices.cs" />
     <Compile Include="BillServices.cs" />
+    <Compile Include="CancelledOrderServices.cs" />
     <Compile Include="ConfigurationServices.cs" />
     <Compile Include="KitchenServices.cs" />
     <Compile Include="MenuItemServices.cs" />

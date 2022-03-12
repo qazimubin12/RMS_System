@@ -34,6 +34,14 @@ namespace RMS_System.Services
             }
         }
 
+        public string GetTableServedBy(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Tables.Where(x => x.TableName == TableName).Select(x => x.ServedBy).FirstOrDefault();
+            }
+        }
+
         public Table GetTable(string Name)
         {
             using (var context = new RMContext())

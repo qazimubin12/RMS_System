@@ -49,6 +49,9 @@ namespace RMS_System.Controllers
             }
             else
             {
+
+            }
+            {
                 string msg = "Invalid Password or UserName";
                 TempData["ErrorMessage"] = msg;
             }
