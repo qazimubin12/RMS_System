@@ -619,6 +619,7 @@ namespace RMS_System.Controllers
             order.ItemsServed = 0;
             order.OrderDate = DateTime.Now;
             order.PaymentStatus = "Order Placed";
+            order.GrossTotal = grandtotal;
             OrderServices.Instance.SaveOrder(order);
 
             return PartialView("TableFoodEntry", model);
