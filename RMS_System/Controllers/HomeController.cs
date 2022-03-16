@@ -321,6 +321,8 @@ namespace RMS_System.Controllers
             return View(model);
         }
 
+   
+
 
 
 
@@ -349,9 +351,6 @@ namespace RMS_System.Controllers
             model.CancelledOrders = CancelledOrderServices.Instance.GetCancelledOrdersReport(myStartDate,myEndDate);
             return View(model);
         }
-
-
-
 
         [HttpPost]
         [Obsolete]
@@ -520,6 +519,7 @@ namespace RMS_System.Controllers
 
                 TableEntryForFoodViewModel model = new TableEntryForFoodViewModel();
                 model.SelectedTableName = TableServices.Instance.GetTable(ID);
+                var SomeInfoForTable = TableServices.Instance.GetTable(ID);
                 if (model.SelectedTableName.TableStatus == "Waiting for Billing")
                 {
                     return RedirectToAction("WaiterApp", "Home");
@@ -527,17 +527,26 @@ namespace RMS_System.Controllers
                 Session["Table"] = model.SelectedTableName.ID;
                 Session["TableName"] = model.SelectedTableName.TableName;
                 model.WaiterName = UsersService.Instance.GetUserName(Session["UserName"].ToString());
+                if (SomeInfoForTable.ServedBy != null)
+                {
+                    if (SomeInfoForTable.ServedBy != model.WaiterName.UserName)
+                    {
+                        return RedirectToAction("WaiterApp", "Home");
+
+                    }
+                }
                 model.MenuItmsCategories = MenuItemServices.Instance.GetAllCategories();
-                model.MenuItems = MenuItemServices.Instance.GetMenuItems(null, Category);
-                model.OrderedQuantity = 0;
                 if (Category == null)
                 {
-                    return View("GoToFoodEntry", model);
+                    model.MenuItems = MenuItemServices.Instance.GetMenuItems(null);
                 }
                 else
                 {
-                    return View("GoToFoodEntry", model);
+                    model.MenuItems = MenuItemServices.Instance.GetMenuItems(null, Category);
                 }
+                model.OrderedQuantity = 0;
+
+                return View(model);
             }
 
         }
@@ -549,7 +558,18 @@ namespace RMS_System.Controllers
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
             model.SelectedTableName = int.Parse(Session["Table"].ToString());
-            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(Session["TableName"].ToString());
+           
+            var Table = TableServices.Instance.GetTable(model.SelectedTableName);
+            model.Table = Table;
+            if(Table.OrderItems == Table.ItemsServed)
+            {
+                model.OrderSatisfied = true;
+            }
+            else
+            {
+                model.OrderSatisfied = false;
+            }
             return PartialView("TableFoodEntry", model);
         }
 
@@ -570,10 +590,18 @@ namespace RMS_System.Controllers
             FoodEntryViewModel model = new FoodEntryViewModel();
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
-            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
-
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(Session["TableName"].ToString());
             model.SelectedTableName = int.Parse(Session["Table"].ToString());
-
+            var Table = TableServices.Instance.GetTable(model.SelectedTableName);
+            model.Table = Table;
+            if (Table.OrderItems == Table.ItemsServed)
+            {
+                model.OrderSatisfied = true;
+            }
+            else
+            {
+                model.OrderSatisfied = false;
+            }
 
             return PartialView("TableFoodEntry", model);
         }
@@ -589,9 +617,58 @@ namespace RMS_System.Controllers
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.SelectedTableName = int.Parse(Session["Table"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
-            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
-
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(Session["TableName"].ToString());
+            var Table = TableServices.Instance.GetTable(model.SelectedTableName);
+            model.Table = Table;
+            if (Table.OrderItems == Table.ItemsServed)
+            {
+                model.OrderSatisfied = true;
+            }
+            else
+            {
+                model.OrderSatisfied = false;
+            }
             return PartialView("TableFoodEntry", model);
+        }
+
+        public ActionResult UpdateOrder(int ID)
+        {
+            Double grandtotal = 0;
+            var OrderedItems = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
+            foreach (var item in OrderedItems)
+            {
+                if (item.FoodDispatchedStatus == null)
+                {
+                    TableEntryServices.Instance.UpdateTableEntryStatus(item, "Not Yet");
+                }
+                grandtotal += item.ProductTotal;
+            }
+
+
+
+            TableServices.Instance.UpdateTableInfoForUpdateOrder(ID, "Order Placed", OrderedItems.Count, "Active", Session["UserName"].ToString());
+            FoodEntryViewModel model = new FoodEntryViewModel();
+            var Table2 = TableServices.Instance.GetTable(Session["TableName"].ToString());
+            model.Table = Table2;
+            if (Table2.ItemsServed == Table2.OrderItems)
+            {
+                model.OrderSatisfied = true;
+            }
+            else
+            {
+                model.OrderSatisfied = false;
+            }
+
+            model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
+            model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(Session["TableName"].ToString());
+            var Table = TableServices.Instance.GetTable(ID);
+
+
+            var CompleteOrder = OrderServices.Instance.GetOrderForUpdation(Session["TableName"].ToString());
+            OrderServices.Instance.UpdateOrderInfo(CompleteOrder, grandtotal, OrderedItems.Count, grandtotal,"Order Placed");
+            return PartialView("TableFoodEntry", model);
+
         }
 
 
@@ -604,12 +681,24 @@ namespace RMS_System.Controllers
                 TableEntryServices.Instance.UpdateTableEntryStatus(item, "Not Yet");
                 grandtotal += item.ProductTotal;
             }
+
+
+
             TableServices.Instance.UpdateTableInfo(ID, "Order Placed", OrderedItems.Count, "Active", Session["UserName"].ToString());
             FoodEntryViewModel model = new FoodEntryViewModel();
+            var Table2 = TableServices.Instance.GetTable(Session["TableName"].ToString());
+            model.Table = Table2;
+            if (Table2.ItemsServed == Table2.OrderItems)
+            {
+                model.OrderSatisfied = true;
+            }
+            else
+            {
+                model.OrderSatisfied = false;
+            }
             model.Entries = TableEntryServices.Instance.GetTableEntries(Session["TableName"].ToString());
             model.TableStatus = TableServices.Instance.GetTableStatus(int.Parse(Session["Table"].ToString()));
-            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(model.SelectedTableName);
-
+            model.SessionStatus = TableServices.Instance.GetTableSessionStatus(Session["TableName"].ToString());
 
             var order = new Order();
             order.TableName = Session["TableName"].ToString();
@@ -621,7 +710,6 @@ namespace RMS_System.Controllers
             order.PaymentStatus = "Order Placed";
             order.GrossTotal = grandtotal;
             OrderServices.Instance.SaveOrder(order);
-
             return PartialView("TableFoodEntry", model);
 
 
@@ -641,7 +729,7 @@ namespace RMS_System.Controllers
 
             int ItemsServed = TableServices.Instance.GetItemsServed(Table);
             ItemsServed++;
-            TableServices.Instance.UpdateTableInfo(ActualCompleteTable, ItemsServed);
+                TableServices.Instance.UpdateTableInfo(ActualCompleteTable, ItemsServed);
 
             int FinalItemsServed = TableServices.Instance.GetItemsServed(Table);
             int FinalItemsOrdered = TableServices.Instance.GetItemsOrdered(Table);
@@ -832,6 +920,7 @@ namespace RMS_System.Controllers
             model.TableEntries = TableEntryServices.Instance.GetTableEntriesForBilling(model.Table.TableName, ID);
             model.CGST = BillServices.Instance.GetCGST(model.OrderID);
             model.SGST = BillServices.Instance.GetSGST(model.OrderID);
+            model.GrandTotal = model.Order.GrossTotal + model.CGST + model.SGST;
             return View("ShowReceipt", model);
         }
 

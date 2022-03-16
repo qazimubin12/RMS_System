@@ -181,9 +181,9 @@
     }
 
 
-    setInterval(function () {
-        LoadCart();
-    }, 1000);
+    //setInterval(function () {
+    //    LoadCart();
+    //}, 1000);
 
 
 
@@ -195,6 +195,7 @@
         var tr = $(this).closest('tr');
         var FirstCol = tr.find(`input[data-id=${abc}]`).val();
         if (FirstCol != 0) {
+            $(abc).attr("disabled", true);
             $.ajax({
                 url: '@Url.Action("TableFoodEntry", "Home")',
                 type: 'GET',
@@ -207,6 +208,7 @@
                 .done(function (response) {
 
                     $("#ActionContainer").html(response);
+                    LoadCart();
 
                 })
                 .fail(function (XMLHttpRequest, textStatus, errorThrown) {

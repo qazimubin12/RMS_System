@@ -7,6 +7,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                <div style="padding-left:40%; background-color:blue;color:white;" >
+                    <h4 class="container-fluid">@DateTime.Now</h4>
+                    </div>
                 <div class="card card-primary">
                     <div class="card-header">
                         <table class="col-md-12">
@@ -40,12 +43,6 @@
 
 <script>
 
-    @*$(function () {
-        setInterval(function () {
-            $('#ActionContainer').load('@Url.Action("BillingOrderDashboard", "Home")');
-        }, 2000);
-    });*@
-
 
     function LoadCart() {
           $.ajax({
@@ -53,7 +50,6 @@
             type: 'GET'
         })
             .done(function (response) {
-
                 $("#ActionContainer").html(response);
 
             })
@@ -63,6 +59,8 @@
 
 
     }
+
+
 </script>
 
 <style>

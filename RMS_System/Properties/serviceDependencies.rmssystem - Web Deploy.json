@@ -1,10 +1,3 @@
 {
-  "dependencies": {
-    "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/rmssystem/databases/rmssystem",
-      "type": "mssql.azure",
-      "connectionId": "RMSConnectionStrings",
-      "secretStore": "AzureAppSettings"
-    }
-  }
+  "dependencies": {}
 }

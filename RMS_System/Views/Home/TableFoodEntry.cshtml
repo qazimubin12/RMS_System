@@ -8,59 +8,60 @@
     @if (Model.Entries.Count != 0)
     {
 
-    <table class="table table-hover ">
-  
-        @foreach (var item in Model.Entries)
-        {
-            {
-                grosstotal += item.ProductTotal;
-            }
-            if (item.FoodDispatchedStatus == "Not Yet")
+        <table class="table table-hover ">
+
+            @foreach (var item in Model.Entries)
             {
 
-                <tr style="background-color:mediumaquamarine">
-                    <td>@item.FoodItem  (@item.Quantity)</td>
-                    <td>@item.ProductTotal</td>
-                    @if (item.FoodDispatchedStatus != "Not Yet")
-                    {
-                        <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-outline-danger" id="@item.ID">DELETE</button></td>
-                    }
-                </tr>
+                {
+                    grosstotal += item.ProductTotal;
+                }
+                if (item.FoodDispatchedStatus == "Not Yet")
+                {
 
+                    <tr style="background-color:mediumaquamarine">
+                        <td>@item.FoodItem  (@item.Quantity)</td>
+                        <td>@item.ProductTotal</td>
+                        @if (item.FoodDispatchedStatus != "Not Yet")
+                        {
+                            <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-outline-danger" id="@item.ID">DELETE</button></td>
+                        }
+                    </tr>
+
+                }
+                else if (item.FoodDispatchedStatus == "Dispatched")
+                {
+                    <tr style="background-color:lightgreen">
+                        <td>@item.FoodItem  (@item.Quantity)</td>
+                        <td>@item.ProductTotal</td>
+                        @if (Model.TableStatus == "Fresh Table")
+                        {
+                            <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-outline-danger" id="@item.ID">DELETE</button></td>
+                        }
+                    </tr>
+                }
+
+
+
+                else
+                {
+                    <tr>
+                        <td>@item.FoodItem  (@item.Quantity)</td>
+                        <td>@item.ProductTotal</td>
+                        @if (item.FoodDispatchedStatus != "null" || item.FoodDispatchedStatus != "Not Yet")
+                        {
+                            <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-outline-danger" id="@item.ID">DELETE</button></td>
+                        }
+                    </tr>
+                }
             }
-            else if (item.FoodDispatchedStatus == "Dispatched")
-            {
-                <tr style="background-color:lightgreen">
-                    <td>@item.FoodItem  (@item.Quantity)</td>
-                    <td>@item.ProductTotal</td>
-                    @if (Model.TableStatus == "Fresh Table")
-                    {
-                        <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-outline-danger" id="@item.ID">DELETE</button></td>
-                    }
-                </tr>
-            }
 
 
-
-            else
-            {
-                <tr>
-                    <td>@item.FoodItem  (@item.Quantity)</td>
-                    <td>@item.ProductTotal</td>
-                    @if (item.FoodDispatchedStatus != "null" || item.FoodDispatchedStatus != "Not Yet")
-                    {
-                        <td><button onclick="DeleteEntriy(@item.ID)" class="btn btn-outline-danger" id="@item.ID">DELETE</button></td>
-                    }
-                </tr>
-            }
-        }
-       
-
-        <tr>
-            <td>Total Amount</td>
-            <td>@grosstotal.ToString()</td>
-        </tr>
-    </table>
+            <tr>
+                <td>Total Amount</td>
+                <td>@grosstotal.ToString()</td>
+            </tr>
+        </table>
 
     }
     else
@@ -74,15 +75,22 @@
         {
             <button onclick="ConfirmOrder(@Model.SelectedTableName)" data-id="@Model.SelectedTableName" id="btnConfirmOrder" class="btn btn-outline-danger btn-block">Confirm Order</button>
         }
+        if (Model.Entries.Count != Model.Table.OrderItems && Model.TableStatus != "Fresh Table")
+        {
+            <button onclick="UpdateOrder(@Model.SelectedTableName)" data-id="@Model.SelectedTableName" id="btnUpdateOrder" class="btn btn-outline-danger btn-block">Update Order</button>
+        }
         else
         {
             if (Model.TableStatus == "Order Delivered")
             {
-            <button onclick="CloseSession(@Model.SelectedTableName)" data-id="@Model.SelectedTableName" id="btnCloseSession" class="btn btn-outline-danger btn-block">Close Session</button>
+                <button onclick="CloseSession(@Model.SelectedTableName)" data-id="@Model.SelectedTableName" id="btnCloseSession" class="btn btn-outline-danger btn-block">Close Session</button>
             }
+
         }
+
+
     }
-    </div>
+</div>
 
 
 
@@ -105,14 +113,37 @@
 
 
     function ConfirmOrder(tableID) {
-         $.ajax({
-             url: '@Url.Action("ConfirmOrder", "Home")',
-             data: {
-                 ID: tableID
-             }
+            $("#btnConfirmOrder").attr("disabled", true);
+        $.ajax({
+            url: '@Url.Action("ConfirmOrder", "Home")',
+            data: {
+                ID: tableID
+            },
         })
             .done(function (response) {
                 $("#tableContainer").html(response);
+                $("#btnConfirmOrder").attr("disabled", false);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    };
+
+
+     function UpdateOrder(tableID) {
+         $("#btnUpdateOrder").attr("disabled", true);
+        $.ajax({
+            url: '@Url.Action("UpdateOrder", "Home")',
+            data: {
+                ID: tableID
+            },
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#btnUpdateOrder").attr("disabled", false);
+
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
 

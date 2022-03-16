@@ -28,5 +28,6 @@ namespace RMS_System.ViewModels
         public Double SGST { get; set; }
         public Double CGST { get; set; }
         public Double TotalAmount { get; set; }
+        public Double GrandTotal { get; set; }
     }
 }

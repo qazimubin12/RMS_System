@@ -34,6 +34,8 @@ namespace RMS_System.ViewModels
         public int ProductTotal { get; set; }
         public List<TableEntry> Entries { get; set; }
         public string TableStatus { get; set; }
+        public Table Table { get; set; }
+        public bool OrderSatisfied { get; set; }
 
         public string SessionStatus { get; set; }
 

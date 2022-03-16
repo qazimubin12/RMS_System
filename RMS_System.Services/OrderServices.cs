@@ -250,6 +250,22 @@ namespace RMS_System.Services
             }
         }
 
+        public Order GetOrder(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => x.TableName == TableName).FirstOrDefault();
+            }
+        }
+
+        public Order GetOrderForUpdation(string TableName)
+        {
+            using (var context = new RMContext())
+            {
+                return context.Orders.Where(x => x.TableName == TableName && x.PaidBy == null).FirstOrDefault();
+            }
+        }
+
         public int GetItemsServedForOrder(string TableName, int ID)
         {
             using (var context = new RMContext())
@@ -297,6 +313,25 @@ namespace RMS_System.Services
             {
                 context.Orders.Attach(order);
                 context.Entry(order).Property(x => x.GrandTotal).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+
+        public void UpdateOrderInfo(Order order, Double GrandTotal,int OrderedItems,Double GrossTotal,string Status)
+        {
+
+            order.GrandTotal = GrandTotal;
+            order.OrderedItems = OrderedItems;
+            order.GrossTotal = GrossTotal;
+            order.PaymentStatus = Status;
+            using (var context = new RMContext())
+            {
+                context.Orders.Attach(order);
+                context.Entry(order).Property(x => x.GrandTotal).IsModified = true;
+                context.Entry(order).Property(x => x.OrderedItems).IsModified = true;
+                context.Entry(order).Property(x => x.GrossTotal).IsModified = true;
+                context.Entry(order).Property(x => x.GrossTotal).IsModified = true;
                 context.SaveChanges();
             }
         }

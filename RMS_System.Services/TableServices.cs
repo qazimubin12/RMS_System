@@ -59,11 +59,11 @@ namespace RMS_System.Services
             }
         }
 
-        public string GetTableSessionStatus(int ID)
+        public string GetTableSessionStatus(string TableName)
         {
             using (var context = new RMContext())
             {
-                return context.Tables.Where(x => x.ID == ID).Select(x => x.SessionStatus).FirstOrDefault();
+                return context.Tables.Where(x => x.TableName == TableName).Select(x => x.SessionStatus).FirstOrDefault();
             }
         }
 
@@ -150,6 +150,26 @@ namespace RMS_System.Services
                 context.Entry(table).Property(x => x.OrderItems).IsModified = true;
                 context.Entry(table).Property(x => x.SessionStatus).IsModified = true;
                 context.Entry(table).Property(x => x.ItemsServed).IsModified = true;
+                context.Entry(table).Property(x => x.ServedBy).IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+
+        public void UpdateTableInfoForUpdateOrder(int TableID, string Status, int OrderedItems, string SessionStatus, string ServedBy)
+        {
+            var table = new Table();
+            table.ID = TableID;
+            table.TableStatus = Status;
+            table.OrderItems = OrderedItems;
+            table.ServedBy = ServedBy;
+            table.SessionStatus = SessionStatus;
+            using (var context = new RMContext())
+            {
+                context.Tables.Attach(table);
+                context.Entry(table).Property(x => x.TableStatus).IsModified = true;
+                context.Entry(table).Property(x => x.OrderItems).IsModified = true;
+                context.Entry(table).Property(x => x.SessionStatus).IsModified = true;
                 context.Entry(table).Property(x => x.ServedBy).IsModified = true;
                 context.SaveChanges();
             }

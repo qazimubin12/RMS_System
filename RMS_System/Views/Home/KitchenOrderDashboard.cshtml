@@ -12,7 +12,7 @@
         if (item2.OrderedItems != item2.ItemsServed)
         {
             <div class="scroll2 table-responsive col-sm-4">
-                <h5>@item2.WaiterName - @item2.TableName </h5>
+                <h3  style="padding-left:30%; background-color:cadetblue;color:white">@item2.WaiterName - @item2.TableName </h3>
                 <table class="table-hover table-condensed col-md-12">
                     <tbody>
                         @foreach (var item in Model.Entries)
@@ -29,7 +29,7 @@
                                             var hours = span.Hours;
                                         }
 
-                                        <span>@hours : @minutes : @seconds</span>
+                                        <span style="background-color:gold">@hours : @minutes : @seconds</span>
 
 
                                     </td>
@@ -37,13 +37,13 @@
                                         (@item.Quantity) @item.FoodItem
                                     </td>
                                     <td>
-                                        <button class="dispatchbtn btn btn-sm btn-outline-warning" data-id="@item.ID">DISPATCH</button>
+                                        <button class="dispatchbtn btn btn-sm btn-outline-secondary" data-id="@item.ID">DISPATCH</button>
                                     </td>
                                     @if (Model.Role == "Kitchen Master")
                                     {
 
                                         <td>
-                                            <button class="deletebtn btn btn-sm btn-outline-danger" data-id="@item.ID">DELETE</button>
+                                            <button class="deletebtn btn btn-outline-secondary" data-id="@item.ID">DELETE</button>
                                         </td>
                                     }
                                 </tr>
@@ -65,6 +65,8 @@
 
 <script>
     $(".dispatchbtn").click(function () {
+
+        $(".dispatchbtn").attr("disabled", true);
         $.ajax({
             url: '@Url.Action("DispatchEntry", "Home")',
             type: 'GET',
@@ -75,6 +77,7 @@
             .done(function (response) {
 
                 $("#ActionContainer").html(response);
+                $(".dispatchbtn").attr("disabled", false);
 
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -83,6 +86,14 @@
 
     });
 
+
+   var submit = 0;
+   function CheckDouble() {
+     if (++submit > 1) {
+     alert('This sometimes takes a few seconds - please be patient.');
+     return false;
+   }
+ }
 
 
     $(".deletebtn").click(function () {

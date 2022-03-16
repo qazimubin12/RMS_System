@@ -15,14 +15,14 @@
     @foreach (var item2 in Model.Order)
     {
 
-        <div class="border border-dark table-responsive col-md-4">
+        <div style="border:inset" class="border table-responsive col-md-4">
             <table class=" table-hover table-condensed col-md-12">
                 @{++Count;
                     ++Count2;}
                 <thead>
                     <tr>
-                        <td colspan="3">
-                            <h4 class="text-light bg-dark">@item2.TableName</h4>
+                        <td align="center" colspan="3">
+                            <h3 class="text-light bg-dark">@item2.TableName</h3>
                         </td>
                     </tr>
                 </thead>
@@ -104,9 +104,9 @@
 
                     <tr>
 
-                        <td><button type="button"  data-id="@item2.ID" class="btnPrint btn btn-sm btn-outline-secondary">PRINT</button></td>
-                        <td><button type="button" data-method="Cash" data-id="@item2.ID" class="btnCash btn btn-sm btn-outline-primary">Paid by Cash</button></td>
-                        <td><button type="button" data-method="Card" data-id="@item2.ID" class="btnCard btn btn-sm btn-outline-primary">Paid By Card</button></td>
+                        <td><button type="button"  data-id="@item2.ID" class="btnPrint btn  btn-outline-secondary">PRINT</button></td>
+                        <td><button type="button" data-method="Cash" data-id="@item2.ID" class="btnCash btn  btn-outline-primary">Paid by Cash</button></td>
+                        <td><button type="button" data-method="Card" data-id="@item2.ID" class="btnCard btn  btn-outline-primary">Paid By Card</button></td>
                     </tr>
 
 

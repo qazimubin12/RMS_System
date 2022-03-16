@@ -1,7 +1,7 @@
 ﻿@model RMS_System.ViewModels.ConfigurationViewModel
 @{
     ViewBag.Title = "Index";
-    var imageURL = "/Content/themedata/dist/img/placeholder.png";
+    var imageURL = !string.IsNullOrEmpty(Model.Configuration.ImageURL) ? Model.Configuration.ImageURL : "/Content/themedata/dist/img/placeholder.png";
 }
 
 
