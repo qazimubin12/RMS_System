@@ -520,7 +520,7 @@ namespace RMS_System.Controllers
                 TableEntryForFoodViewModel model = new TableEntryForFoodViewModel();
                 model.SelectedTableName = TableServices.Instance.GetTable(ID);
                 var SomeInfoForTable = TableServices.Instance.GetTable(ID);
-                if (model.SelectedTableName.TableStatus == "Waiting for Billing")
+                if (SomeInfoForTable.TableStatus == "Waiting for Billing")
                 {
                     return RedirectToAction("WaiterApp", "Home");
                 }
