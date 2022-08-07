@@ -96,23 +96,6 @@ namespace RMS_System.Services
             }
         }
 
-        public List<Role> GetAllRoles()
-        {
-            using (var context = new RMContext())
-            {
-                var result = context.Roles.ToList();
-                return result;  
-            }
-        }
-
-        public List<string> GetAllRolesInString()
-        {
-            using (var context = new RMContext())
-            {
-                var result = context.Roles.Select(x=>x.Roles).ToList();
-                return result;
-            }
-        }
         public void UpdateUser(User user)
         {
             using (var context = new RMContext())
@@ -132,5 +115,24 @@ namespace RMS_System.Services
                 context.SaveChanges();
             }
         }
+
+        public List<Role> GetAllRoles()
+        {
+            using (var context = new RMContext())
+            {
+                var result = context.Roles.ToList();
+                return result;  
+            }
+        }
+
+        public List<string> GetAllRolesInString()
+        {
+            using (var context = new RMContext())
+            {
+                var result = context.Roles.Select(x=>x.Roles).ToList();
+                return result;
+            }
+        }
+        
     }
 }

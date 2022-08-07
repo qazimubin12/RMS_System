@@ -12,10 +12,10 @@ import $ from 'jquery'
  * ====================================================
  */
 
-const NAME = 'CardRefresh'
-const DATA_KEY = 'lte.cardrefresh'
-const EVENT_KEY = `.${DATA_KEY}`
-const JQUERY_NO_CONFLICT = $.fn[NAME]
+//const NAME = 'CardRefresh'
+//const DATA_KEY = 'lte.cardrefresh'
+//const EVENT_KEY = `.${DATA_KEY}`
+//const JQUERY_NO_CONFLICT = $.fn[NAME]
 
 const EVENT_LOADED = `loaded${EVENT_KEY}`
 const EVENT_OVERLAY_ADDED = `overlay.added${EVENT_KEY}`

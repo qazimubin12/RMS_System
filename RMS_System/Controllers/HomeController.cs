@@ -271,6 +271,10 @@ namespace RMS_System.Controllers
         }
 
 
+
+
+
+
         [HttpGet]
         [Obsolete]
         public ActionResult RevenueReport(AdminViewModel model)
@@ -506,7 +510,7 @@ namespace RMS_System.Controllers
 
 
         [HttpGet]
-        public ActionResult GoToFoodEntry(int ID, string Category = null)
+        public ActionResult GoToFoodEntry(int ID,string Category = null)
         {
             CheckRoleForWaiter();
             if (WaiterRole == false)
@@ -536,14 +540,9 @@ namespace RMS_System.Controllers
                     }
                 }
                 model.MenuItmsCategories = MenuItemServices.Instance.GetAllCategories();
-                if (Category == null)
-                {
-                    model.MenuItems = MenuItemServices.Instance.GetMenuItems(null);
-                }
-                else
-                {
-                    model.MenuItems = MenuItemServices.Instance.GetMenuItems(null, Category);
-                }
+
+                model.MenuItems = MenuItemServices.Instance.GetMenuItems(null, Category);
+
                 model.OrderedQuantity = 0;
 
                 return View(model);

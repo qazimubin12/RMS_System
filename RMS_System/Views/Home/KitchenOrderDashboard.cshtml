@@ -11,50 +11,52 @@
     {
         if (item2.OrderedItems != item2.ItemsServed)
         {
-            <div class="scroll2 table-responsive col-sm-4">
-                <h3  style="padding-left:30%; background-color:cadetblue;color:white">@item2.WaiterName - @item2.TableName </h3>
-                <table class="table-hover table-condensed col-md-12">
-                    <tbody>
-                        @foreach (var item in Model.Entries)
+    <div class="card col-md-4">
+        <div>
+            <h3 style="padding-left:30%; background-color:cadetblue;color:white">@item2.WaiterName - @item2.TableName </h3>
+            <table class="table-hover table-condensed col-md-12">
+                <tbody>
+                    @foreach (var item in Model.Entries)
+                    {
+                        if (item.TableName == item2.TableName)
                         {
-                            if (item.TableName == item2.TableName)
-                            {
 
-                                <tr>
-                                    <td>
-                                        @{ var CreateDate = @item.OrderedTime;
-                                            TimeSpan span = (DateTime.Now - CreateDate);
-                                            var seconds = span.Seconds;
-                                            var minutes = span.Minutes;
-                                            var hours = span.Hours;
-                                        }
-
-                                        <span style="background-color:gold">@hours : @minutes : @seconds</span>
-
-
-                                    </td>
-                                    <td>
-                                        (@item.Quantity) @item.FoodItem
-                                    </td>
-                                    <td>
-                                        <button class="dispatchbtn btn btn-sm btn-outline-secondary" data-id="@item.ID">DISPATCH</button>
-                                    </td>
-                                    @if (Model.Role == "Kitchen Master")
-                                    {
-
-                                        <td>
-                                            <button class="deletebtn btn btn-outline-secondary" data-id="@item.ID">DELETE</button>
-                                        </td>
+                            <tr>
+                                <td>
+                                    @{ var CreateDate = @item.OrderedTime;
+                                        TimeSpan span = (DateTime.Now - CreateDate);
+                                        var seconds = span.Seconds;
+                                        var minutes = span.Minutes;
+                                        var hours = span.Hours;
                                     }
-                                </tr>
-                            }
 
+                                    <span style="background-color:gold">@hours : @minutes : @seconds</span>
+
+
+                                </td>
+                                <td>
+                                    (@item.Quantity) @item.FoodItem
+                                </td>
+                                <td>
+                                    <button class="dispatchbtn btn btn-sm btn-outline-secondary" data-id="@item.ID">DISPATCH</button>
+                                </td>
+                                @if (Model.Role == "Kitchen Master")
+                                {
+
+                                    <td>
+                                        <button class="deletebtn btn btn-outline-secondary" data-id="@item.ID">DELETE</button>
+                                    </td>
+                                }
+                            </tr>
                         }
 
+                    }
 
-                    </tbody>
-                </table>
-            </div>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
         }
 
     }
