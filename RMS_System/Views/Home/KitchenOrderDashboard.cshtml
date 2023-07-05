@@ -68,7 +68,7 @@
 <script>
     $(".dispatchbtn").click(function () {
 
-        $(".dispatchbtn").attr("disabled", true);
+        $(this).attr("disabled", true);
         $.ajax({
             url: '@Url.Action("DispatchEntry", "Home")',
             type: 'GET',

@@ -16,9 +16,9 @@
                             <div class="filter-container p-0 row">
                                 @foreach (var item in Model.Tables)
                                 {
-                                    <div onclick="UseTableInFoodEntry(@item.ID)" style="padding-bottom:5px" class="filtr-item col-sm-2" data-id="@item.ID">
+                                    <div onclick="UseTableInFoodEntry(@item.ID)" style="cursor:pointer;padding-bottom:5px" class="filtr-item col-sm-2" data-id="@item.ID">
                                        
-                                        <a href="" data-toggle="lightbox">
+                                        <a  data-toggle="lightbox">
                                             @if (item.TableStatus == "Fresh Table")
                                             {
                                                 <div class="rounded" id="tablecontainer" style=" height: 120px; width: 160px; background: rgb(1,193,239); background: linear-gradient(90deg, rgba(1,193,239,1) 66%, rgba(17,209,255,1) 100%);  ">

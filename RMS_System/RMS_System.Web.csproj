@@ -195,7 +195,6 @@
     <Content Include="Content\themedata\build\config\postcss.config.js" />
     <Content Include="Content\themedata\build\config\rollup.config.js" />
     <Content Include="Content\themedata\build\js\AdminLTE.js" />
-    <Content Include="Content\themedata\build\js\CardRefresh.js" />
     <Content Include="Content\themedata\build\js\CardWidget.js" />
     <Content Include="Content\themedata\build\js\ControlSidebar.js" />
     <Content Include="Content\themedata\build\js\DirectChat.js" />
@@ -2462,7 +2461,6 @@
     <Content Include="Content\themedata\plugins\toastr\toastr.js.map" />
     <Content Include="Content\themedata\README.md" />
     <Content Include="manifest.json" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Properties\PublishProfiles\hotelrms - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\rmssystem - FTP.pubxml" />

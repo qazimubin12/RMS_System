@@ -65,7 +65,7 @@
                                     <div class="card-header">
                                         <label>@item.MenuName</label>
                                     </div>
-                                    @if (item.ImageURL == null)
+                                    @if (item.ImageURL == null || item.ImageURL == "")
                                     {
                                         <img class="card-img-top" height="100" width="100" src="@Url.Content(PlaceholderURL)" />
                                     }

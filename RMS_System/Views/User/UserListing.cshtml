@@ -41,14 +41,14 @@
                                     {
                                         <tr>
                                             <td>
-                                                @if (item.ImageURL == null)
+                                                @if (item.ImageURL == null || item.ImageURL == "")
                                                 {
                                                     <img height="70" width="70" src="@Url.Content(PlaceholderURL)" />
                                                 }
                                                 else
                                                 {
 
-                                                    <img height="70" width="70" src="@Url.Content(item.ImageURL)" />
+                                                    <img height="70" width="70" src="@item.ImageURL" />
                                                 }
 
                                             </td>
